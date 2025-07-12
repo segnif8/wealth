@@ -5,902 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WealthGrow - Investment Platform</title>
-        <style>
-        :root {
-            --primary: #4e73df;
-            --secondary: #858796;
-            --success: #1cc88a;
-            --info: #36b9cc;
-            --warning: #f6c23e;
-            --danger: #e74a3b;
-            --dark: #5a5c69;
-            --light: #f8f9fc;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: #f8f9fc;
-            color: #333;
-        }
-        
-        .container {
-            display: flex;
-            min-height: 100vh;
-        }
-        
-        /* Sidebar */
-        .sidebar {
-            width: 250px;
-            background: linear-gradient(180deg, var(--primary) 0%, #224abe 100%);
-            color: white;
-            padding: 20px 0;
-            transition: all 0.3s;
-            position: fixed;
-            height: 100vh;
-            z-index: 100;
-        }
-        
-        .sidebar.hidden {
-            margin-left: -250px;
-        }
-        
-        .sidebar-header {
-            padding: 0 20px 20px;
-            text-align: center;
-        }
-        
-        .sidebar-header h3 {
-            color: white;
-            font-weight: 700;
-        }
-        
-        .sidebar-menu {
-            list-style: none;
-        }
-        
-        .sidebar-menu li {
-            padding: 10px 20px;
-            border-left: 3px solid transparent;
-            transition: all 0.3s;
-        }
-        
-        .sidebar-menu li:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-left: 3px solid white;
-        }
-        
-        .sidebar-menu li.active {
-            background-color: rgba(255, 255, 255, 0.2);
-            border-left: 3px solid white;
-        }
-        
-        .sidebar-menu a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-        }
-        
-        .sidebar-menu a:hover {
-            color: white;
-        }
-        
-        .sidebar-menu i {
-            margin-right: 10px;
-            font-size: 1.1rem;
-        }
-        
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            margin-left: 250px;
-            transition: all 0.3s;
-        }
-        
-        .main-content.expanded {
-            margin-left: 0;
-        }
-        
-        /* Navbar */
-        .navbar {
-            background-color: white;
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
-            padding: 1rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .navbar-left {
-            display: flex;
-            align-items: center;
-        }
-        
-        .toggle-sidebar {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--secondary);
-            cursor: pointer;
-            margin-right: 1rem;
-        }
-        
-        .navbar-right {
-            display: flex;
-            align-items: center;
-        }
-        
-        .user-menu {
-            position: relative;
-        }
-        
-        .user-btn {
-            background: none;
-            border: none;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            color: var(--dark);
-        }
-        
-        .user-btn img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-        
-        .dropdown-menu {
-            position: absolute;
-            right: 0;
-            top: 50px;
-            background-color: white;
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
-            border-radius: 0.35rem;
-            padding: 0.5rem 0;
-            min-width: 200px;
-            display: none;
-            z-index: 1000;
-        }
-        
-        .dropdown-menu.show {
-            display: block;
-        }
-        
-        .dropdown-item {
-            padding: 0.5rem 1.5rem;
-            color: var(--dark);
-            text-decoration: none;
-            display: block;
-        }
-        
-        .dropdown-item:hover {
-            background-color: #f8f9fc;
-        }
-        
-        /* Content */
-        .content {
-            padding: 1.5rem;
-        }
-        
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        .page-title h1 {
-            font-size: 1.75rem;
-            color: var(--dark);
-            font-weight: 600;
-        }
-        
-        .breadcrumb {
-            display: flex;
-            list-style: none;
-        }
-        
-        .breadcrumb-item {
-            color: var(--secondary);
-        }
-        
-        .breadcrumb-item.active {
-            color: var(--primary);
-            font-weight: 600;
-        }
-        
-        .breadcrumb-item + .breadcrumb-item::before {
-            content: "/";
-            padding: 0 0.5rem;
-        }
-        
-        /* Cards */
-        .card {
-            background-color: white;
-            border-radius: 0.35rem;
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
-            margin-bottom: 1.5rem;
-        }
-        
-        .card-header {
-            padding: 1rem 1.5rem;
-            background-color: #f8f9fc;
-            border-bottom: 1px solid #e3e6f0;
-            border-radius: 0.35rem 0.35rem 0 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .card-header h6 {
-            font-weight: 700;
-            color: var(--dark);
-            margin: 0;
-        }
-        
-        .card-body {
-            padding: 1.5rem;
-        }
-        
-        /* Stats Cards */
-        .stats-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .stats-card {
-            background-color: white;
-            border-radius: 0.35rem;
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
-            padding: 1.5rem;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .stats-card.primary {
-            border-left: 4px solid var(--primary);
-        }
-        
-        .stats-card.success {
-            border-left: 4px solid var(--success);
-        }
-        
-        .stats-card.info {
-            border-left: 4px solid var(--info);
-        }
-        
-        .stats-card.warning {
-            border-left: 4px solid var(--warning);
-        }
-        
-        .stats-card .title {
-            font-size: 0.875rem;
-            color: var(--secondary);
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-        
-        .stats-card .value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin: 0.5rem 0;
-        }
-        
-        .stats-card .icon {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 2rem;
-            opacity: 0.2;
-        }
-        
-        /* Forms */
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-        
-        .form-control {
-            display: block;
-            width: 100%;
-            padding: 0.75rem;
-            font-size: 1rem;
-            line-height: 1.5;
-            color: #6e707e;
-            background-color: #fff;
-            background-clip: padding-box;
-            border: 1px solid #d1d3e2;
-            border-radius: 0.35rem;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-        }
-        
-        .form-control:focus {
-            color: #6e707e;
-            background-color: #fff;
-            border-color: #bac8f3;
-            outline: 0;
-            box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
-        }
-        
-        .btn {
-            display: inline-block;
-            font-weight: 400;
-            color: #fff;
-            text-align: center;
-            vertical-align: middle;
-            user-select: none;
-            background-color: var(--primary);
-            border: 1px solid var(--primary);
-            padding: 0.75rem 1.5rem;
-            font-size: 1rem;
-            line-height: 1.5;
-            border-radius: 0.35rem;
-            transition: all 0.15s ease-in-out;
-            cursor: pointer;
-        }
-        
-        .btn:hover {
-            background-color: #2e59d9;
-            border-color: #2653d4;
-            color: white;
-        }
-        
-        .btn-success {
-            background-color: var(--success);
-            border-color: var(--success);
-        }
-        
-        .btn-success:hover {
-            background-color: #17a673;
-            border-color: #169b6b;
-        }
-        
-        .btn-danger {
-            background-color: var(--danger);
-            border-color: var(--danger);
-        }
-        
-        .btn-danger:hover {
-            background-color: #d62c1a;
-            border-color: #c52717;
-        }
-        
-        .btn-warning {
-            background-color: var(--warning);
-            border-color: var(--warning);
-        }
-        
-        .btn-warning:hover {
-            background-color: #e0b228;
-            border-color: #d9aa24;
-        }
-        
-        .btn-info {
-            background-color: var(--info);
-            border-color: var(--info);
-        }
-        
-        .btn-info:hover {
-            background-color: #2c9faf;
-            border-color: #2a96a5;
-        }
-        
-        .btn-secondary {
-            background-color: var(--secondary);
-            border-color: var(--secondary);
-        }
-        
-        .btn-secondary:hover {
-            background-color: #717384;
-            border-color: #6b6d7d;
-        }
-        
-        /* Tables */
-        .table {
-            width: 100%;
-            margin-bottom: 1rem;
-            color: #858796;
-            border-collapse: collapse;
-        }
-        
-        .table th {
-            padding: 1rem;
-            vertical-align: bottom;
-            border-bottom: 2px solid #e3e6f0;
-            text-align: left;
-            font-weight: 700;
-        }
-        
-        .table td {
-            padding: 1rem;
-            vertical-align: top;
-            border-top: 1px solid #e3e6f0;
-        }
-        
-        .table-striped tbody tr:nth-of-type(odd) {
-            background-color: #f8f9fc;
-        }
-        
-        .badge {
-            display: inline-block;
-            padding: 0.35em 0.65em;
-            font-size: 0.75em;
-            font-weight: 700;
-            line-height: 1;
-            text-align: center;
-            white-space: nowrap;
-            vertical-align: baseline;
-            border-radius: 0.25rem;
-        }
-        
-        .badge-success {
-            color: #fff;
-            background-color: var(--success);
-        }
-        
-        .badge-danger {
-            color: #fff;
-            background-color: var(--danger);
-        }
-        
-        .badge-warning {
-            color: #fff;
-            background-color: var(--warning);
-        }
-        
-        .badge-info {
-            color: #fff;
-            background-color: var(--info);
-        }
-        
-        .badge-primary {
-            color: #fff;
-            background-color: var(--primary);
-        }
-        
-        /* Alert */
-        .alert {
-            position: relative;
-            padding: 1rem 1.5rem;
-            margin-bottom: 1rem;
-            border: 1px solid transparent;
-            border-radius: 0.35rem;
-        }
-        
-        .alert-success {
-            color: #0f5132;
-            background-color: #d1e7dd;
-            border-color: #badbcc;
-        }
-        
-        .alert-danger {
-            color: #842029;
-            background-color: #f8d7da;
-            border-color: #f5c2c7;
-        }
-        
-        .alert-warning {
-            color: #664d03;
-            background-color: #fff3cd;
-            border-color: #ffecb5;
-        }
-        
-        .alert-info {
-            color: #055160;
-            background-color: #cff4fc;
-            border-color: #b6effb;
-        }
-        
-        /* Login Page */
-        .login-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #f8f9fc;
-        }
-        
-        .login-wrapper {
-            width: 100%;
-            max-width: 1200px;
-            display: flex;
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-            border-radius: 0.5rem;
-            overflow: hidden;
-        }
-        
-        .login-left {
-            flex: 1;
-            background: linear-gradient(135deg, var(--primary) 0%, #224abe 100%);
-            color: white;
-            padding: 4rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-        
-        .login-left h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .login-left p {
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-        
-        .login-features {
-            text-align: left;
-            margin-top: 2rem;
-        }
-        
-        .login-feature {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        .login-feature i {
-            font-size: 1.5rem;
-            margin-right: 1rem;
-            color: rgba(255, 255, 255, 0.8);
-        }
-        
-        .login-right {
-            flex: 1;
-            background-color: white;
-            padding: 4rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        
-        .login-card {
-            width: 100%;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-        
-        .login-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .login-header img {
-            height: 60px;
-            margin-bottom: 1rem;
-        }
-        
-        .login-header h2 {
-            font-size: 1.75rem;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-        }
-        
-        .login-header p {
-            color: var(--secondary);
-        }
-        
-        .login-body {
-            margin-bottom: 1.5rem;
-        }
-        
-        .login-footer {
-            text-align: center;
-            margin-top: 1.5rem;
-        }
-        
-        .login-footer a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-        }
-        
-        .social-login {
-            margin-top: 2rem;
-        }
-        
-        .social-login p {
-            text-align: center;
-            color: var(--secondary);
-            margin-bottom: 1rem;
-            position: relative;
-        }
-        
-        .social-login p::before,
-        .social-login p::after {
-            content: "";
-            display: inline-block;
-            width: 30%;
-            height: 1px;
-            background-color: #e3e6f0;
-            position: absolute;
-            top: 50%;
-        }
-        
-        .social-login p::before {
-            left: 0;
-        }
-        
-        .social-login p::after {
-            right: 0;
-        }
-        
-        .social-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-        }
-        
-        .social-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            color: white;
-            font-size: 1.2rem;
-            transition: all 0.3s;
-        }
-        
-        .social-btn.facebook {
-            background-color: #3b5998;
-        }
-        
-        .social-btn.google {
-            background-color: #db4437;
-        }
-        
-        .social-btn.twitter {
-            background-color: #1da1f2;
-        }
-        
-        .social-btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-        
-        /* Register Page */
-        .register-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #f8f9fc;
-        }
-        
-        .register-wrapper {
-            width: 100%;
-            max-width: 1200px;
-            display: flex;
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-            border-radius: 0.5rem;
-            overflow: hidden;
-        }
-        
-        .register-left {
-            flex: 1;
-            background: linear-gradient(135deg, var(--success) 0%, #17a673 100%);
-            color: white;
-            padding: 4rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-        
-        .register-left h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .register-left p {
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-        
-        .register-features {
-            text-align: left;
-            margin-top: 2rem;
-        }
-        
-        .register-feature {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        .register-feature i {
-            font-size: 1.5rem;
-            margin-right: 1rem;
-            color: rgba(255, 255, 255, 0.8);
-        }
-        
-        .register-right {
-            flex: 1;
-            background-color: white;
-            padding: 4rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        
-        .register-card {
-            width: 100%;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-        
-        .register-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .register-header img {
-            height: 60px;
-            margin-bottom: 1rem;
-        }
-        
-        .register-header h2 {
-            font-size: 1.75rem;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-        }
-        
-        .register-header p {
-            color: var(--secondary);
-        }
-        
-        .register-body {
-            margin-bottom: 1.5rem;
-        }
-        
-        .register-footer {
-            text-align: center;
-            margin-top: 1.5rem;
-        }
-        
-        .register-footer a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-        }
-        
-        /* Modal */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1050;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s;
-        }
-        
-        .modal.show {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        .modal-dialog {
-            width: 100%;
-            max-width: 500px;
-            background-color: white;
-            border-radius: 0.5rem;
-            overflow: hidden;
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-            transform: translateY(-50px);
-            transition: transform 0.3s;
-        }
-        
-        .modal.show .modal-dialog {
-            transform: translateY(0);
-        }
-        
-        .modal-header {
-            padding: 1.5rem;
-            background-color: #f8f9fc;
-            border-bottom: 1px solid #e3e6f0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .modal-header h5 {
-            font-weight: 700;
-            margin: 0;
-        }
-        
-        .modal-header .close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-        
-        .modal-body {
-            padding: 1.5rem;
-        }
-        
-        .modal-footer {
-            padding: 1rem;
-            background-color: #f8f9fc;
-            border-top: 1px solid #e3e6f0;
-            display: flex;
-            justify-content: flex-end;
-        }
-        
-        /* Responsive */
-        @media (max-width: 992px) {
-            .login-wrapper,
-            .register-wrapper {
-                flex-direction: column;
-            }
-            
-            .login-left,
-            .register-left {
-                padding: 2rem;
-            }
-            
-            .login-right,
-            .register-right {
-                padding: 2rem;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .sidebar {
-                margin-left: -250px;
-            }
-            
-            .sidebar.show {
-                margin-left: 0;
-            }
-            
-            .main-content {
-                margin-left: 0;
-            }
-            
-            .navbar {
-                padding: 1rem;
-            }
-            
-            .stats-cards {
-                grid-template-columns: 1fr;
-            }
-            
-            .login-left,
-            .register-left {
-                display: none;
-            }
-        }
-    </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -1337,6 +441,13 @@
                                             <option value="dashen">Dashen Bank</option>
                                         </select>
                                     </div>
+                                    
+                                    <!-- Admin bank details section -->
+                                    <div class="form-group" id="admin-bank-details" style="display: none;">
+                                        <h5>Admin Bank Details</h5>
+                                        <div id="bank-details-content"></div>
+                                    </div>
+                                    
                                     <div class="form-group">
                                         <label for="deposit-phone" class="form-label">Phone Number</label>
                                         <input type="tel" id="deposit-phone" class="form-control" placeholder="Enter your phone number" required>
@@ -1346,14 +457,8 @@
                                         <input type="text" id="deposit-transaction-id" class="form-control" placeholder="Enter transaction ID" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="deposit-screenshot" class="form-label">Payment Screenshot</label>
+                                        <label for="deposit-screenshot" class="form-label">Payment Proof (Screenshot)</label>
                                         <input type="file" id="deposit-screenshot" class="form-control" accept="image/*" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <div id="bank-details" style="display: none;">
-                                            <h6>Bank Details</h6>
-                                            <p id="bank-info"></p>
-                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Submit Deposit Request</button>
@@ -1374,8 +479,8 @@
                                                 <th>Date</th>
                                                 <th>Amount</th>
                                                 <th>Method</th>
-                                                <th>Status</th>
                                                 <th>Proof</th>
+                                                <th>Status</th>
                                             </tr>
                                         </thead>
                                         <tbody id="deposit-history">
@@ -1832,7 +937,6 @@
                                                 <th>User</th>
                                                 <th>Amount</th>
                                                 <th>Method</th>
-                                                <th>Transaction ID</th>
                                                 <th>Proof</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -2061,35 +1165,6 @@
 
                         <div class="card">
                             <div class="card-header">
-                                <h6>Bank Account Settings</h6>
-                            </div>
-                            <div class="card-body">
-                                <form id="bank-settings-form">
-                                    <div class="form-group">
-                                        <label for="bank-name" class="form-label">Bank Name</label>
-                                        <input type="text" id="bank-name" class="form-control" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="account-name" class="form-label">Account Name</label>
-                                        <input type="text" id="account-name" class="form-control" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="account-number" class="form-label">Account Number</label>
-                                        <input type="text" id="account-number" class="form-control" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="telebirr-number" class="form-label">Telebirr Number</label>
-                                        <input type="text" id="telebirr-number" class="form-control" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-primary">Save Bank Details</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-header">
                                 <h6>System Information</h6>
                             </div>
                             <div class="card-body">
@@ -2267,19 +1342,6 @@
         </div>
     </div>
 
-    <!-- Screenshot Modal -->
-    <div class="modal" id="screenshot-modal">
-        <div class="modal-dialog">
-            <div class="modal-header">
-                <h5 id="screenshot-modal-title">Payment Proof</h5>
-                <button class="close" id="close-screenshot-modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <img id="screenshot-image" src="" alt="Payment Proof" style="max-width: 100%;">
-            </div>
-        </div>
-    </div>
-
     <script>
         // Database simulation with localStorage persistence
         const DB = {
@@ -2381,23 +1443,32 @@
                     min_withdraw: 100,
                     withdraw_fee: 6,
                     referral_bonus: 5,
-                    last_backup: null
+                    last_backup: null,
+                    bank_details: {
+                        telebirr: {
+                            name: "Admin Name",
+                            phone: "0912345678"
+                        },
+                        cbe: {
+                            name: "Admin Name",
+                            account: "100020003000",
+                            bank: "Commercial Bank of Ethiopia"
+                        },
+                        awash: {
+                            name: "Admin Name",
+                            account: "200030004000",
+                            bank: "Awash Bank"
+                        },
+                        dashen: {
+                            name: "Admin Name",
+                            account: "300040005000",
+                            bank: "Dashen Bank"
+                        }
+                    }
                 };
             },
             setSettings: (settings) => {
                 localStorage.setItem('wealthgrow_settings', JSON.stringify(settings));
-            },
-            getBankDetails: () => {
-                const bankDetails = localStorage.getItem('wealthgrow_bank_details');
-                return bankDetails ? JSON.parse(bankDetails) : {
-                    bank_name: "Commercial Bank of Ethiopia",
-                    account_name: "WealthGrow Investments",
-                    account_number: "100034567890",
-                    telebirr_number: "0912345678"
-                };
-            },
-            setBankDetails: (bankDetails) => {
-                localStorage.setItem('wealthgrow_bank_details', JSON.stringify(bankDetails));
             },
             backup: () => {
                 const backup = {
@@ -2408,7 +1479,6 @@
                     deposits: DB.getDeposits(),
                     withdrawals: DB.getWithdrawals(),
                     settings: DB.getSettings(),
-                    bankDetails: DB.getBankDetails(),
                     timestamp: new Date().toISOString()
                 };
                 
@@ -2429,7 +1499,6 @@
                 if (backup.deposits) DB.setDeposits(backup.deposits);
                 if (backup.withdrawals) DB.setWithdrawals(backup.withdrawals);
                 if (backup.settings) DB.setSettings(backup.settings);
-                if (backup.bankDetails) DB.setBankDetails(backup.bankDetails);
             },
             reset: () => {
                 localStorage.removeItem('wealthgrow_users');
@@ -2439,103 +1508,34 @@
                 localStorage.removeItem('wealthgrow_deposits');
                 localStorage.removeItem('wealthgrow_withdrawals');
                 localStorage.removeItem('wealthgrow_settings');
-                localStorage.removeItem('wealthgrow_bank_details');
+                localStorage.removeItem('wealthgrow_backup');
+                localStorage.removeItem('currentUser');
                 
                 // Reinitialize with default data
                 DB.getUsers();
                 DB.getInvestmentPlans();
                 DB.getSettings();
-                DB.getBankDetails();
             }
         };
 
         // Current user
         let currentUser = null;
         let confirmCallback = null;
+        let currentPage = 'dashboard';
 
-        // Check for logged in user on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            const loggedInUserId = localStorage.getItem('wealthgrow_current_user');
-            if (loggedInUserId) {
-                const users = DB.getUsers();
-                const user = users.find(u => u.id == loggedInUserId);
-                if (user) {
-                    loginUser(user);
+        // Simple event bus for real-time updates
+        const EventBus = {
+            events: {},
+            emit(event, data) {
+                if (this.events[event]) {
+                    this.events[event].forEach(callback => callback(data));
                 }
+            },
+            on(event, callback) {
+                if (!this.events[event]) this.events[event] = [];
+                this.events[event].push(callback);
             }
-
-            // Check for referral code in URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const refCode = urlParams.get('ref');
-            
-            if (refCode) {
-                document.getElementById('register-referral').value = refCode;
-            }
-
-            // Initialize bank details display
-            const depositMethod = document.getElementById('deposit-method');
-            if (depositMethod) {
-                depositMethod.addEventListener('change', updateBankDetailsDisplay);
-            }
-        });
-
-        function loginUser(user) {
-            currentUser = user;
-            user.last_login = new Date().toISOString();
-            
-            // Update user in database
-            const users = DB.getUsers();
-            const updatedUsers = users.map(u => u.id === user.id ? user : u);
-            DB.setUsers(updatedUsers);
-            
-            // Store current user ID in localStorage
-            localStorage.setItem('wealthgrow_current_user', user.id);
-            
-            loginPage.style.display = 'none';
-            app.style.display = 'block';
-            
-            // Update UI
-            usernameDisplay.textContent = user.username;
-            userAvatar.src = `https://ui-avatars.com/api/?name=${user.username}&background=4e73df&color=fff`;
-            
-            // Show admin menu if admin
-            if (user.is_admin) {
-                adminMenu.style.display = 'block';
-                showPage('admin-dashboard');
-            } else {
-                adminMenu.style.display = 'none';
-                showPage('dashboard');
-            }
-            
-            // Update dashboard
-            updateDashboard();
-        }
-
-        function updateBankDetailsDisplay() {
-            const method = document.getElementById('deposit-method').value;
-            const bankDetailsDiv = document.getElementById('bank-details');
-            const bankInfo = document.getElementById('bank-info');
-            const bankDetails = DB.getBankDetails();
-
-            if (method === 'telebirr') {
-                bankInfo.innerHTML = `
-                    <strong>Telebirr Number:</strong> ${bankDetails.telebirr_number}<br>
-                    <strong>Account Name:</strong> ${bankDetails.account_name}<br>
-                    <strong>Note:</strong> Send the exact amount and upload the payment screenshot
-                `;
-                bankDetailsDiv.style.display = 'block';
-            } else if (method) {
-                bankInfo.innerHTML = `
-                    <strong>Bank Name:</strong> ${bankDetails.bank_name}<br>
-                    <strong>Account Name:</strong> ${bankDetails.account_name}<br>
-                    <strong>Account Number:</strong> ${bankDetails.account_number}<br>
-                    <strong>Note:</strong> Send the exact amount and upload the payment screenshot
-                `;
-                bankDetailsDiv.style.display = 'block';
-            } else {
-                bankDetailsDiv.style.display = 'none';
-            }
-        }
+        };
 
         // DOM Elements
         const loginPage = document.getElementById('login-page');
@@ -2571,10 +1571,6 @@
         const confirmMessage = document.getElementById('confirm-message');
         const confirmModalTitle = document.getElementById('confirm-modal-title');
 
-        const screenshotModal = document.getElementById('screenshot-modal');
-        const closeScreenshotModal = document.getElementById('close-screenshot-modal');
-        const screenshotImage = document.getElementById('screenshot-image');
-
         // Pages
         const pages = {
             dashboard: document.getElementById('dashboard-page'),
@@ -2599,7 +1595,6 @@
         const passwordForm = document.getElementById('password-form');
         const addPlanForm = document.getElementById('add-plan-form');
         const generalSettingsForm = document.getElementById('general-settings-form');
-        const bankSettingsForm = document.getElementById('bank-settings-form');
 
         // Investment modal
         const investmentModal = document.getElementById('investment-modal');
@@ -2624,255 +1619,238 @@
         const backupBtn = document.getElementById('backup-btn');
         const resetBtn = document.getElementById('reset-btn');
 
-        // Event Listeners
-        showRegister.addEventListener('click', (e) => {
-            e.preventDefault();
-            loginPage.style.display = 'none';
-            registerPage.style.display = 'flex';
-        });
-
-        showLogin.addEventListener('click', (e) => {
-            e.preventDefault();
-            registerPage.style.display = 'none';
-            loginPage.style.display = 'flex';
-        });
-
-        forgotPassword.addEventListener('click', (e) => {
-            e.preventDefault();
-            loginPage.style.display = 'none';
-            forgotPasswordModal.classList.add('show');
-        });
-
-        showLoginFromForgot.addEventListener('click', (e) => {
-            e.preventDefault();
-            forgotPasswordModal.classList.remove('show');
-            loginPage.style.display = 'flex';
-        });
-
-        closeForgotPasswordModal.addEventListener('click', () => {
-            forgotPasswordModal.classList.remove('show');
-        });
-
-        forgotPasswordForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('forgot-email').value;
-            
-            // In a real app, you would send a reset link to the email
-            alert(`Password reset link has been sent to ${email}`);
-            forgotPasswordModal.classList.remove('show');
-            forgotPasswordForm.reset();
-        });
-
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const username = document.getElementById('login-username').value;
-            const password = document.getElementById('login-password').value;
-            
-            const users = DB.getUsers();
-            const user = users.find(u => u.username === username && u.password === password);
-            
-            if (user) {
-                if (user.status === 'blocked') {
-                    alert('Your account has been blocked. Please contact support.');
-                    return;
-                }
+        // Initialize the application
+        function init() {
+            // Check for existing session
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                loginPage.style.display = 'none';
+                app.style.display = 'block';
                 
-                loginUser(user);
-            } else {
-                alert('Invalid username or password');
-            }
-        });
-
-        registerForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const fullname = document.getElementById('register-fullname').value;
-            const username = document.getElementById('register-username').value;
-            const email = document.getElementById('register-email').value;
-            const phone = document.getElementById('register-phone').value;
-            const password = document.getElementById('register-password').value;
-            const confirmPassword = document.getElementById('register-confirm-password').value;
-            const referralCode = document.getElementById('register-referral').value;
-            const agreeTerms = document.getElementById('register-terms').checked;
-            
-            // Validate
-            if (!agreeTerms) {
-                alert('You must agree to the terms and conditions');
-                return;
-            }
-            
-            if (password !== confirmPassword) {
-                alert('Passwords do not match');
-                return;
-            }
-            
-            const users = DB.getUsers();
-            
-            if (users.some(u => u.username === username)) {
-                alert('Username already taken');
-                return;
-            }
-            
-            if (users.some(u => u.email === email)) {
-                alert('Email already registered');
-                return;
-            }
-            
-            // Find referrer
-            let referred_by = null;
-            if (referralCode) {
-                const referrer = users.find(u => u.referral_code === referralCode);
-                if (referrer) {
-                    referred_by = referrer.id;
+                // Update UI
+                usernameDisplay.textContent = currentUser.username;
+                userAvatar.src = `https://ui-avatars.com/api/?name=${currentUser.username}&background=4e73df&color=fff`;
+                
+                if (currentUser.is_admin) {
+                    adminMenu.style.display = 'block';
+                    showPage('admin-dashboard');
                 } else {
-                    alert('Invalid referral code');
-                    return;
+                    adminMenu.style.display = 'none';
+                    showPage('dashboard');
                 }
-            }
-            
-            // Create user
-            const newUser = {
-                id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
-                username,
-                password,
-                fullname,
-                email,
-                phone,
-                address: '',
-                balance: 0,
-                profit: 0,
-                referral_balance: 0,
-                status: 'active',
-                is_admin: false,
-                referral_code: username.toUpperCase() + Math.floor(1000 + Math.random() * 900),
-                referred_by,
-                join_date: new Date().toISOString(),
-                last_login: new Date().toISOString()
-            };
-            
-            const updatedUsers = [...users, newUser];
-            DB.setUsers(updatedUsers);
-            
-            // Add referral bonus if applicable
-            if (referred_by) {
-                const referrer = updatedUsers.find(u => u.id === referred_by);
-                referrer.referral_balance += DB.getSettings().referral_bonus;
                 
-                // Add transaction for referrer
-                const transactions = DB.getTransactions();
-                const newTransaction = {
-                    id: transactions.length > 0 ? Math.max(...transactions.map(t => t.id)) + 1 : 1,
-                    user_id: referrer.id,
-                    type: 'referral',
-                    amount: DB.getSettings().referral_bonus,
-                    description: `Referral bonus for ${username}`,
-                    status: 'completed',
-                    date: new Date().toISOString()
-                };
-                
-                DB.setTransactions([...transactions, newTransaction]);
-                DB.setUsers(updatedUsers);
+                updateDashboard();
             }
             
-            alert('Registration successful! Please login.');
-            registerPage.style.display = 'none';
-            loginPage.style.display = 'flex';
-            registerForm.reset();
-        });
-
-        logoutBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            localStorage.removeItem('wealthgrow_current_user');
-            currentUser = null;
-            app.style.display = 'none';
-            loginPage.style.display = 'flex';
-            loginForm.reset();
-        });
-
-        toggleSidebar.addEventListener('click', () => {
-            sidebar.classList.toggle('hidden');
-            mainContent.classList.toggle('expanded');
-        });
-
-        userBtn.addEventListener('click', () => {
-            dropdownMenu.classList.toggle('show');
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!userBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
-                dropdownMenu.classList.remove('show');
+            // Check for referral code in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const refCode = urlParams.get('ref');
+            if (refCode) {
+                document.getElementById('register-referral').value = refCode;
             }
-        });
+            
+            // Setup event listeners
+            setupEventListeners();
+        }
 
-        // Navigation
-        document.querySelectorAll('.sidebar-menu a').forEach(link => {
-            link.addEventListener('click', (e) => {
+        // Setup all event listeners
+        function setupEventListeners() {
+            // Navigation
+            showRegister.addEventListener('click', (e) => {
                 e.preventDefault();
-                const href = link.getAttribute('href').substring(1);
-                showPage(href);
-                
-                // Update active menu item
-                document.querySelectorAll('.sidebar-menu li').forEach(item => {
-                    item.classList.remove('active');
-                });
-                link.parentElement.classList.add('active');
-                
-                // Close dropdown if open
-                dropdownMenu.classList.remove('show');
+                loginPage.style.display = 'none';
+                registerPage.style.display = 'flex';
             });
-        });
 
-        // Confirmation modal
-        closeConfirmModal.addEventListener('click', () => {
-            confirmModal.classList.remove('show');
-        });
+            showLogin.addEventListener('click', (e) => {
+                e.preventDefault();
+                registerPage.style.display = 'none';
+                loginPage.style.display = 'flex';
+            });
 
-        cancelConfirm.addEventListener('click', () => {
-            confirmModal.classList.remove('show');
-        });
+            forgotPassword.addEventListener('click', (e) => {
+                e.preventDefault();
+                loginPage.style.display = 'none';
+                forgotPasswordModal.classList.add('show');
+            });
 
-        confirmAction.addEventListener('click', () => {
-            if (confirmCallback) {
-                confirmCallback();
-            }
-            confirmModal.classList.remove('show');
-        });
+            showLoginFromForgot.addEventListener('click', (e) => {
+                e.preventDefault();
+                forgotPasswordModal.classList.remove('show');
+                loginPage.style.display = 'flex';
+            });
 
-        function showConfirmation(title, message, callback) {
-            confirmModalTitle.textContent = title;
-            confirmMessage.textContent = message;
-            confirmCallback = callback;
-            confirmModal.classList.add('show');
-        }
+            closeForgotPasswordModal.addEventListener('click', () => {
+                forgotPasswordModal.classList.remove('show');
+            });
 
-        // Screenshot modal
-        closeScreenshotModal.addEventListener('click', () => {
-            screenshotModal.classList.remove('show');
-        });
+            forgotPasswordForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('forgot-email').value;
+                alert(`Password reset link has been sent to ${email}`);
+                forgotPasswordModal.classList.remove('show');
+                forgotPasswordForm.reset();
+            });
 
-        function showScreenshot(imageSrc) {
-            screenshotImage.src = imageSrc;
-            screenshotModal.classList.add('show');
-        }
+            loginForm.addEventListener('submit', handleLogin);
+            registerForm.addEventListener('submit', handleRegister);
+            logoutBtn.addEventListener('click', handleLogout);
 
-        // Backup and reset
-        backupBtn.addEventListener('click', () => {
-            DB.backup();
-            alert('System backup created successfully');
-            updateSettingsPage();
-        });
+            // Sidebar and user menu
+            toggleSidebar.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+                mainContent.classList.toggle('expanded');
+            });
 
-        resetBtn.addEventListener('click', () => {
-            showConfirmation(
-                'Reset System',
-                'Are you sure you want to reset the system? This will delete all data and cannot be undone!',
-                () => {
-                    DB.reset();
-                    alert('System has been reset to default settings');
-                    updateSettingsPage();
+            userBtn.addEventListener('click', () => {
+                dropdownMenu.classList.toggle('show');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!userBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                    dropdownMenu.classList.remove('show');
                 }
-            );
-        });
+            });
+
+            // Navigation
+            document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const href = link.getAttribute('href').substring(1);
+                    showPage(href);
+                    
+                    // Update active menu item
+                    document.querySelectorAll('.sidebar-menu li').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    link.parentElement.classList.add('active');
+                    
+                    // Close dropdown if open
+                    dropdownMenu.classList.remove('show');
+                });
+            });
+
+            // Confirmation modal
+            closeConfirmModal.addEventListener('click', () => {
+                confirmModal.classList.remove('show');
+            });
+
+            cancelConfirm.addEventListener('click', () => {
+                confirmModal.classList.remove('show');
+            });
+
+            confirmAction.addEventListener('click', () => {
+                if (confirmCallback) {
+                    confirmCallback();
+                }
+                confirmModal.classList.remove('show');
+            });
+
+            // Backup and reset
+            backupBtn?.addEventListener('click', () => {
+                DB.backup();
+                alert('System backup created successfully');
+                updateSettingsPage();
+            });
+
+            resetBtn?.addEventListener('click', () => {
+                showConfirmation(
+                    'Reset System',
+                    'Are you sure you want to reset the system? This will delete all data and cannot be undone!',
+                    () => {
+                        DB.reset();
+                        alert('System has been reset to default settings');
+                        updateSettingsPage();
+                    }
+                );
+            });
+
+            // Deposit method change
+            document.getElementById('deposit-method')?.addEventListener('change', function() {
+                const method = this.value;
+                const bankDetailsDiv = document.getElementById('admin-bank-details');
+                const bankDetailsContent = document.getElementById('bank-details-content');
+                const settings = DB.getSettings();
+                
+                if (method && settings.bank_details[method]) {
+                    const details = settings.bank_details[method];
+                    let html = '';
+                    
+                    if (method === 'telebirr') {
+                        html = `
+                            <p><strong>Name:</strong> ${details.name}</p>
+                            <p><strong>Phone:</strong> ${details.phone}</p>
+                            <p>Please send the payment to this Telebirr account and upload screenshot proof.</p>
+                        `;
+                    } else {
+                        html = `
+                            <p><strong>Account Name:</strong> ${details.name}</p>
+                            <p><strong>Account Number:</strong> ${details.account}</p>
+                            <p><strong>Bank:</strong> ${details.bank}</p>
+                            <p>Please transfer to this account and upload screenshot proof.</p>
+                        `;
+                    }
+                    
+                    bankDetailsContent.innerHTML = html;
+                    bankDetailsDiv.style.display = 'block';
+                } else {
+                    bankDetailsDiv.style.display = 'none';
+                }
+            });
+
+            // Forms
+            depositForm?.addEventListener('submit', handleDeposit);
+            withdrawForm?.addEventListener('submit', handleWithdraw);
+            profileForm?.addEventListener('submit', handleProfileUpdate);
+            passwordForm?.addEventListener('submit', handlePasswordChange);
+            addPlanForm?.addEventListener('submit', handleAddPlan);
+            generalSettingsForm?.addEventListener('submit', handleSaveSettings);
+
+            // Investment modal
+            closeInvestmentModal?.addEventListener('click', () => {
+                investmentModal.classList.remove('show');
+            });
+
+            // User modal
+            closeUserModal?.addEventListener('click', () => {
+                userModal.classList.remove('show');
+            });
+
+            // Plan modal
+            closePlanModal?.addEventListener('click', () => {
+                planModal.classList.remove('show');
+            });
+
+            // Investment form
+            investmentForm?.addEventListener('submit', handleInvestment);
+
+            // Copy referral link
+            document.getElementById('copy-referral-link')?.addEventListener('click', () => {
+                const referralLink = document.getElementById('referral-link');
+                referralLink.select();
+                document.execCommand('copy');
+                alert('Referral link copied to clipboard!');
+            });
+
+            // Event bus listeners for real-time updates
+            EventBus.on('data-updated', () => {
+                if (currentPage === 'dashboard') updateDashboard();
+                if (currentPage === 'deposit') updateDepositPage();
+                if (currentPage === 'withdraw') updateWithdrawPage();
+                if (currentPage === 'invest') updateInvestPage();
+                if (currentPage === 'transactions') updateTransactionsPage();
+                if (currentPage === 'referrals') updateReferralsPage();
+                if (currentPage === 'profile') updateProfilePage();
+                if (currentPage === 'admin-dashboard') updateAdminDashboard();
+                if (currentPage === 'users') updateUsersPage();
+                if (currentPage === 'deposits') updateDepositsPage();
+                if (currentPage === 'withdrawals') updateWithdrawalsPage();
+                if (currentPage === 'investment-plans') updateInvestmentPlansPage();
+                if (currentPage === 'settings') updateSettingsPage();
+            });
+        }
 
         // Show page function
         function showPage(page) {
@@ -2882,6 +1860,7 @@
             });
             
             // Show requested page
+            currentPage = page;
             let pageElement;
             switch (page) {
                 case 'dashboard':
@@ -2964,84 +1943,230 @@
             }
         }
 
-        // Deposit form
-        depositForm.addEventListener('submit', (e) => {
+        // Show confirmation dialog
+        function showConfirmation(title, message, callback) {
+            confirmModalTitle.textContent = title;
+            confirmMessage.textContent = message;
+            confirmCallback = callback;
+            confirmModal.classList.add('show');
+        }
+
+        // Login handler
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            
+            const users = DB.getUsers();
+            const user = users.find(u =>                u.username === username && u.password === password
+            );
+            
+            if (user) {
+                // Update last login
+                user.last_login = new Date().toISOString();
+                DB.setUsers(users);
+                
+                // Set current user
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                // Hide login, show app
+                loginPage.style.display = 'none';
+                app.style.display = 'block';
+                
+                // Update UI
+                usernameDisplay.textContent = currentUser.username;
+                userAvatar.src = `https://ui-avatars.com/api/?name=${currentUser.username}&background=4e73df&color=fff`;
+                
+                if (currentUser.is_admin) {
+                    adminMenu.style.display = 'block';
+                    showPage('admin-dashboard');
+                } else {
+                    adminMenu.style.display = 'none';
+                    showPage('dashboard');
+                }
+                
+                updateDashboard();
+            } else {
+                alert('Invalid username or password');
+            }
+        }
+
+        // Register handler
+        function handleRegister(e) {
+            e.preventDefault();
+            const fullname = document.getElementById('register-fullname').value;
+            const username = document.getElementById('register-username').value;
+            const email = document.getElementById('register-email').value;
+            const phone = document.getElementById('register-phone').value;
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm-password').value;
+            const referralCode = document.getElementById('register-referral').value;
+            
+            // Validation
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+            
+            const users = DB.getUsers();
+            
+            // Check if username exists
+            if (users.some(u => u.username === username)) {
+                alert('Username already exists');
+                return;
+            }
+            
+            // Check if email exists
+            if (users.some(u => u.email === email)) {
+                alert('Email already registered');
+                return;
+            }
+            
+            // Generate referral code
+            const refCode = 'WG' + Math.random().toString(36).substr(2, 8).toUpperCase();
+            
+            // Find referrer if code provided
+            let referredBy = null;
+            if (referralCode) {
+                const referrer = users.find(u => u.referral_code === referralCode);
+                if (referrer) {
+                    referredBy = referrer.id;
+                }
+            }
+            
+            // Create new user
+            const newUser = {
+                id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
+                username,
+                password,
+                fullname,
+                email,
+                phone,
+                address: '',
+                balance: 0,
+                profit: 0,
+                referral_balance: 0,
+                status: 'active',
+                is_admin: false,
+                referral_code: refCode,
+                referred_by: referredBy,
+                join_date: new Date().toISOString(),
+                last_login: new Date().toISOString()
+            };
+            
+            users.push(newUser);
+            DB.setUsers(users);
+            
+            // If referred, add bonus to referrer
+            if (referredBy) {
+                const referrer = users.find(u => u.id === referredBy);
+                if (referrer) {
+                    const settings = DB.getSettings();
+                    referrer.referral_balance += settings.referral_bonus;
+                    DB.setUsers(users);
+                    
+                    // Add transaction for referrer
+                    const transactions = DB.getTransactions();
+                    transactions.push({
+                        id: transactions.length > 0 ? Math.max(...transactions.map(t => t.id)) + 1 : 1,
+                        user_id: referrer.id,
+                        type: 'referral',
+                        amount: settings.referral_bonus,
+                        description: `Referral bonus from ${username}`,
+                        status: 'completed',
+                        date: new Date().toISOString()
+                    });
+                    DB.setTransactions(transactions);
+                }
+            }
+            
+            alert('Registration successful! Please login with your credentials.');
+            registerPage.style.display = 'none';
+            loginPage.style.display = 'flex';
+            registerForm.reset();
+        }
+
+        // Logout handler
+        function handleLogout(e) {
+            e.preventDefault();
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            app.style.display = 'none';
+            loginPage.style.display = 'flex';
+            loginForm.reset();
+        }
+
+        // Deposit handler
+        function handleDeposit(e) {
             e.preventDefault();
             const amount = parseFloat(document.getElementById('deposit-amount').value);
             const method = document.getElementById('deposit-method').value;
             const phone = document.getElementById('deposit-phone').value;
-            const transaction_id = document.getElementById('deposit-transaction-id').value;
+            const transactionId = document.getElementById('deposit-transaction-id').value;
             const screenshot = document.getElementById('deposit-screenshot').files[0];
+            
             const settings = DB.getSettings();
             
             if (amount < settings.min_deposit) {
-                alert(`Minimum deposit amount is ${settings.min_deposit} ${settings.currency}`);
+                alert(`Minimum deposit amount is ${settings.min_deposit} ETB`);
                 return;
             }
             
-            if (!screenshot) {
-                alert('Please upload payment screenshot');
-                return;
-            }
-            
-            // Convert image to base64 for storage
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const screenshotData = event.target.result;
-                
-                // Create deposit request
-                const deposits = DB.getDeposits();
-                const newDeposit = {
-                    id: deposits.length > 0 ? Math.max(...deposits.map(d => d.id)) + 1 : 1,
-                    user_id: currentUser.id,
-                    amount,
-                    method,
-                    phone,
-                    transaction_id,
-                    screenshot: screenshotData,
-                    status: 'pending',
-                    date: new Date().toISOString()
-                };
-                
-                DB.setDeposits([...deposits, newDeposit]);
-                
-                // Add transaction
-                const transactions = DB.getTransactions();
-                const newTransaction = {
-                    id: transactions.length > 0 ? Math.max(...transactions.map(t => t.id)) + 1 : 1,
-                    user_id: currentUser.id,
-                    type: 'deposit',
-                    amount,
-                    description: `Deposit via ${method}`,
-                    status: 'pending',
-                    date: new Date().toISOString()
-                };
-                
-                DB.setTransactions([...transactions, newTransaction]);
-                
-                alert('Deposit request submitted successfully. Please wait for admin confirmation.');
-                depositForm.reset();
-                updateDepositPage();
+            // Create deposit request
+            const deposits = DB.getDeposits();
+            const newDeposit = {
+                id: deposits.length > 0 ? Math.max(...deposits.map(d => d.id)) + 1 : 1,
+                user_id: currentUser.id,
+                amount,
+                method,
+                phone,
+                transaction_id: transactionId,
+                screenshot: screenshot ? screenshot.name : '',
+                status: 'pending',
+                date: new Date().toISOString()
             };
-            reader.readAsDataURL(screenshot);
-        });
+            
+            deposits.push(newDeposit);
+            DB.setDeposits(deposits);
+            
+            // Add transaction
+            const transactions = DB.getTransactions();
+            transactions.push({
+                id: transactions.length > 0 ? Math.max(...transactions.map(t => t.id)) + 1 : 1,
+                user_id: currentUser.id,
+                type: 'deposit',
+                amount,
+                description: `Deposit via ${method}`,
+                status: 'pending',
+                date: new Date().toISOString()
+            });
+            DB.setTransactions(transactions);
+            
+            alert('Deposit request submitted successfully. It will be processed shortly.');
+            depositForm.reset();
+            document.getElementById('admin-bank-details').style.display = 'none';
+            
+            // Update UI
+            EventBus.emit('data-updated');
+        }
 
-        // Withdraw form
-        withdrawForm.addEventListener('submit', (e) => {
+        // Withdraw handler
+        function handleWithdraw(e) {
             e.preventDefault();
             const amount = parseFloat(document.getElementById('withdraw-amount').value);
             const method = document.getElementById('withdraw-method').value;
             const phone = document.getElementById('withdraw-phone').value;
-            const account_name = document.getElementById('withdraw-account-name').value;
+            const accountName = document.getElementById('withdraw-account-name').value;
+            
             const settings = DB.getSettings();
-            
-            if (amount < settings.min_withdraw) {
-                alert(`Minimum withdrawal amount is ${settings.min_withdraw} ${settings.currency}`);
-                return;
-            }
-            
             const fee = amount * (settings.withdraw_fee / 100);
             const total = amount + fee;
+            
+            if (amount < settings.min_withdraw) {
+                alert(`Minimum withdrawal amount is ${settings.min_withdraw} ETB`);
+                return;
+            }
             
             if (currentUser.balance < total) {
                 alert('Insufficient balance for withdrawal');
@@ -3056,47 +2181,56 @@
                 amount,
                 fee,
                 method,
+                account_name: accountName,
                 phone,
-                account_name,
                 status: 'pending',
                 date: new Date().toISOString()
             };
             
-            DB.setWithdrawals([...withdrawals, newWithdrawal]);
+            withdrawals.push(newWithdrawal);
+            DB.setWithdrawals(withdrawals);
             
-            // Deduct from balance (will be reversed if rejected)
+            // Deduct from user balance
             const users = DB.getUsers();
-            const updatedUsers = users.map(u => {
-                if (u.id === currentUser.id) {
-                    return { ...u, balance: u.balance - total };
-                }
-                return u;
-            });
-            DB.setUsers(updatedUsers);
-            currentUser = updatedUsers.find(u => u.id === currentUser.id);
+            const user = users.find(u => u.id === currentUser.id);
+            if (user) {
+                user.balance -= total;
+                DB.setUsers(users);
+                
+                // Add transaction
+                const transactions = DB.getTransactions();
+                transactions.push({
+                    id: transactions.length > 0 ? Math.max(...transactions.map(t => t.id)) + 1 : 1,
+                    user_id: currentUser.id,
+                    type: 'withdrawal',
+                    amount: -amount,
+                    description: `Withdrawal via ${method}`,
+                    status: 'pending',
+                    date: new Date().toISOString()
+                });
+                
+                transactions.push({
+                    id: transactions.length > 0 ? Math.max(...transactions.map(t => t.id)) + 1 : 1,
+                    user_id: currentUser.id,
+                    type: 'fee',
+                    amount: -fee,
+                    description: `Withdrawal fee (${settings.withdraw_fee}%)`,
+                    status: 'completed',
+                    date: new Date().toISOString()
+                });
+                
+                DB.setTransactions(transactions);
+            }
             
-            // Add transaction
-            const transactions = DB.getTransactions();
-            const newTransaction = {
-                id: transactions.length > 0 ? Math.max(...transactions.map(t => t.id)) + 1 : 1,
-                user_id: currentUser.id,
-                type: 'withdrawal',
-                amount: -amount,
-                description: `Withdrawal request via ${method}`,
-                status: 'pending',
-                date: new Date().toISOString()
-            };
-            
-            DB.setTransactions([...transactions, newTransaction]);
-            
-            alert('Withdrawal request submitted successfully. Please wait for admin processing.');
+            alert('Withdrawal request submitted successfully. It will be processed shortly.');
             withdrawForm.reset();
-            updateWithdrawPage();
-            updateDashboard();
-        });
+            
+            // Update UI
+            EventBus.emit('data-updated');
+        }
 
-        // Profile form
-        profileForm.addEventListener('submit', (e) => {
+        // Profile update handler
+        function handleProfileUpdate(e) {
             e.preventDefault();
             const fullname = document.getElementById('profile-fullname').value;
             const email = document.getElementById('profile-email').value;
@@ -3104,388 +2238,92 @@
             const address = document.getElementById('profile-address').value;
             
             const users = DB.getUsers();
+            const user = users.find(u => u.id === currentUser.id);
             
-            // Check if email is already taken by another user
-            if (users.some(u => u.email === email && u.id !== currentUser.id)) {
-                alert('Email already registered by another user');
-                return;
+            if (user) {
+                user.fullname = fullname;
+                user.email = email;
+                user.phone = phone;
+                user.address = address;
+                
+                DB.setUsers(users);
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                alert('Profile updated successfully');
+                
+                // Update UI
+                EventBus.emit('data-updated');
             }
-            
-            const updatedUsers = users.map(u => {
-                if (u.id === currentUser.id) {
-                    return {
-                        ...u,
-                        fullname,
-                        email,
-                        phone,
-                        address
-                    };
-                }
-                return u;
-            });
-            
-            DB.setUsers(updatedUsers);
-            currentUser = updatedUsers.find(u => u.id === currentUser.id);
-            
-            alert('Profile updated successfully');
-            updateProfilePage();
-        });
+        }
 
-        // Password form
-        passwordForm.addEventListener('submit', (e) => {
+        // Password change handler
+        function handlePasswordChange(e) {
             e.preventDefault();
             const currentPassword = document.getElementById('current-password').value;
             const newPassword = document.getElementById('new-password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
-            
-            if (currentPassword !== currentUser.password) {
-                alert('Current password is incorrect');
-                return;
-            }
             
             if (newPassword !== confirmPassword) {
                 alert('New passwords do not match');
                 return;
             }
             
-            const users = DB.getUsers();
-            const updatedUsers = users.map(u => {
-                if (u.id === currentUser.id) {
-                    return { ...u, password: newPassword };
-                }
-                return u;
-            });
-            
-            DB.setUsers(updatedUsers);
-            currentUser = updatedUsers.find(u => u.id === currentUser.id);
-            
-            alert('Password changed successfully');
-            passwordForm.reset();
-        });
-
-        // Investment modal
-        closeInvestmentModal.addEventListener('click', () => {
-            investmentModal.classList.remove('show');
-        });
-
-        // User modal
-        closeUserModal.addEventListener('click', () => {
-            userModal.classList.remove('show');
-        });
-
-        // Plan modal
-        closePlanModal.addEventListener('click', () => {
-            planModal.classList.remove('show');
-        });
-
-        // Add plan form
-        addPlanForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('plan-name').value;
-            const min_amount = parseFloat(document.getElementById('plan-min').value);
-            const max_amount = document.getElementById('plan-max').value ? parseFloat(document.getElementById('plan-max').value) : null;
-            const duration = parseInt(document.getElementById('plan-duration').value);
-            const daily_profit = parseFloat(document.getElementById('plan-profit').value);
-            const description = document.getElementById('plan-description').value;
-            
-            const plans = DB.getInvestmentPlans();
-            const newPlan = {
-                id: plans.length > 0 ? Math.max(...plans.map(p => p.id)) + 1 : 1,
-                name,
-                min_amount,
-                max_amount,
-                duration,
-                daily_profit,
-                description
-            };
-            
-            DB.setInvestmentPlans([...plans, newPlan]);
-            alert('Investment plan added successfully');
-            addPlanForm.reset();
-            updateInvestmentPlansPage();
-        });
-
-        // General settings form
-        generalSettingsForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const settings = {
-                site_name: document.getElementById('site-name').value,
-                currency: document.getElementById('site-currency').value,
-                min_deposit: parseFloat(document.getElementById('min-deposit').value),
-                min_withdraw: parseFloat(document.getElementById('min-withdraw').value),
-                withdraw_fee: parseFloat(document.getElementById('withdraw-fee').value),
-                referral_bonus: parseFloat(document.getElementById('referral-bonus').value),
-                last_backup: DB.getSettings().last_backup
-            };
-            
-            DB.setSettings(settings);
-            alert('Settings saved successfully');
-        });
-
-        // Bank settings form
-        bankSettingsForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const bankDetails = {
-                bank_name: document.getElementById('bank-name').value,
-                account_name: document.getElementById('account-name').value,
-                account_number: document.getElementById('account-number').value,
-                telebirr_number: document.getElementById('telebirr-number').value
-            };
-            
-            DB.setBankDetails(bankDetails);
-            alert('Bank details saved successfully');
-        });
-
-        // Update dashboard
-        function updateDashboard() {
-            if (!currentUser) return;
-            
-            const settings = DB.getSettings();
-            const investments = DB.getInvestments();
-            const transactions = DB.getTransactions();
-            const users = DB.getUsers();
-            
-            // Update stats
-            document.getElementById('balance-amount').textContent = currentUser.balance.toFixed(2) + ' ' + settings.currency;
-            document.getElementById('total-profit').textContent = currentUser.profit.toFixed(2) + ' ' + settings.currency;
-            
-            // Active investments
-            const userInvestments = investments.filter(i => i.user_id === currentUser.id && i.status === 'active');
-            document.getElementById('active-investments').textContent = userInvestments.length;
-            
-            // Referrals
-            const userReferrals = users.filter(u => u.referred_by === currentUser.id);
-            document.getElementById('total-referrals').textContent = userReferrals.length;
-            
-            // Recent transactions
-            const recentTransactions = transactions
-                .filter(t => t.user_id === currentUser.id)
-                .sort((a, b) => new Date(b.date) - new Date(a.date))
-                .slice(0, 5);
-            
-            const transactionsTable = document.getElementById('recent-transactions');
-            transactionsTable.innerHTML = '';
-            
-            recentTransactions.forEach(t => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${formatDate(t.date)}</td>
-                    <td>${t.type}</td>
-                    <td>${t.amount >= 0 ? '+' : ''}${t.amount.toFixed(2)} ${settings.currency}</td>
-                    <td>${getStatusBadge(t.status)}</td>
-                `;
-                transactionsTable.appendChild(row);
-            });
-            
-            // Active investments table
-            const investmentsTable = document.getElementById('active-investments-table');
-            investmentsTable.innerHTML = '';
-            
-            const plans = DB.getInvestmentPlans();
-            
-            userInvestments.forEach(i => {
-                const plan = plans.find(p => p.id === i.plan_id);
-                const endDate = new Date(i.start_date);
-                endDate.setDate(endDate.getDate() + plan.duration);
-                
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${plan.name}</td>
-                    <td>${i.amount.toFixed(2)} ${settings.currency}</td>
-                    <td>${(i.amount * (plan.daily_profit / 100)).toFixed(2)} ${settings.currency}/day</td>
-                    <td>${formatDate(i.start_date)}</td>
-                    <td>${formatDate(endDate)}</td>
-                    <td>${getStatusBadge(i.status)}</td>
-                `;
-                investmentsTable.appendChild(row);
-            });
-        }
-
-        // Update deposit page
-        function updateDepositPage() {
-            if (!currentUser) return;
-            
-            const deposits = DB.getDeposits();
-            const settings = DB.getSettings();
-            
-            // Deposit history
-            const userDeposits = deposits
-                .filter(d => d.user_id === currentUser.id)
-                .sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            const depositHistory = document.getElementById('deposit-history');
-            depositHistory.innerHTML = '';
-            
-            userDeposits.forEach(d => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${formatDate(d.date)}</td>
-                    <td>${d.amount.toFixed(2)} ${settings.currency}</td>
-                    <td>${d.method}</td>
-                    <td>${getStatusBadge(d.status)}</td>
-                    <td>
-                        ${d.screenshot ? 
-                            `<button class="btn btn-sm btn-info view-screenshot-btn" data-screenshot="${d.screenshot}">
-                                <i class="fas fa-eye"></i> View
-                            </button>` : 
-                            'N/A'}
-                    </td>
-                `;
-                depositHistory.appendChild(row);
-            });
-            
-            // Add event listeners to screenshot buttons
-            document.querySelectorAll('.view-screenshot-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const screenshot = e.target.closest('button').getAttribute('data-screenshot');
-                    showScreenshot(screenshot);
-                });
-            });
-        }
-
-        // Update withdraw page
-        function updateWithdrawPage() {
-            if (!currentUser) return;
-            
-            const withdrawals = DB.getWithdrawals();
-            const settings = DB.getSettings();
-            
-            // Withdrawal history
-            const userWithdrawals = withdrawals
-                .filter(w => w.user_id === currentUser.id)
-                .sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            const withdrawHistory = document.getElementById('withdraw-history');
-            withdrawHistory.innerHTML = '';
-            
-            userWithdrawals.forEach(w => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${formatDate(w.date)}</td>
-                    <td>${w.amount.toFixed(2)} ${settings.currency}</td>
-                    <td>${w.fee.toFixed(2)} ${settings.currency}</td>
-                    <td>${w.method}</td>
-                    <td>${getStatusBadge(w.status)}</td>
-                `;
-                withdrawHistory.appendChild(row);
-            });
-        }
-
-        // Update invest page
-        function updateInvestPage() {
-            if (!currentUser) return;
-            
-            const plans = DB.getInvestmentPlans();
-            const investments = DB.getInvestments();
-            const settings = DB.getSettings();
-            
-            // Investment plans
-            const plansContainer = document.getElementById('investment-plans');
-            plansContainer.innerHTML = '';
-            
-            plans.forEach(plan => {
-                const planCard = document.createElement('div');
-                planCard.className = 'col-md-4 mb-4';
-                planCard.innerHTML = `
-                    <div class="card">
-                        <div class="card-header">
-                            <h6>${plan.name}</h6>
-                        </div>
-                        <div class="card-body">
-                            <ul class="list-unstyled">
-                                <li><strong>Min Amount:</strong> ${plan.min_amount.toFixed(2)} ${settings.currency}</li>
-                                ${plan.max_amount ? `<li><strong>Max Amount:</strong> ${plan.max_amount.toFixed(2)} ${settings.currency}</li>` : ''}
-                                <li><strong>Duration:</strong> ${plan.duration} days</li>
-                                <li><strong>Daily Profit:</strong> ${plan.daily_profit}%</li>
-                                ${plan.description ? `<li><strong>Description:</strong> ${plan.description}</li>` : ''}
-                            </ul>
-                            <button class="btn btn-primary w-100 invest-btn" data-plan-id="${plan.id}">Invest Now</button>
-                        </div>
-                    </div>
-                `;
-                plansContainer.appendChild(planCard);
-            });
-            
-            // Add event listeners to invest buttons
-            document.querySelectorAll('.invest-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const planId = parseInt(e.target.getAttribute('data-plan-id'));
-                    const plan = plans.find(p => p.id === planId);
-                    
-                    investmentModalTitle.textContent = `Invest in ${plan.name}`;
-                    investmentAmount.value = plan.min_amount;
-                    investmentRange.textContent = `Investment range: ${plan.min_amount} ${settings.currency}${plan.max_amount ? ` - ${plan.max_amount} ${settings.currency}` : '+'}`;
-                    
-                    // Set min and max
-                    investmentAmount.min = plan.min_amount;
-                    if (plan.max_amount) {
-                        investmentAmount.max = plan.max_amount;
-                    }
-                    
-                    // Store plan ID in form
-                    investmentForm.setAttribute('data-plan-id', planId);
-                    
-                    investmentModal.classList.add('show');
-                });
-            });
-            
-            // User investments
-            const userInvestments = investments
-                .filter(i => i.user_id === currentUser.id)
-                .sort((a, b) => new Date(b.start_date) - new Date(a.date));
-            
-            const investmentsTable = document.getElementById('user-investments');
-            investmentsTable.innerHTML = '';
-            
-            userInvestments.forEach(i => {
-                const plan = plans.find(p => p.id === i.plan_id);
-                const endDate = new Date(i.start_date);
-                endDate.setDate(endDate.getDate() + plan.duration);
-                
-                const dailyProfit = i.amount * (plan.daily_profit / 100);
-                const totalProfit = dailyProfit * plan.duration;
-                
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${plan.name}</td>
-                    <td>${i.amount.toFixed(2)} ${settings.currency}</td>
-                    <td>${dailyProfit.toFixed(2)} ${settings.currency}</td>
-                    <td>${totalProfit.toFixed(2)} ${settings.currency}</td>
-                    <td>${formatDate(i.start_date)}</td>
-                    <td>${formatDate(endDate)}</td>
-                    <td>${getStatusBadge(i.status)}</td>
-                `;
-                investmentsTable.appendChild(row);
-            });
-        }
-
-        // Investment form
-        investmentForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const planId = parseInt(investmentForm.getAttribute('data-plan-id'));
-            const plans = DB.getInvestmentPlans();
-            const plan = plans.find(p => p.id === planId);
-            const amount = parseFloat(investmentAmount.value);
-            const wallet = investmentWallet.value;
-            const settings = DB.getSettings();
-            
-            // Validate amount
-            if (amount < plan.min_amount) {
-                alert(`Minimum investment for this plan is ${plan.min_amount} ${settings.currency}`);
+            if (currentUser.password !== currentPassword) {
+                alert('Current password is incorrect');
                 return;
             }
             
-            if (plan.max_amount && amount > plan.max_amount) {
-                alert(`Maximum investment for this plan is ${plan.max_amount} ${settings.currency}`);
+            const users = DB.getUsers();
+            const user = users.find(u => u.id === currentUser.id);
+            
+            if (user) {
+                user.password = newPassword;
+                DB.setUsers(users);
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                alert('Password changed successfully');
+                passwordForm.reset();
+            }
+        }
+
+        // Investment handler
+        function handleInvestment(e) {
+            e.preventDefault();
+            const amount = parseFloat(investmentAmount.value);
+            const wallet = investmentWallet.value;
+            
+            // Get plan from modal data
+            const planId = parseInt(investmentModal.getAttribute('data-plan-id'));
+            const plans = DB.getInvestmentPlans();
+            const plan = plans.find(p => p.id === planId);
+            
+            if (!plan) {
+                alert('Invalid investment plan');
+                return;
+            }
+            
+            // Validate amount
+            if (amount < plan.min_amount || (plan.max_amount && amount > plan.max_amount)) {
+                alert(`Amount must be between ${plan.min_amount} and ${plan.max_amount || 'unlimited'} ETB`);
                 return;
             }
             
             // Check balance
+            const users = DB.getUsers();
+            const user = users.find(u => u.id === currentUser.id);
+            
+            if (!user) {
+                alert('User not found');
+                return;
+            }
+            
             let balance = 0;
             if (wallet === 'balance') {
-                balance = currentUser.balance;
+                balance = user.balance;
             } else if (wallet === 'profit') {
-                balance = currentUser.profit;
+                balance = user.profit;
             }
             
             if (balance < amount) {
@@ -3493,124 +2331,342 @@
                 return;
             }
             
-            // Update user balance
-            const users = DB.getUsers();
-            const updatedUsers = users.map(u => {
-                if (u.id === currentUser.id) {
-                    if (wallet === 'balance') {
-                        return { ...u, balance: u.balance - amount };
-                    } else {
-                        return { ...u, profit: u.profit - amount };
-                    }
-                }
-                return u;
-            });
-            
-            DB.setUsers(updatedUsers);
-            currentUser = updatedUsers.find(u => u.id === currentUser.id);
+            // Deduct from balance
+            if (wallet === 'balance') {
+                user.balance -= amount;
+            } else if (wallet === 'profit') {
+                user.profit -= amount;
+            }
             
             // Create investment
             const investments = DB.getInvestments();
+            const now = new Date();
+            const endDate = new Date(now);
+            endDate.setDate(now.getDate() + plan.duration);
+            
             const newInvestment = {
                 id: investments.length > 0 ? Math.max(...investments.map(i => i.id)) + 1 : 1,
                 user_id: currentUser.id,
-                plan_id: planId,
+                plan_id: plan.id,
                 amount,
-                start_date: new Date().toISOString(),
-                status: 'active'
+                daily_profit: (amount * plan.daily_profit) / 100,
+                total_profit: (amount * plan.daily_profit * plan.duration) / 100,
+                start_date: now.toISOString(),
+                end_date: endDate.toISOString(),
+                status: 'active',
+                wallet_used: wallet
             };
             
-            DB.setInvestments([...investments, newInvestment]);
+            investments.push(newInvestment);
+            DB.setInvestments(investments);
             
             // Add transaction
             const transactions = DB.getTransactions();
-            const newTransaction = {
+            transactions.push({
                 id: transactions.length > 0 ? Math.max(...transactions.map(t => t.id)) + 1 : 1,
                 user_id: currentUser.id,
                 type: 'investment',
                 amount: -amount,
                 description: `Investment in ${plan.name}`,
                 status: 'completed',
-                date: new Date().toISOString()
+                date: now.toISOString()
+            });
+            
+            DB.setTransactions(transactions);
+            DB.setUsers(users);
+            
+            alert(`Successfully invested ${amount} ETB in ${plan.name}`);
+            investmentModal.classList.remove('show');
+            
+            // Update UI
+            EventBus.emit('data-updated');
+        }
+
+        // Add plan handler (admin)
+        function handleAddPlan(e) {
+            e.preventDefault();
+            const name = document.getElementById('plan-name').value;
+            const minAmount = parseFloat(document.getElementById('plan-min').value);
+            const maxAmount = document.getElementById('plan-max').value ? parseFloat(document.getElementById('plan-max').value) : null;
+            const duration = parseInt(document.getElementById('plan-duration').value);
+            const dailyProfit = parseFloat(document.getElementById('plan-profit').value);
+            const description = document.getElementById('plan-description').value;
+            
+            const plans = DB.getInvestmentPlans();
+            const newPlan = {
+                id: plans.length > 0 ? Math.max(...plans.map(p => p.id)) + 1 : 1,
+                name,
+                min_amount: minAmount,
+                max_amount: maxAmount,
+                duration,
+                daily_profit: dailyProfit,
+                description
             };
             
-            DB.setTransactions([...transactions, newTransaction]);
+            plans.push(newPlan);
+            DB.setInvestmentPlans(plans);
             
-            alert('Investment created successfully');
-            investmentModal.classList.remove('show');
-            investmentForm.reset();
-            updateDashboard();
-            updateInvestPage();
-        });
+            alert('New investment plan added successfully');
+            addPlanForm.reset();
+            
+            // Update UI
+            EventBus.emit('data-updated');
+        }
+
+        // Save settings handler (admin)
+        function handleSaveSettings(e) {
+            e.preventDefault();
+            const siteName = document.getElementById('site-name').value;
+            const currency = document.getElementById('site-currency').value;
+            const minDeposit = parseFloat(document.getElementById('min-deposit').value);
+            const minWithdraw = parseFloat(document.getElementById('min-withdraw').value);
+            const withdrawFee = parseFloat(document.getElementById('withdraw-fee').value);
+            const referralBonus = parseFloat(document.getElementById('referral-bonus').value);
+            
+            const settings = DB.getSettings();
+            settings.site_name = siteName;
+            settings.currency = currency;
+            settings.min_deposit = minDeposit;
+            settings.min_withdraw = minWithdraw;
+            settings.withdraw_fee = withdrawFee;
+            settings.referral_bonus = referralBonus;
+            
+            DB.setSettings(settings);
+            
+            alert('Settings saved successfully');
+            
+            // Update UI
+            EventBus.emit('data-updated');
+        }
+
+        // Update dashboard
+        function updateDashboard() {
+            if (!currentUser) return;
+            
+            // Update balance and stats
+            document.getElementById('balance-amount').textContent = `${currentUser.balance.toFixed(2)} ETB`;
+            document.getElementById('total-profit').textContent = `${currentUser.profit.toFixed(2)} ETB`;
+            
+            // Count active investments
+            const investments = DB.getInvestments();
+            const userInvestments = investments.filter(i => i.user_id === currentUser.id && i.status === 'active');
+            document.getElementById('active-investments').textContent = userInvestments.length;
+            
+            // Count referrals
+            const users = DB.getUsers();
+            const referrals = users.filter(u => u.referred_by === currentUser.id);
+            document.getElementById('total-referrals').textContent = referrals.length;
+            
+            // Update recent transactions
+            const transactions = DB.getTransactions();
+            const userTransactions = transactions
+                .filter(t => t.user_id === currentUser.id)
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(0, 5);
+            
+            const transactionsTable = document.getElementById('recent-transactions');
+            transactionsTable.innerHTML = userTransactions.map(t => `
+                <tr>
+                    <td>${new Date(t.date).toLocaleDateString()}</td>
+                    <td>${t.type}</td>
+                    <td>${t.amount > 0 ? '+' : ''}${t.amount.toFixed(2)} ETB</td>
+                    <td><span class="badge ${t.status === 'completed' ? 'success' : t.status === 'pending' ? 'warning' : 'danger'}">${t.status}</span></td>
+                </tr>
+            `).join('');
+            
+            // Update active investments table
+            const investmentsTable = document.getElementById('active-investments-table');
+            investmentsTable.innerHTML = userInvestments.map(i => {
+                const plan = DB.getInvestmentPlans().find(p => p.id === i.plan_id);
+                return `
+                    <tr>
+                        <td>${plan?.name || 'Unknown Plan'}</td>
+                        <td>${i.amount.toFixed(2)} ETB</td>
+                        <td>${i.daily_profit.toFixed(2)} ETB/day</td>
+                        <td>${new Date(i.start_date).toLocaleDateString()}</td>
+                        <td>${new Date(i.end_date).toLocaleDateString()}</td>
+                        <td><span class="badge success">${i.status}</span></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Update deposit page
+        function updateDepositPage() {
+            if (!currentUser) return;
+            
+            // Update deposit history
+            const deposits = DB.getDeposits();
+            const userDeposits = deposits
+                .filter(d => d.user_id === currentUser.id)
+                .sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            const depositHistory = document.getElementById('deposit-history');
+            depositHistory.innerHTML = userDeposits.map(d => `
+                <tr>
+                    <td>${new Date(d.date).toLocaleDateString()}</td>
+                    <td>${d.amount.toFixed(2)} ETB</td>
+                    <td>${d.method}</td>
+                    <td>${d.screenshot ? '<a href="#" class="view-proof">View</a>' : 'N/A'}</td>
+                    <td><span class="badge ${d.status === 'completed' ? 'success' : d.status === 'pending' ? 'warning' : 'danger'}">${d.status}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        // Update withdraw page
+        function updateWithdrawPage() {
+            if (!currentUser) return;
+            
+            // Update withdrawal history
+            const withdrawals = DB.getWithdrawals();
+            const userWithdrawals = withdrawals
+                .filter(w => w.user_id === currentUser.id)
+                .sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            const withdrawHistory = document.getElementById('withdraw-history');
+            withdrawHistory.innerHTML = userWithdrawals.map(w => `
+                <tr>
+                    <td>${new Date(w.date).toLocaleDateString()}</td>
+                    <td>${w.amount.toFixed(2)} ETB</td>
+                    <td>${w.fee.toFixed(2)} ETB</td>
+                    <td>${w.method}</td>
+                    <td><span class="badge ${w.status === 'completed' ? 'success' : w.status === 'pending' ? 'warning' : 'danger'}">${w.status}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        // Update invest page
+        function updateInvestPage() {
+            if (!currentUser) return;
+            
+            // Display investment plans
+            const plans = DB.getInvestmentPlans();
+            const plansContainer = document.getElementById('investment-plans');
+            
+            plansContainer.innerHTML = plans.map(plan => `
+                <div class="col-md-4">
+                    <div class="plan-card">
+                        <div class="plan-header">
+                            <h4>${plan.name}</h4>
+                            <div class="plan-profit">${plan.daily_profit}% daily</div>
+                        </div>
+                        <div class="plan-body">
+                            <p>${plan.description}</p>
+                            <ul>
+                                <li><strong>Min Investment:</strong> ${plan.min_amount.toFixed(2)} ETB</li>
+                                ${plan.max_amount ? `<li><strong>Max Investment:</strong> ${plan.max_amount.toFixed(2)} ETB</li>` : ''}
+                                <li><strong>Duration:</strong> ${plan.duration} days</li>
+                                <li><strong>Total Return:</strong> ${(plan.daily_profit * plan.duration).toFixed(2)}%</li>
+                            </ul>
+                            <button class="btn btn-primary invest-btn" data-plan-id="${plan.id}">Invest Now</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Add event listeners to invest buttons
+            document.querySelectorAll('.invest-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const planId = parseInt(btn.getAttribute('data-plan-id'));
+                    const plan = plans.find(p => p.id === planId);
+                    
+                    if (plan) {
+                        investmentModal.setAttribute('data-plan-id', plan.id);
+                        investmentModalTitle.textContent = `Invest in ${plan.name}`;
+                        investmentAmount.min = plan.min_amount;
+                        investmentAmount.max = plan.max_amount || '';
+                        investmentRange.textContent = plan.max_amount 
+                            ? `Range: ${plan.min_amount.toFixed(2)} - ${plan.max_amount.toFixed(2)} ETB`
+                            : `Minimum: ${plan.min_amount.toFixed(2)} ETB`;
+                        investmentModal.classList.add('show');
+                    }
+                });
+            });
+            
+            // Update user investments
+            const investments = DB.getInvestments();
+            const userInvestments = investments.filter(i => i.user_id === currentUser.id);
+            
+            const investmentsTable = document.getElementById('user-investments');
+            investmentsTable.innerHTML = userInvestments.map(i => {
+                const plan = plans.find(p => p.id === i.plan_id);
+                const totalProfit = i.daily_profit * Math.min(
+                    plan.duration,
+                    Math.floor((new Date() - new Date(i.start_date)) / (1000 * 60 * 60 * 24))
+                );
+                
+                return `
+                    <tr>
+                        <td>${plan?.name || 'Unknown Plan'}</td>
+                        <td>${i.amount.toFixed(2)} ETB</td>
+                        <td>${i.daily_profit.toFixed(2)} ETB</td>
+                        <td>${totalProfit.toFixed(2)} ETB</td>
+                        <td>${new Date(i.start_date).toLocaleDateString()}</td>
+                        <td>${new Date(i.end_date).toLocaleDateString()}</td>
+                        <td><span class="badge ${i.status === 'active' ? 'success' : i.status === 'completed' ? 'info' : 'danger'}">${i.status}</span></td>
+                    </tr>
+                `;
+            }).join('');
+        }
 
         // Update transactions page
         function updateTransactionsPage() {
             if (!currentUser) return;
             
             const transactions = DB.getTransactions();
-            const settings = DB.getSettings();
-            
             const userTransactions = transactions
                 .filter(t => t.user_id === currentUser.id)
                 .sort((a, b) => new Date(b.date) - new Date(a.date));
             
-            const transactionsTable = document.getElementById('all-transactions');
-            transactionsTable.innerHTML = '';
-            
-            userTransactions.forEach(t => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${formatDate(t.date)}</td>
+            const allTransactions = document.getElementById('all-transactions');
+            allTransactions.innerHTML = userTransactions.map(t => `
+                <tr>
+                    <td>${new Date(t.date).toLocaleDateString()}</td>
                     <td>${t.type}</td>
-                    <td>${t.amount >= 0 ? '+' : ''}${t.amount.toFixed(2)} ${settings.currency}</td>
+                    <td>${t.amount > 0 ? '+' : ''}${t.amount.toFixed(2)} ETB</td>
                     <td>${t.description}</td>
-                    <td>${getStatusBadge(t.status)}</td>
-                `;
-                transactionsTable.appendChild(row);
-            });
+                    <td><span class="badge ${t.status === 'completed' ? 'success' : t.status === 'pending' ? 'warning' : 'danger'}">${t.status}</span></td>
+                </tr>
+            `).join('');
         }
 
         // Update referrals page
         function updateReferralsPage() {
             if (!currentUser) return;
             
+            // Set referral link
+            document.getElementById('referral-link').value = 
+                `${window.location.origin}${window.location.pathname}?ref=${currentUser.referral_code}`;
+            
+            // Get referrals
             const users = DB.getUsers();
-            const settings = DB.getSettings();
-            
-            // Referral link
-            document.getElementById('referral-link').value = `${window.location.origin}${window.location.pathname}?ref=${currentUser.referral_code}`;
-            
-            // Copy referral link
-            document.getElementById('copy-referral-link').addEventListener('click', () => {
-                const referralLink = document.getElementById('referral-link');
-                referralLink.select();
-                document.execCommand('copy');
-                alert('Referral link copied to clipboard!');
+            const referrals = users.filter(u => u.referred_by === currentUser.id);
+            const activeReferrals = referrals.filter(u => {
+                const deposits = DB.getDeposits();
+                return deposits.some(d => d.user_id === u.id && d.status === 'completed');
             });
             
-            // Referral stats
-            const userReferrals = users.filter(u => u.referred_by === currentUser.id);
-            const activeReferrals = userReferrals.filter(u => u.status === 'active');
-            
-            document.getElementById('referral-total').textContent = userReferrals.length;
+            // Update stats
+            document.getElementById('referral-total').textContent = referrals.length;
             document.getElementById('referral-active').textContent = activeReferrals.length;
-            document.getElementById('referral-earnings').textContent = currentUser.referral_balance.toFixed(2) + ' ' + settings.currency;
+            document.getElementById('referral-earnings').textContent = `${currentUser.referral_balance.toFixed(2)} ETB`;
             
-            // Referral list
+            // Update referral list
             const referralList = document.getElementById('referral-list');
-            referralList.innerHTML = '';
-            
-            userReferrals.forEach(u => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${u.fullname}</td>
-                    <td>${u.username}</td>
-                    <td>${formatDate(u.join_date)}</td>
-                    <td>${getStatusBadge(u.status)}</td>
-                    <td>${u.status === 'active' ? settings.referral_bonus.toFixed(2) : '0.00'} ${settings.currency}</td>
+            referralList.innerHTML = referrals.map(r => {
+                const hasDeposit = activeReferrals.some(u => u.id === r.id);
+                const referralBonus = hasDeposit ? DB.getSettings().referral_bonus : 0;
+                
+                return `
+                    <tr>
+                        <td>${r.fullname}</td>
+                        <td>${r.username}</td>
+                        <td>${new Date(r.join_date).toLocaleDateString()}</td>
+                        <td><span class="badge ${hasDeposit ? 'success' : 'warning'}">${hasDeposit ? 'Active' : 'Inactive'}</span></td>
+                        <td>${referralBonus.toFixed(2)} ETB</td>
+                    </tr>
                 `;
-                referralList.appendChild(row);
-            });
+            }).join('');
         }
 
         // Update profile page
@@ -3623,87 +2679,119 @@
             document.getElementById('profile-address').value = currentUser.address || '';
         }
 
-        // Admin dashboard
+        // Update admin dashboard
         function updateAdminDashboard() {
             if (!currentUser || !currentUser.is_admin) return;
             
             const users = DB.getUsers();
             const deposits = DB.getDeposits();
             const withdrawals = DB.getWithdrawals();
-            const transactions = DB.getTransactions();
-            const settings = DB.getSettings();
             
-            // Stats
-            document.getElementById('admin-total-users').textContent = users.length;
-            document.getElementById('admin-active-users').textContent = users.filter(u => u.status === 'active').length;
+            // Count users
+            document.getElementById('admin-total-users').textContent = users.length - 1; // Exclude admin
+            document.getElementById('admin-active-users').textContent = users.filter(u => !u.is_admin && u.status === 'active').length;
             
+            // Calculate total deposits and withdrawals
             const totalDeposits = deposits
                 .filter(d => d.status === 'completed')
                 .reduce((sum, d) => sum + d.amount, 0);
-            document.getElementById('admin-total-deposits').textContent = totalDeposits.toFixed(2) + ' ' + settings.currency;
             
             const totalWithdrawals = withdrawals
                 .filter(w => w.status === 'completed')
-                .reduce((sum, w) => sum + w.amount, 0);
-            document.getElementById('admin-total-withdrawals').textContent = totalWithdrawals.toFixed(2) + ' ' + settings.currency;
+                .reduce((sum, w) => sum + w.amount + w.fee, 0);
+            
+            document.getElementById('admin-total-deposits').textContent = `${totalDeposits.toFixed(2)} ETB`;
+            document.getElementById('admin-total-withdrawals').textContent = `${totalWithdrawals.toFixed(2)} ETB`;
             
             // Recent activities
+            const transactions = DB.getTransactions();
             const recentActivities = transactions
                 .sort((a, b) => new Date(b.date) - new Date(a.date))
                 .slice(0, 10);
             
             const activitiesTable = document.getElementById('admin-recent-activities');
-            activitiesTable.innerHTML = '';
-            
-            recentActivities.forEach(t => {
+            activitiesTable.innerHTML = recentActivities.map(t => {
                 const user = users.find(u => u.id === t.user_id);
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${formatDate(t.date)}</td>
-                    <td>${user?.username || 'Unknown'}</td>
-                    <td>${t.description}</td>
-                    <td>${t.amount >= 0 ? '+' : ''}${t.amount.toFixed(2)} ${settings.currency}</td>
+                return `
+                    <tr>
+                        <td>${new Date(t.date).toLocaleDateString()}</td>
+                        <td>${user?.username || 'Unknown'}</td>
+                        <td>${t.type}</td>
+                        <td>${t.amount > 0 ? '+' : ''}${t.amount.toFixed(2)} ETB</td>
+                    </tr>
                 `;
-                activitiesTable.appendChild(row);
-            });
+            }).join('');
         }
 
-        // Users page
+        // Update users page (admin)
         function updateUsersPage() {
             if (!currentUser || !currentUser.is_admin) return;
             
-            const users = DB.getUsers();
-            const settings = DB.getSettings();
-            
+            const users = DB.getUsers().filter(u => !u.is_admin);
             const usersTable = document.getElementById('users-list');
-            usersTable.innerHTML = '';
             
-            users.forEach(u => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
+            usersTable.innerHTML = users.map(u => `
+                <tr>
                     <td>${u.username}</td>
                     <td>${u.fullname}</td>
                     <td>${u.email}</td>
-                    <td>${u.balance.toFixed(2)} ${settings.currency}</td>
-                    <td>${getStatusBadge(u.status)}</td>
-                    <td>${formatDate(u.join_date)}</td>
+                    <td>${u.balance.toFixed(2)} ETB</td>
+                    <td><span class="badge ${u.status === 'active' ? 'success' : 'danger'}">${u.status}</span></td>
+                    <td>${new Date(u.join_date).toLocaleDateString()}</td>
                     <td>
-                        <button class="btn btn-sm btn-info view-user-btn" data-user-id="${u.id}">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                        ${u.id !== currentUser.id ? `
-                        <button class="btn btn-sm btn-danger delete-user-btn" data-user-id="${u.id}">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                        ` : ''}
+                        <button class="btn btn-sm btn-primary view-user" data-user-id="${u.id}">View</button>
+                        ${u.status === 'active' 
+                            ? `<button class="btn btn-sm btn-warning block-user" data-user-id="${u.id}">Block</button>` 
+                            : `<button class="btn btn-sm btn-success unblock-user" data-user-id="${u.id}">Unblock</button>`}
+                        <button class="btn btn-sm btn-danger delete-user" data-user-id="${u.id}">Delete</button>
                     </td>
-                `;
-                usersTable.appendChild(row);
+                </tr>
+            `).join('');
+            
+            // Add event listeners to user actions
+            document.querySelectorAll('.view-user').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const userId = parseInt(btn.getAttribute('data-user-id'));
+                    viewUserDetails(userId);
+                });
+            });
+            
+            document.querySelectorAll('.block-user').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const userId = parseInt(btn.getAttribute('data-user-id'));
+                    showConfirmation(
+                        'Block User',
+                        'Are you sure you want to block this user? They will not be able to access their account.',
+                        () => blockUser(userId)
+                    );
+                });
+            });
+            
+            document.querySelectorAll('.unblock-user').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const userId = parseInt(btn.getAttribute('data-user-id'));
+                    showConfirmation(
+                        'Unblock User',
+                        'Are you sure you want to unblock this user? They will regain access to their account.',
+                        () => unblockUser(userId)
+                    );
+                });
+            });
+            
+            document.querySelectorAll('.delete-user').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const userId = parseInt(btn.getAttribute('data-user-id'));
+                    showConfirmation(
+                        'Delete User',
+                        'Are you sure you want to permanently delete this user? This action cannot be undone!',
+                        () => deleteUser(userId)
+                    );
+                });
             });
             
             // User search
-            document.getElementById('user-search').addEventListener('input', (e) => {
-                const searchTerm = e.target.value.toLowerCase();
+            document.getElementById('user-search')?.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
                 const rows = usersTable.querySelectorAll('tr');
                 
                 rows.forEach(row => {
@@ -3718,569 +2806,591 @@
                     }
                 });
             });
-            
-            // View user buttons
-            document.querySelectorAll('.view-user-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const userId = parseInt(e.target.closest('button').getAttribute('data-user-id'));
-                    const users = DB.getUsers();
-                    const user = users.find(u => u.id === userId);
-                    const settings = DB.getSettings();
-                    
-                    userModalTitle.textContent = `User: ${user.username}`;
-                    document.getElementById('modal-username').textContent = user.username;
-                    document.getElementById('modal-fullname').textContent = user.fullname;
-                    document.getElementById('modal-email').textContent = user.email;
-                    document.getElementById('modal-phone').textContent = user.phone;
-                    document.getElementById('modal-balance').textContent = user.balance.toFixed(2) + ' ' + settings.currency;
-                    document.getElementById('modal-status').innerHTML = getStatusBadge(user.status);
-                    document.getElementById('modal-joined').textContent = formatDate(user.join_date);
-                    document.getElementById('modal-last-login').textContent = formatDate(user.last_login);
-                    
-                    // Actions
-                    const actionsDiv = document.getElementById('user-actions');
-                    actionsDiv.innerHTML = '';
-                    
-                    if (user.id !== currentUser.id) {
-                        if (user.status === 'active') {
-                            const blockBtn = document.createElement('button');
-                            blockBtn.className = 'btn btn-danger';
-                            blockBtn.innerHTML = '<i class="fas fa-ban"></i> Block User';
-                            blockBtn.addEventListener('click', () => {
-                                const updatedUsers = users.map(u => {
-                                    if (u.id === user.id) {
-                                        return { ...u, status: 'blocked' };
-                                    }
-                                    return u;
-                                });
-                                DB.setUsers(updatedUsers);
-                                alert('User has been blocked');
-                                updateUsersPage();
-                                userModal.classList.remove('show');
-                            });
-                            actionsDiv.appendChild(blockBtn);
-                        } else {
-                            const unblockBtn = document.createElement('button');
-                            unblockBtn.className = 'btn btn-success';
-                            unblockBtn.innerHTML = '<i class="fas fa-check"></i> Unblock User';
-                            unblockBtn.addEventListener('click', () => {
-                                const updatedUsers = users.map(u => {
-                                    if (u.id === user.id) {
-                                        return { ...u, status: 'active' };
-                                    }
-                                    return u;
-                                });
-                                DB.setUsers(updatedUsers);
-                                alert('User has been unblocked');
-                                updateUsersPage();
-                                userModal.classList.remove('show');
-                            });
-                            actionsDiv.appendChild(unblockBtn);
-                        }
-                        
-                        // Delete user button
-                        const deleteBtn = document.createElement('button');
-                        deleteBtn.className = 'btn btn-danger ml-2';
-                        deleteBtn.innerHTML = '<i class="fas fa-trash"></i> Delete User';
-                        deleteBtn.addEventListener('click', () => {
-                            showConfirmation(
-                                'Delete User',
-                                `Are you sure you want to permanently delete user ${user.username}? This action cannot be undone!`,
-                                () => {
-                                    const updatedUsers = users.filter(u => u.id !== user.id);
-                                    DB.setUsers(updatedUsers);
-                                    
-                                    // Also delete user's investments, deposits, withdrawals, etc.
-                                    const investments = DB.getInvestments().filter(i => i.user_id !== user.id);
-                                    DB.setInvestments(investments);
-                                    
-                                    const deposits = DB.getDeposits().filter(d => d.user_id !== user.id);
-                                    DB.setDeposits(deposits);
-                                    
-                                    const withdrawals = DB.getWithdrawals().filter(w => w.user_id !== user.id);
-                                    DB.setWithdrawals(withdrawals);
-                                    
-                                    const transactions = DB.getTransactions().filter(t => t.user_id !== user.id);
-                                    DB.setTransactions(transactions);
-                                    
-                                    alert('User has been deleted');
-                                    updateUsersPage();
-                                    userModal.classList.remove('show');
-                                }
-                            );
-                        });
-                        actionsDiv.appendChild(deleteBtn);
-                    }
-                    
-                    // Add funds button
-                    const addFundsBtn = document.createElement('button');
-                    addFundsBtn.className = 'btn btn-primary ml-2';
-                    addFundsBtn.innerHTML = '<i class="fas fa-plus"></i> Add Funds';
-                    addFundsBtn.addEventListener('click', () => {
-                        const amount = prompt('Enter amount to add:');
-                        if (amount && !isNaN(amount)) {
-                            const updatedUsers = users.map(u => {
-                                if (u.id === user.id) {
-                                    return { ...u, balance: u.balance + parseFloat(amount) };
-                                }
-                                return u;
-                            });
-                            
-                            DB.setUsers(updatedUsers);
-                            
-                            // Add transaction
-                            const transactions = DB.getTransactions();
-                            const newTransaction = {
-                                id: transactions.length > 0 ? Math.max(...transactions.map(t => t.id)) + 1 : 1,
-                                user_id: user.id,
-                                type: 'admin',
-                                amount: parseFloat(amount),
-                                description: `Funds added by admin ${currentUser.username}`,
-                                status: 'completed',
-                                date: new Date().toISOString()
-                            };
-                            
-                            DB.setTransactions([...transactions, newTransaction]);
-                            
-                            alert('Funds added successfully');
-                            updateUsersPage();
-                            userModal.classList.remove('show');
-                        }
-                    });
-                    actionsDiv.appendChild(addFundsBtn);
-                    
-                    userModal.classList.add('show');
-                });
-            });
-            
-            // Delete            // Delete user buttons
-            document.querySelectorAll('.delete-user-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const userId = parseInt(e.target.closest('button').getAttribute('data-user-id'));
-                    const users = DB.getUsers();
-                    const user = users.find(u => u.id === userId);
-                    
-                    showConfirmation(
-                        'Delete User',
-                        `Are you sure you want to delete user ${user.username}? This action cannot be undone!`,
-                        () => {
-                            const updatedUsers = users.filter(u => u.id !== userId);
-                            DB.setUsers(updatedUsers);
-                            
-                            // Also delete related data
-                            const investments = DB.getInvestments().filter(i => i.user_id !== userId);
-                            DB.setInvestments(investments);
-                            
-                            const deposits = DB.getDeposits().filter(d => d.user_id !== userId);
-                            DB.setDeposits(deposits);
-                            
-                            const withdrawals = DB.getWithdrawals().filter(w => w.user_id !== userId);
-                            DB.setWithdrawals(withdrawals);
-                            
-                            const transactions = DB.getTransactions().filter(t => t.user_id !== userId);
-                            DB.setTransactions(transactions);
-                            
-                            alert('User deleted successfully');
-                            updateUsersPage();
-                        }
-                    );
-                });
-            });
         }
 
-        // Deposits page
+        // View user details (admin)
+        function viewUserDetails(userId) {
+            const users = DB.getUsers();
+            const user = users.find(u => u.id === userId);
+            
+            if (!user) {
+                alert('User not found');
+                return;
+            }
+            
+            // Populate modal
+            userModalTitle.textContent = `User Details: ${user.username}`;
+            document.getElementById('modal-username').textContent = user.username;
+            document.getElementById('modal-fullname').textContent = user.fullname;
+            document.getElementById('modal-email').textContent = user.email;
+            document.getElementById('modal-phone').textContent = user.phone;
+            document.getElementById('modal-balance').textContent = `${user.balance.toFixed(2)} ETB`;
+            document.getElementById('modal-status').textContent = user.status;
+            document.getElementById('modal-joined').textContent = new Date(user.join_date).toLocaleDateString();
+            document.getElementById('modal-last-login').textContent = new Date(user.last_login).toLocaleDateString();
+            
+            // Set actions
+            const actionsDiv = document.getElementById('user-actions');
+            actionsDiv.innerHTML = `
+                <button class="btn btn-sm ${user.status === 'active' ? 'btn-warning' : 'btn-success'}" 
+                    id="modal-toggle-status">
+                    ${user.status === 'active' ? 'Block User' : 'Unblock User'}
+                </button>
+                <button class="btn btn-sm btn-danger" id="modal-delete-user">Delete User</button>
+                <button class="btn btn-sm btn-primary" id="modal-add-funds">Add Funds</button>
+                <button class="btn btn-sm btn-secondary" id="modal-deduct-funds">Deduct Funds</button>
+            `;
+            
+            // Add event listeners
+            document.getElementById('modal-toggle-status').addEventListener('click', () => {
+                if (user.status === 'active') {
+                    showConfirmation(
+                        'Block User',
+                        'Are you sure you want to block this user? They will not be able to access their account.',
+                        () => {
+                            blockUser(userId);
+                            userModal.classList.remove('show');
+                        }
+                    );
+                } else {
+                    showConfirmation(
+                        'Unblock User',
+                        'Are you sure you want to unblock this user? They will regain access to their account.',
+                        () => {
+                            unblockUser(userId);
+                            userModal.classList.remove('show');
+                        }
+                    );
+                }
+            });
+            
+            document.getElementById('modal-delete-user').addEventListener('click', () => {
+                showConfirmation(
+                    'Delete User',
+                    'Are you sure you want to permanently delete this user? This action cannot be undone!',
+                    () => {
+                        deleteUser(userId);
+                        userModal.classList.remove('show');
+                    }
+                );
+            });
+            
+            document.getElementById('modal-add-funds').addEventListener('click', () => {
+                const amount = prompt('Enter amount to add (ETB):');
+                if (amount && !isNaN(parseFloat(amount))) {
+                    addUserFunds(userId, parseFloat(amount));
+                    userModal.classList.remove('show');
+                }
+            });
+            
+            document.getElementById('modal-deduct-funds').addEventListener('click', () => {
+                const amount = prompt('Enter amount to deduct (ETB):');
+                if (amount && !isNaN(parseFloat(amount))) {
+                    deductUserFunds(userId, parseFloat(amount));
+                    userModal.classList.remove('show');
+                }
+            });
+            
+            // Show modal
+            userModal.classList.add('show');
+        }
+
+        // Block user (admin)
+        function blockUser(userId) {
+            const users = DB.getUsers();
+            const user = users.find(u => u.id === userId);
+            
+            if (user) {
+                user.status = 'blocked';
+                DB.setUsers(users);
+                alert('User has been blocked');
+                EventBus.emit('data-updated');
+            }
+        }
+
+        // Unblock user (admin)
+        function unblockUser(userId) {
+            const users = DB.getUsers();
+            const user = users.find(u => u.id === userId);
+            
+            if (user) {
+                user.status = 'active';
+                DB.setUsers(users);
+                alert('User has been unblocked');
+                EventBus.emit('data-updated');
+            }
+        }
+
+        // Delete user (admin)
+        function deleteUser(userId) {
+            let users = DB.getUsers();
+            users = users.filter(u => u.id !== userId);
+            DB.setUsers(users);
+            
+            // Also remove user's investments, transactions, etc.
+            let investments = DB.getInvestments();
+            investments = investments.filter(i => i.user_id !== userId);
+            DB.setInvestments(investments);
+            
+            let transactions = DB.getTransactions();
+            transactions = transactions.filter(t => t.user_id !== userId);
+            DB.setTransactions(transactions);
+            
+            let deposits = DB.getDeposits();
+            deposits = deposits.filter(d => d.user_id !== userId);
+            DB.setDeposits(deposits);
+            
+            let withdrawals = DB.getWithdrawals();
+            withdrawals = withdrawals.filter(w => w.user_id !== userId);
+            DB.setWithdrawals(withdrawals);
+            
+            alert('User has been deleted');
+            EventBus.emit('data-updated');
+        }
+
+        // Add funds to user (admin)
+        function addUserFunds(userId, amount) {
+            const users = DB.getUsers();
+            const user = users.find(u => u.id === userId);
+            
+            if (user) {
+                user.balance += amount;
+                DB.setUsers(users);
+                
+                // Add transaction
+                const transactions = DB.getTransactions();
+                transactions.push({
+                    id: transactions.length > 0 ? Math.max(...transactions.map(t => t.id)) + 1 : 1,
+                    user_id: userId,
+                    type: 'admin',
+                    amount,
+                    description: 'Funds added by admin',
+                    status: 'completed',
+                    date: new Date().toISOString()
+                });
+                DB.setTransactions(transactions);
+                
+                alert(`${amount.toFixed(2)} ETB has been added to user's balance`);
+                EventBus.emit('data-updated');
+            }
+        }
+
+        // Deduct funds from user (admin)
+        function deductUserFunds(userId, amount) {
+            const users = DB.getUsers();
+            const user = users.find(u => u.id === userId);
+            
+            if (user) {
+                if (user.balance < amount) {
+                    alert('User has insufficient balance');
+                    return;
+                }
+                
+                user.balance -= amount;
+                DB.setUsers(users);
+                
+                // Add transaction
+                const transactions = DB.getTransactions();
+                transactions.push({
+                    id: transactions.length > 0 ? Math.max(...transactions.map(t => t.id)) + 1 : 1,
+                    user_id: userId,
+                    type: 'admin',
+                    amount: -amount,
+                    description: 'Funds deducted by admin',
+                    status: 'completed',
+                    date: new Date().toISOString()
+                });
+                DB.setTransactions(transactions);
+                
+                alert(`${amount.toFixed(2)} ETB has been deducted from user's balance`);
+                EventBus.emit('data-updated');
+            }
+        }
+
+        // Update deposits page (admin)
         function updateDepositsPage() {
             if (!currentUser || !currentUser.is_admin) return;
             
             const deposits = DB.getDeposits();
             const users = DB.getUsers();
-            const settings = DB.getSettings();
             
             // Pending deposits
-            const pendingDeposits = deposits
-                .filter(d => d.status === 'pending')
-                .sort((a, b) => new Date(b.date) - new Date(a.date));
-            
+            const pendingDeposits = deposits.filter(d => d.status === 'pending');
             const pendingTable = document.getElementById('pending-deposits');
-            pendingTable.innerHTML = '';
             
-            pendingDeposits.forEach(d => {
+            pendingTable.innerHTML = pendingDeposits.map(d => {
                 const user = users.find(u => u.id === d.user_id);
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${formatDate(d.date)}</td>
-                    <td>${user?.username || 'Unknown'}</td>
-                    <td>${d.amount.toFixed(2)} ${settings.currency}</td>
-                    <td>${d.method}</td>
-                    <td>${d.transaction_id}</td>
-                    <td>
-                        <button class="btn btn-sm btn-info view-screenshot-btn" data-screenshot="${d.screenshot}">
-                            <i class="fas fa-eye"></i> View
-                        </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-sm btn-success approve-deposit-btn" data-deposit-id="${d.id}">
-                            <i class="fas fa-check"></i> Approve
-                        </button>
-                        <button class="btn btn-sm btn-danger reject-deposit-btn" data-deposit-id="${d.id}">
-                            <i class="fas fa-times"></i> Reject
-                        </button>
-                    </td>
+                return `
+                    <tr>
+                        <td>${new Date(d.date).toLocaleDateString()}</td>
+                        <td>${user?.username || 'Unknown'}</td>
+                        <td>${d.amount.toFixed(2)} ETB</td>
+                        <td>${d.method}</td>
+                        <td>${d.screenshot ? '<a href="#" class="view-proof">View</a>' : 'N/A'}</td>
+                        <td>
+                            <button class="btn btn-sm btn-success approve-deposit" data-deposit-id="${d.id}">Approve</button>
+                            <button class="btn btn-sm btn-danger reject-deposit" data-deposit-id="${d.id}">Reject</button>
+                        </td>
+                    </tr>
                 `;
-                pendingTable.appendChild(row);
+            }).join('');
+            
+            // Add event listeners to approve/reject buttons
+            document.querySelectorAll('.approve-deposit').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const depositId = parseInt(btn.getAttribute('data-deposit-id'));
+                    approveDeposit(depositId);
+                });
+            });
+            
+            document.querySelectorAll('.reject-deposit').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const depositId = parseInt(btn.getAttribute('data-deposit-id'));
+                    rejectDeposit(depositId);
+                });
             });
             
             // Completed deposits
-            const completedDeposits = deposits
-                .filter(d => d.status === 'completed')
-                .sort((a, b) => new Date(b.date) - new Date(a.date));
-            
+            const completedDeposits = deposits.filter(d => d.status !== 'pending');
             const completedTable = document.getElementById('completed-deposits');
-            completedTable.innerHTML = '';
             
-            completedDeposits.forEach(d => {
+            completedTable.innerHTML = completedDeposits.map(d => {
                 const user = users.find(u => u.id === d.user_id);
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${formatDate(d.date)}</td>
-                    <td>${user?.username || 'Unknown'}</td>
-                    <td>${d.amount.toFixed(2)} ${settings.currency}</td>
-                    <td>${d.method}</td>
-                    <td>${currentUser.username}</td>
+                const admin = users.find(u => u.id === d.processed_by);
+                
+                return `
+                    <tr>
+                        <td>${new Date(d.date).toLocaleDateString()}</td>
+                        <td>${user?.username || 'Unknown'}</td>
+                        <td>${d.amount.toFixed(2)} ETB</td>
+                        <td>${d.method}</td>
+                        <td>${admin?.username || 'System'}</td>
+                    </tr>
                 `;
-                completedTable.appendChild(row);
-            });
-            
-            // Add event listeners to screenshot buttons
-            document.querySelectorAll('.view-screenshot-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const screenshot = e.target.closest('button').getAttribute('data-screenshot');
-                    showScreenshot(screenshot);
-                });
-            });
-            
-            // Approve deposit buttons
-            document.querySelectorAll('.approve-deposit-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const depositId = parseInt(e.target.closest('button').getAttribute('data-deposit-id'));
-                    const deposits = DB.getDeposits();
-                    const deposit = deposits.find(d => d.id === depositId);
-                    const users = DB.getUsers();
-                    
-                    // Update deposit status
-                    const updatedDeposits = deposits.map(d => {
-                        if (d.id === depositId) {
-                            return { ...d, status: 'completed' };
-                        }
-                        return d;
-                    });
-                    
-                    // Update user balance
-                    const updatedUsers = users.map(u => {
-                        if (u.id === deposit.user_id) {
-                            return { ...u, balance: u.balance + deposit.amount };
-                        }
-                        return u;
-                    });
-                    
-                    // Update transaction status
-                    const transactions = DB.getTransactions();
-                    const updatedTransactions = transactions.map(t => {
-                        if (t.type === 'deposit' && t.user_id === deposit.user_id && t.amount === deposit.amount) {
-                            return { ...t, status: 'completed' };
-                        }
-                        return t;
-                    });
-                    
-                    DB.setDeposits(updatedDeposits);
-                    DB.setUsers(updatedUsers);
-                    DB.setTransactions(updatedTransactions);
-                    
-                    alert('Deposit approved successfully');
-                    updateDepositsPage();
-                });
-            });
-            
-            // Reject deposit buttons
-            document.querySelectorAll('.reject-deposit-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const depositId = parseInt(e.target.closest('button').getAttribute('data-deposit-id'));
-                    const deposits = DB.getDeposits();
-                    
-                    // Update deposit status
-                    const updatedDeposits = deposits.map(d => {
-                        if (d.id === depositId) {
-                            return { ...d, status: 'rejected' };
-                        }
-                        return d;
-                    });
-                    
-                    // Update transaction status
-                    const transactions = DB.getTransactions();
-                    const updatedTransactions = transactions.map(t => {
-                        if (t.type === 'deposit' && t.user_id === deposit.user_id && t.amount === deposit.amount) {
-                            return { ...t, status: 'rejected' };
-                        }
-                        return t;
-                    });
-                    
-                    DB.setDeposits(updatedDeposits);
-                    DB.setTransactions(updatedTransactions);
-                    
-                    alert('Deposit rejected');
-                    updateDepositsPage();
-                });
-            });
+            }).join('');
         }
 
-        // Withdrawals page
+        // Approve deposit (admin)
+        function approveDeposit(depositId) {
+            const deposits = DB.getDeposits();
+            const deposit = deposits.find(d => d.id === depositId);
+            
+            if (deposit) {
+                deposit.status = 'completed';
+                deposit.processed_by = currentUser.id;
+                DB.setDeposits(deposits);
+                
+                // Add funds to user
+                const users = DB.getUsers();
+                const user = users.find(u => u.id === deposit.user_id);
+                
+                if (user) {
+                    user.balance += deposit.amount;
+                    DB.setUsers(users);
+                    
+                    // Update transaction status
+                    const transactions = DB.getTransactions();
+                    const transaction = transactions.find(t => 
+                        t.user_id === deposit.user_id && 
+                        t.type === 'deposit' && 
+                        t.amount === deposit.amount && 
+                        t.status === 'pending'
+                    );
+                    
+                    if (transaction) {
+                        transaction.status = 'completed';
+                        DB.setTransactions(transactions);
+                    }
+                }
+                
+                alert('Deposit approved successfully');
+                EventBus.emit('data-updated');
+            }
+        }
+
+        // Reject deposit (admin)
+        function rejectDeposit(depositId) {
+            const deposits = DB.getDeposits();
+            const deposit = deposits.find(d => d.id === depositId);
+            
+            if (deposit) {
+                deposit.status = 'rejected';
+                deposit.processed_by = currentUser.id;
+                DB.setDeposits(deposits);
+                
+                // Update transaction status
+                const transactions = DB.getTransactions();
+                const transaction = transactions.find(t => 
+                    t.user_id === deposit.user_id && 
+                    t.type === 'deposit' && 
+                    t.amount === deposit.amount && 
+                    t.status === 'pending'
+                );
+                
+                if (transaction) {
+                    transaction.status = 'rejected';
+                    DB.setTransactions(transactions);
+                }
+                
+                alert('Deposit rejected');
+                EventBus.emit('data-updated');
+            }
+        }
+
+        // Update withdrawals page (admin)
         function updateWithdrawalsPage() {
             if (!currentUser || !currentUser.is_admin) return;
             
             const withdrawals = DB.getWithdrawals();
             const users = DB.getUsers();
-            const settings = DB.getSettings();
             
             // Pending withdrawals
-            const pendingWithdrawals = withdrawals
-                .filter(w => w.status === 'pending')
-                .sort((a, b) => new Date(b.date) - new Date(a.date));
-            
+            const pendingWithdrawals = withdrawals.filter(w => w.status === 'pending');
             const pendingTable = document.getElementById('pending-withdrawals');
-            pendingTable.innerHTML = '';
             
-            pendingWithdrawals.forEach(w => {
+            pendingTable.innerHTML = pendingWithdrawals.map(w => {
                 const user = users.find(u => u.id === w.user_id);
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${formatDate(w.date)}</td>
-                    <td>${user?.username || 'Unknown'}</td>
-                    <td>${w.amount.toFixed(2)} ${settings.currency}</td>
-                    <td>${w.fee.toFixed(2)} ${settings.currency}</td>
-                    <td>${w.method}</td>
-                    <td>${w.account_name} (${w.phone})</td>
-                    <td>
-                        <button class="btn btn-sm btn-success approve-withdrawal-btn" data-withdrawal-id="${w.id}">
-                            <i class="fas fa-check"></i> Approve
-                        </button>
-                        <button class="btn btn-sm btn-danger reject-withdrawal-btn" data-withdrawal-id="${w.id}">
-                            <i class="fas fa-times"></i> Reject
-                        </button>
-                    </td>
+                return `
+                    <tr>
+                        <td>${new Date(w.date).toLocaleDateString()}</td>
+                        <td>${user?.username || 'Unknown'}</td>
+                        <td>${w.amount.toFixed(2)} ETB</td>
+                        <td>${w.fee.toFixed(2)} ETB</td>
+                        <td>${w.method}</td>
+                        <td>${w.account_name} (${w.phone})</td>
+                        <td>
+                            <button class="btn btn-sm btn-success approve-withdrawal" data-withdrawal-id="${w.id}">Approve</button>
+                            <button class="btn btn-sm btn-danger reject-withdrawal" data-withdrawal-id="${w.id}">Reject</button>
+                        </td>
+                    </tr>
                 `;
-                pendingTable.appendChild(row);
+            }).join('');
+            
+            // Add event listeners to approve/reject buttons
+            document.querySelectorAll('.approve-withdrawal').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const withdrawalId = parseInt(btn.getAttribute('data-withdrawal-id'));
+                    approveWithdrawal(withdrawalId);
+                });
+            });
+            
+            document.querySelectorAll('.reject-withdrawal').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const withdrawalId = parseInt(btn.getAttribute('data-withdrawal-id'));
+                    rejectWithdrawal(withdrawalId);
+                });
             });
             
             // Completed withdrawals
-            const completedWithdrawals = withdrawals
-                .filter(w => w.status === 'completed')
-                .sort((a, b) => new Date(b.date) - new Date(a.date));
-            
+            const completedWithdrawals = withdrawals.filter(w => w.status !== 'pending');
             const completedTable = document.getElementById('completed-withdrawals');
-            completedTable.innerHTML = '';
             
-            completedWithdrawals.forEach(w => {
+            completedTable.innerHTML = completedWithdrawals.map(w => {
                 const user = users.find(u => u.id === w.user_id);
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${formatDate(w.date)}</td>
-                    <td>${user?.username || 'Unknown'}</td>
-                    <td>${w.amount.toFixed(2)} ${settings.currency}</td>
-                    <td>${w.fee.toFixed(2)} ${settings.currency}</td>
-                    <td>${w.method}</td>
-                    <td>${currentUser.username}</td>
+                const admin = users.find(u => u.id === w.processed_by);
+                
+                return `
+                    <tr>
+                        <td>${new Date(w.date).toLocaleDateString()}</td>
+                        <td>${user?.username || 'Unknown'}</td>
+                        <td>${w.amount.toFixed(2)} ETB</td>
+                        <td>${w.fee.toFixed(2)} ETB</td>
+                        <td>${w.method}</td>
+                        <td>${admin?.username || 'System'}</td>
+                    </tr>
                 `;
-                completedTable.appendChild(row);
-            });
-            
-            // Approve withdrawal buttons
-            document.querySelectorAll('.approve-withdrawal-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const withdrawalId = parseInt(e.target.closest('button').getAttribute('data-withdrawal-id'));
-                    const withdrawals = DB.getWithdrawals();
-                    const withdrawal = withdrawals.find(w => w.id === withdrawalId);
-                    const transactions = DB.getTransactions();
-                    
-                    // Update withdrawal status
-                    const updatedWithdrawals = withdrawals.map(w => {
-                        if (w.id === withdrawalId) {
-                            return { ...w, status: 'completed' };
-                        }
-                        return w;
-                    });
-                    
-                    // Update transaction status
-                    const updatedTransactions = transactions.map(t => {
-                        if (t.type === 'withdrawal' && t.user_id === withdrawal.user_id && t.amount === -withdrawal.amount) {
-                            return { ...t, status: 'completed' };
-                        }
-                        return t;
-                    });
-                    
-                    DB.setWithdrawals(updatedWithdrawals);
-                    DB.setTransactions(updatedTransactions);
-                    
-                    alert('Withdrawal approved successfully');
-                    updateWithdrawalsPage();
-                });
-            });
-            
-            // Reject withdrawal buttons
-            document.querySelectorAll('.reject-withdrawal-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const withdrawalId = parseInt(e.target.closest('button').getAttribute('data-withdrawal-id'));
-                    const withdrawals = DB.getWithdrawals();
-                    const withdrawal = withdrawals.find(w => w.id === withdrawalId);
-                    const users = DB.getUsers();
-                    const transactions = DB.getTransactions();
-                    
-                    // Update withdrawal status
-                    const updatedWithdrawals = withdrawals.map(w => {
-                        if (w.id === withdrawalId) {
-                            return { ...w, status: 'rejected' };
-                        }
-                        return w;
-                    });
-                    
-                    // Return funds to user
-                    const total = withdrawal.amount + withdrawal.fee;
-                    const updatedUsers = users.map(u => {
-                        if (u.id === withdrawal.user_id) {
-                            return { ...u, balance: u.balance + total };
-                        }
-                        return u;
-                    });
-                    
-                    // Update transaction status
-                    const updatedTransactions = transactions.map(t => {
-                        if (t.type === 'withdrawal' && t.user_id === withdrawal.user_id && t.amount === -withdrawal.amount) {
-                            return { ...t, status: 'rejected' };
-                        }
-                        return t;
-                    });
-                    
-                    DB.setWithdrawals(updatedWithdrawals);
-                    DB.setUsers(updatedUsers);
-                    DB.setTransactions(updatedTransactions);
-                    currentUser = updatedUsers.find(u => u.id === currentUser.id);
-                    
-                    alert('Withdrawal rejected and funds returned to user');
-                    updateWithdrawalsPage();
-                });
-            });
+            }).join('');
         }
 
-        // Investment plans page
+        // Approve withdrawal (admin)
+        function approveWithdrawal(withdrawalId) {
+            const withdrawals = DB.getWithdrawals();
+            const withdrawal = withdrawals.find(w => w.id === withdrawalId);
+            
+            if (withdrawal) {
+                withdrawal.status = 'completed';
+                withdrawal.processed_by = currentUser.id;
+                DB.setWithdrawals(withdrawals);
+                
+                // Update transaction status
+                const transactions = DB.getTransactions();
+                const transaction = transactions.find(t => 
+                    t.user_id === withdrawal.user_id && 
+                    t.type === 'withdrawal' && 
+                    t.amount === -withdrawal.amount && 
+                    t.status === 'pending'
+                );
+                
+                if (transaction) {
+                    transaction.status = 'completed';
+                    DB.setTransactions(transactions);
+                }
+                
+                alert('Withdrawal approved successfully');
+                EventBus.emit('data-updated');
+            }
+        }
+
+        // Reject withdrawal (admin)
+        function rejectWithdrawal(withdrawalId) {
+            const withdrawals = DB.getWithdrawals();
+            const withdrawal = withdrawals.find(w => w.id === withdrawalId);
+            
+            if (withdrawal) {
+                // Return funds to user
+                const users = DB.getUsers();
+                const user = users.find(u => u.id === withdrawal.user_id);
+                
+                if (user) {
+                    user.balance += withdrawal.amount + withdrawal.fee;
+                    DB.setUsers(users);
+                }
+                
+                withdrawal.status = 'rejected';
+                withdrawal.processed_by = currentUser.id;
+                DB.setWithdrawals(withdrawals);
+                
+                // Update transaction status
+                const transactions = DB.getTransactions();
+                const withdrawalTransaction = transactions.find(t => 
+                    t.user_id === withdrawal.user_id && 
+                    t.type === 'withdrawal' && 
+                    t.amount === -withdrawal.amount && 
+                    t.status === 'pending'
+                );
+                
+                const feeTransaction = transactions.find(t => 
+                    t.user_id === withdrawal.user_id && 
+                    t.type === 'fee' && 
+                    t.amount === -withdrawal.fee && 
+                    t.status === 'completed'
+                );
+                
+                if (withdrawalTransaction) {
+                    withdrawalTransaction.status = 'rejected';
+                }
+                
+                if (feeTransaction) {
+                    feeTransaction.status = 'reversed';
+                    
+                    // Add refund transaction
+                    transactions.push({
+                        id: transactions.length > 0 ? Math.max(...transactions.map(t => t.id)) + 1 : 1,
+                        user_id: withdrawal.user_id,
+                        type: 'refund',
+                        amount: withdrawal.fee,
+                        description: 'Withdrawal fee refund',
+                        status: 'completed',
+                        date: new Date().toISOString()
+                    });
+                }
+                
+                DB.setTransactions(transactions);
+                
+                alert('Withdrawal rejected and funds returned to user');
+                EventBus.emit('data-updated');
+            }
+        }
+
+        // Update investment plans page (admin)
         function updateInvestmentPlansPage() {
             if (!currentUser || !currentUser.is_admin) return;
             
             const plans = DB.getInvestmentPlans();
-            const settings = DB.getSettings();
-            
             const plansTable = document.getElementById('plans-list');
-            plansTable.innerHTML = '';
             
-            plans.forEach(plan => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${plan.name}</td>
-                    <td>${plan.min_amount.toFixed(2)} ${settings.currency}</td>
-                    <td>${plan.max_amount ? plan.max_amount.toFixed(2) : 'No limit'} ${settings.currency}</td>
-                    <td>${plan.duration} days</td>
-                    <td>${plan.daily_profit}%</td>
+            plansTable.innerHTML = plans.map(p => `
+                <tr>
+                    <td>${p.name}</td>
+                    <td>${p.min_amount.toFixed(2)} ETB</td>
+                    <td>${p.max_amount ? p.max_amount.toFixed(2) + ' ETB' : 'No limit'}</td>
+                    <td>${p.duration} days</td>
+                    <td>${p.daily_profit}% daily</td>
                     <td>
-                        <button class="btn btn-sm btn-info view-plan-btn" data-plan-id="${plan.id}">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger delete-plan-btn" data-plan-id="${plan.id}">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        <button class="btn btn-sm btn-primary view-plan" data-plan-id="${p.id}">View</button>
+                        <button class="btn btn-sm btn-danger delete-plan" data-plan-id="${p.id}">Delete</button>
                     </td>
-                `;
-                plansTable.appendChild(row);
-            });
+                </tr>
+            `).join('');
             
-            // View plan buttons
-            document.querySelectorAll('.view-plan-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const planId = parseInt(e.target.closest('button').getAttribute('data-plan-id'));
-                    const plans = DB.getInvestmentPlans();
-                    const plan = plans.find(p => p.id === planId);
-                    
-                    planModalTitle.textContent = `Plan: ${plan.name}`;
-                    document.getElementById('modal-plan-name').textContent = plan.name;
-                    document.getElementById('modal-plan-min').textContent = plan.min_amount.toFixed(2) + ' ' + settings.currency;
-                    document.getElementById('modal-plan-max').textContent = plan.max_amount ? plan.max_amount.toFixed(2) + ' ' + settings.currency : 'No limit';
-                    document.getElementById('modal-plan-duration').textContent = plan.duration + ' days';
-                    document.getElementById('modal-plan-profit').textContent = plan.daily_profit + '% daily';
-                    document.getElementById('modal-plan-description').textContent = plan.description || 'No description';
-                    
-                    // Actions
-                    const actionsDiv = document.getElementById('plan-actions');
-                    actionsDiv.innerHTML = '';
-                    
-                    const editBtn = document.createElement('button');
-                    editBtn.className = 'btn btn-primary';
-                    editBtn.innerHTML = '<i class="fas fa-edit"></i> Edit Plan';
-                    editBtn.addEventListener('click', () => {
-                        // In a real app, you would implement plan editing functionality
-                        alert('Plan editing functionality would be implemented here');
-                    });
-                    actionsDiv.appendChild(editBtn);
-                    
-                    const deleteBtn = document.createElement('button');
-                    deleteBtn.className = 'btn btn-danger ml-2';
-                    deleteBtn.innerHTML = '<i class="fas fa-trash"></i> Delete Plan';
-                    deleteBtn.addEventListener('click', () => {
-                        showConfirmation(
-                            'Delete Plan',
-                            `Are you sure you want to delete the ${plan.name} plan? This action cannot be undone!`,
-                            () => {
-                                const updatedPlans = plans.filter(p => p.id !== planId);
-                                DB.setInvestmentPlans(updatedPlans);
-                                alert('Plan deleted successfully');
-                                updateInvestmentPlansPage();
-                                planModal.classList.remove('show');
-                            }
-                        );
-                    });
-                    actionsDiv.appendChild(deleteBtn);
-                    
-                    planModal.classList.add('show');
+            // Add event listeners to plan actions
+            document.querySelectorAll('.view-plan').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const planId = parseInt(btn.getAttribute('data-plan-id'));
+                    viewPlanDetails(planId);
                 });
             });
             
-            // Delete plan buttons
-            document.querySelectorAll('.delete-plan-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const planId = parseInt(e.target.closest('button').getAttribute('data-plan-id'));
-                    const plans = DB.getInvestmentPlans();
-                    const plan = plans.find(p => p.id === planId);
-                    
+            document.querySelectorAll('.delete-plan').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const planId = parseInt(btn.getAttribute('data-plan-id'));
                     showConfirmation(
                         'Delete Plan',
-                        `Are you sure you want to delete the ${plan.name} plan? This action cannot be undone!`,
-                        () => {
-                            const updatedPlans = plans.filter(p => p.id !== planId);
-                            DB.setInvestmentPlans(updatedPlans);
-                            alert('Plan deleted successfully');
-                            updateInvestmentPlansPage();
-                        }
+                        'Are you sure you want to delete this investment plan? Existing investments will not be affected.',
+                        () => deletePlan(planId)
                     );
                 });
             });
         }
 
-        // Settings page
+        // View plan details (admin)
+        function viewPlanDetails(planId) {
+            const plans = DB.getInvestmentPlans();
+            const plan = plans.find(p => p.id === planId);
+            
+            if (!plan) {
+                alert('Plan not found');
+                return;
+            }
+            
+            // Populate modal
+            planModalTitle.textContent = `Plan Details: ${plan.name}`;
+            document.getElementById('modal-plan-name').textContent = plan.name;
+            document.getElementById('modal-plan-min').textContent = `${plan.min_amount.toFixed(2)} ETB`;
+            document.getElementById('modal-plan-max').textContent = plan.max_amount ? `${plan.max_amount.toFixed(2)} ETB` : 'No maximum';
+            document.getElementById('modal-plan-duration').textContent = `${plan.duration} days`;
+            document.getElementById('modal-plan-profit').textContent = `${plan.daily_profit}% daily`;
+            document.getElementById('modal-plan-description').textContent = plan.description || 'No description';
+            
+            // Set actions
+            const actionsDiv = document.getElementById('plan-actions');
+            actionsDiv.innerHTML = `
+                <button class="btn btn-sm btn-danger" id="modal-delete-plan">Delete Plan</button>
+            `;
+            
+            // Add event listener
+            document.getElementById('modal-delete-plan').addEventListener('click', () => {
+                showConfirmation(
+                    'Delete Plan',
+                    'Are you sure you want to delete this investment plan? Existing investments will not be affected.',
+                    () => {
+                        deletePlan(planId);
+                        planModal.classList.remove('show');
+                    }
+                );
+            });
+            
+            // Show modal
+            planModal.classList.add('show');
+        }
+
+        // Delete plan (admin)
+        function deletePlan(planId) {
+            let plans = DB.getInvestmentPlans();
+            plans = plans.filter(p => p.id !== planId);
+            DB.setInvestmentPlans(plans);
+            
+            alert('Investment plan deleted');
+            EventBus.emit('data-updated');
+        }
+
+        // Update settings page (admin)
         function updateSettingsPage() {
             if (!currentUser || !currentUser.is_admin) return;
             
             const settings = DB.getSettings();
-            const bankDetails = DB.getBankDetails();
-            const users = DB.getUsers();
-            const transactions = DB.getTransactions();
             
-            // General settings
+            // Populate form
             document.getElementById('site-name').value = settings.site_name;
             document.getElementById('site-currency').value = settings.currency;
             document.getElementById('min-deposit').value = settings.min_deposit;
@@ -4288,15 +3398,14 @@
             document.getElementById('withdraw-fee').value = settings.withdraw_fee;
             document.getElementById('referral-bonus').value = settings.referral_bonus;
             
-            // Bank settings
-            document.getElementById('bank-name').value = bankDetails.bank_name;
-            document.getElementById('account-name').value = bankDetails.account_name;
-            document.getElementById('account-number').value = bankDetails.account_number;
-            document.getElementById('telebirr-number').value = bankDetails.telebirr_number;
-            
             // System info
-            document.getElementById('last-backup').textContent = settings.last_backup ? formatDate(settings.last_backup) : 'Never';
-            document.getElementById('system-total-users').textContent = users.length;
+            document.getElementById('last-backup').textContent = 
+                settings.last_backup ? new Date(settings.last_backup).toLocaleString() : 'Never';
+            
+            const users = DB.getUsers();
+            document.getElementById('system-total-users').textContent = users.length - 1; // Exclude admin
+            
+            const transactions = DB.getTransactions();
             document.getElementById('system-total-transactions').textContent = transactions.length;
             
             // Update server time every second
@@ -4307,27 +3416,8 @@
             setInterval(updateServerTime, 1000);
         }
 
-        // Helper functions
-        function formatDate(dateString) {
-            if (!dateString) return 'N/A';
-            const date = new Date(dateString);
-            return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-        }
-
-        function getStatusBadge(status) {
-            switch (status) {
-                case 'active':
-                case 'completed':
-                    return `<span class="badge badge-success">${status}</span>`;
-                case 'pending':
-                    return `<span class="badge badge-warning">${status}</span>`;
-                case 'blocked':
-                case 'rejected':
-                    return `<span class="badge badge-danger">${status}</span>`;
-                default:
-                    return `<span class="badge badge-secondary">${status}</span>`;
-            }
-        }
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
