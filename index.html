@@ -1,0 +1,4053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WealthGrow - Investment Platform</title>
+    <style>
+        :root {
+            --primary: #4e73df;
+            --secondary: #858796;
+            --success: #1cc88a;
+            --info: #36b9cc;
+            --warning: #f6c23e;
+            --danger: #e74a3b;
+            --dark: #5a5c69;
+            --light: #f8f9fc;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fc;
+            color: #333;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, var(--primary) 0%, #224abe 100%);
+            color: white;
+            padding: 20px 0;
+            transition: all 0.3s;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+        
+        .sidebar.hidden {
+            margin-left: -250px;
+        }
+        
+        .sidebar-header {
+            padding: 0 20px 20px;
+            text-align: center;
+        }
+        
+        .sidebar-header h3 {
+            color: white;
+            font-weight: 700;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            padding: 10px 20px;
+            border-left: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-menu li:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 3px solid white;
+        }
+        
+        .sidebar-menu li.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-left: 3px solid white;
+        }
+        
+        .sidebar-menu a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .sidebar-menu a:hover {
+            color: white;
+        }
+        
+        .sidebar-menu i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            transition: all 0.3s;
+        }
+        
+        .main-content.expanded {
+            margin-left: 0;
+        }
+        
+        /* Navbar */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .navbar-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .toggle-sidebar {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--secondary);
+            cursor: pointer;
+            margin-right: 1rem;
+        }
+        
+        .navbar-right {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-menu {
+            position: relative;
+        }
+        
+        .user-btn {
+            background: none;
+            border: none;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            color: var(--dark);
+        }
+        
+        .user-btn img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            right: 0;
+            top: 50px;
+            background-color: white;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            border-radius: 0.35rem;
+            padding: 0.5rem 0;
+            min-width: 200px;
+            display: none;
+            z-index: 1000;
+        }
+        
+        .dropdown-menu.show {
+            display: block;
+        }
+        
+        .dropdown-item {
+            padding: 0.5rem 1.5rem;
+            color: var(--dark);
+            text-decoration: none;
+            display: block;
+        }
+        
+        .dropdown-item:hover {
+            background-color: #f8f9fc;
+        }
+        
+        /* Content */
+        .content {
+            padding: 1.5rem;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .page-title h1 {
+            font-size: 1.75rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+        
+        .breadcrumb {
+            display: flex;
+            list-style: none;
+        }
+        
+        .breadcrumb-item {
+            color: var(--secondary);
+        }
+        
+        .breadcrumb-item.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .breadcrumb-item + .breadcrumb-item::before {
+            content: "/";
+            padding: 0 0.5rem;
+        }
+        
+        /* Cards */
+        .card {
+            background-color: white;
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-header {
+            padding: 1rem 1.5rem;
+            background-color: #f8f9fc;
+            border-bottom: 1px solid #e3e6f0;
+            border-radius: 0.35rem 0.35rem 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-header h6 {
+            font-weight: 700;
+            color: var(--dark);
+            margin: 0;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        /* Stats Cards */
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stats-card {
+            background-color: white;
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stats-card.primary {
+            border-left: 4px solid var(--primary);
+        }
+        
+        .stats-card.success {
+            border-left: 4px solid var(--success);
+        }
+        
+        .stats-card.info {
+            border-left: 4px solid var(--info);
+        }
+        
+        .stats-card.warning {
+            border-left: 4px solid var(--warning);
+        }
+        
+        .stats-card .title {
+            font-size: 0.875rem;
+            color: var(--secondary);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        
+        .stats-card .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+        
+        .stats-card .icon {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            opacity: 0.2;
+        }
+        
+        /* Forms */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .form-control {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #6e707e;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #d1d3e2;
+            border-radius: 0.35rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        
+        .form-control:focus {
+            color: #6e707e;
+            background-color: #fff;
+            border-color: #bac8f3;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+        }
+        
+        .btn {
+            display: inline-block;
+            font-weight: 400;
+            color: #fff;
+            text-align: center;
+            vertical-align: middle;
+            user-select: none;
+            background-color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border-radius: 0.35rem;
+            transition: all 0.15s ease-in-out;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #2e59d9;
+            border-color: #2653d4;
+            color: white;
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+        
+        .btn-success:hover {
+            background-color: #17a673;
+            border-color: #169b6b;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            border-color: var(--danger);
+        }
+        
+        .btn-danger:hover {
+            background-color: #d62c1a;
+            border-color: #c52717;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning);
+            border-color: var(--warning);
+        }
+        
+        .btn-warning:hover {
+            background-color: #e0b228;
+            border-color: #d9aa24;
+        }
+        
+        .btn-info {
+            background-color: var(--info);
+            border-color: var(--info);
+        }
+        
+        .btn-info:hover {
+            background-color: #2c9faf;
+            border-color: #2a96a5;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+            border-color: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #717384;
+            border-color: #6b6d7d;
+        }
+        
+        /* Tables */
+        .table {
+            width: 100%;
+            margin-bottom: 1rem;
+            color: #858796;
+            border-collapse: collapse;
+        }
+        
+        .table th {
+            padding: 1rem;
+            vertical-align: bottom;
+            border-bottom: 2px solid #e3e6f0;
+            text-align: left;
+            font-weight: 700;
+        }
+        
+        .table td {
+            padding: 1rem;
+            vertical-align: top;
+            border-top: 1px solid #e3e6f0;
+        }
+        
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #f8f9fc;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.35em 0.65em;
+            font-size: 0.75em;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 0.25rem;
+        }
+        
+        .badge-success {
+            color: #fff;
+            background-color: var(--success);
+        }
+        
+        .badge-danger {
+            color: #fff;
+            background-color: var(--danger);
+        }
+        
+        .badge-warning {
+            color: #fff;
+            background-color: var(--warning);
+        }
+        
+        .badge-info {
+            color: #fff;
+            background-color: var(--info);
+        }
+        
+        .badge-primary {
+            color: #fff;
+            background-color: var(--primary);
+        }
+        
+        /* Alert */
+        .alert {
+            position: relative;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid transparent;
+            border-radius: 0.35rem;
+        }
+        
+        .alert-success {
+            color: #0f5132;
+            background-color: #d1e7dd;
+            border-color: #badbcc;
+        }
+        
+        .alert-danger {
+            color: #842029;
+            background-color: #f8d7da;
+            border-color: #f5c2c7;
+        }
+        
+        .alert-warning {
+            color: #664d03;
+            background-color: #fff3cd;
+            border-color: #ffecb5;
+        }
+        
+        .alert-info {
+            color: #055160;
+            background-color: #cff4fc;
+            border-color: #b6effb;
+        }
+        
+        /* Login Page */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f8f9fc;
+        }
+        
+        .login-wrapper {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .login-left {
+            flex: 1;
+            background: linear-gradient(135deg, var(--primary) 0%, #224abe 100%);
+            color: white;
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .login-left h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .login-left p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .login-features {
+            text-align: left;
+            margin-top: 2rem;
+        }
+        
+        .login-feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .login-feature i {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .login-right {
+            flex: 1;
+            background-color: white;
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .login-header img {
+            height: 60px;
+            margin-bottom: 1rem;
+        }
+        
+        .login-header h2 {
+            font-size: 1.75rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .login-header p {
+            color: var(--secondary);
+        }
+        
+        .login-body {
+            margin-bottom: 1.5rem;
+        }
+        
+        .login-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        
+        .login-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .social-login {
+            margin-top: 2rem;
+        }
+        
+        .social-login p {
+            text-align: center;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        .social-login p::before,
+        .social-login p::after {
+            content: "";
+            display: inline-block;
+            width: 30%;
+            height: 1px;
+            background-color: #e3e6f0;
+            position: absolute;
+            top: 50%;
+        }
+        
+        .social-login p::before {
+            left: 0;
+        }
+        
+        .social-login p::after {
+            right: 0;
+        }
+        
+        .social-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        
+        .social-btn.facebook {
+            background-color: #3b5998;
+        }
+        
+        .social-btn.google {
+            background-color: #db4437;
+        }
+        
+        .social-btn.twitter {
+            background-color: #1da1f2;
+        }
+        
+        .social-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        /* Register Page */
+        .register-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f8f9fc;
+        }
+        
+        .register-wrapper {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .register-left {
+            flex: 1;
+            background: linear-gradient(135deg, var(--success) 0%, #17a673 100%);
+            color: white;
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .register-left h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .register-left p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .register-features {
+            text-align: left;
+            margin-top: 2rem;
+        }
+        
+        .register-feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .register-feature i {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .register-right {
+            flex: 1;
+            background-color: white;
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .register-card {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .register-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .register-header img {
+            height: 60px;
+            margin-bottom: 1rem;
+        }
+        
+        .register-header h2 {
+            font-size: 1.75rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .register-header p {
+            color: var(--secondary);
+        }
+        
+        .register-body {
+            margin-bottom: 1.5rem;
+        }
+        
+        .register-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        
+        .register-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1050;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-dialog {
+            width: 100%;
+            max-width: 500px;
+            background-color: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            transform: translateY(-50px);
+            transition: transform 0.3s;
+        }
+        
+        .modal.show .modal-dialog {
+            transform: translateY(0);
+        }
+        
+        .modal-header {
+            padding: 1.5rem;
+            background-color: #f8f9fc;
+            border-bottom: 1px solid #e3e6f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h5 {
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .modal-header .close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .modal-footer {
+            padding: 1rem;
+            background-color: #f8f9fc;
+            border-top: 1px solid #e3e6f0;
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .login-wrapper,
+            .register-wrapper {
+                flex-direction: column;
+            }
+            
+            .login-left,
+            .register-left {
+                padding: 2rem;
+            }
+            
+            .login-right,
+            .register-right {
+                padding: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                margin-left: -250px;
+            }
+            
+            .sidebar.show {
+                margin-left: 0;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .navbar {
+                padding: 1rem;
+            }
+            
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .login-left,
+            .register-left {
+                display: none;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="login-page" class="login-container">
+        <div class="login-wrapper">
+            <div class="login-left">
+                <h1>Welcome to WealthGrow</h1>
+                <p>Start growing your wealth with our secure investment platform</p>
+                <div class="login-features">
+                    <div class="login-feature">
+                        <i class="fas fa-chart-line"></i>
+                        <div>
+                            <h4>High Returns</h4>
+                            <p>Earn up to 15% daily on your investments</p>
+                        </div>
+                    </div>
+                    <div class="login-feature">
+                        <i class="fas fa-shield-alt"></i>
+                        <div>
+                            <h4>Secure Platform</h4>
+                            <p>Bank-level security for your funds and data</p>
+                        </div>
+                    </div>
+                    <div class="login-feature">
+                        <i class="fas fa-headset"></i>
+                        <div>
+                            <h4>24/7 Support</h4>
+                            <p>Our team is always ready to assist you</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="login-right">
+                <div class="login-card">
+                    <div class="login-header">
+                        <img src="https://via.placeholder.com/60x60" alt="WealthGrow Logo">
+                        <h2>Sign In</h2>
+                        <p>Enter your credentials to access your account</p>
+                    </div>
+                    <div class="login-body">
+                        <form id="login-form">
+                            <div class="form-group">
+                                <label for="login-username" class="form-label">Username</label>
+                                <input type="text" id="login-username" class="form-control" placeholder="Enter your username" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="login-password" class="form-label">Password</label>
+                                <input type="password" id="login-password" class="form-control" placeholder="Enter your password" required>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary w-100">Login</button>
+                            </div>
+                            <div class="form-group text-center">
+                                <a href="#" id="forgot-password">Forgot Password?</a>
+                            </div>
+                        </form>
+                        <div class="social-login">
+                            <p>Or sign in with</p>
+                            <div class="social-buttons">
+                                <a href="#" class="social-btn facebook"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#" class="social-btn google"><i class="fab fa-google"></i></a>
+                                <a href="#" class="social-btn twitter"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="login-footer">
+                        <p>Don't have an account? <a href="#" id="show-register">Register</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Page -->
+    <div id="register-page" class="register-container" style="display: none;">
+        <div class="register-wrapper">
+            <div class="register-left">
+                <h1>Join WealthGrow Today</h1>
+                <p>Start your investment journey with just a few clicks</p>
+                <div class="register-features">
+                    <div class="register-feature">
+                        <i class="fas fa-hand-holding-usd"></i>
+                        <div>
+                            <h4>Low Minimum Deposit</h4>
+                            <p>Start investing with as little as 300 ETB</p>
+                        </div>
+                    </div>
+                    <div class="register-feature">
+                        <i class="fas fa-user-friends"></i>
+                        <div>
+                            <h4>Referral Program</h4>
+                            <p>Earn bonuses for inviting friends</p>
+                        </div>
+                    </div>
+                    <div class="register-feature">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h4>Fast Withdrawals</h4>
+                            <p>Get your funds within 24 hours</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="register-right">
+                <div class="register-card">
+                    <div class="register-header">
+                        <img src="https://via.placeholder.com/60x60" alt="WealthGrow Logo">
+                        <h2>Create Account</h2>
+                        <p>Fill in your details to get started</p>
+                    </div>
+                    <div class="register-body">
+                        <form id="register-form">
+                            <div class="form-group">
+                                <label for="register-fullname" class="form-label">Full Name</label>
+                                <input type="text" id="register-fullname" class="form-control" placeholder="Enter your full name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="register-username" class="form-label">Username</label>
+                                <input type="text" id="register-username" class="form-control" placeholder="Choose a username" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="register-email" class="form-label">Email</label>
+                                <input type="email" id="register-email" class="form-control" placeholder="Enter your email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="register-phone" class="form-label">Phone Number</label>
+                                <input type="tel" id="register-phone" class="form-control" placeholder="Enter your phone number" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="register-password" class="form-label">Password</label>
+                                <input type="password" id="register-password" class="form-control" placeholder="Create a password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="register-confirm-password" class="form-label">Confirm Password</label>
+                                <input type="password" id="register-confirm-password" class="form-control" placeholder="Confirm your password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="register-referral" class="form-label">Referral Code (Optional)</label>
+                                <input type="text" id="register-referral" class="form-control" placeholder="Enter referral code if any">
+                            </div>
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input type="checkbox" id="register-terms" class="form-check-input" required>
+                                    <label for="register-terms" class="form-check-label">I agree to the <a href="#">Terms and Conditions</a></label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary w-100">Register</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="register-footer">
+                        <p>Already have an account? <a href="#" id="show-login">Login</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div class="modal" id="forgot-password-modal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h5>Reset Password</h5>
+                <button class="close" id="close-forgot-password-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="forgot-password-form">
+                    <div class="form-group">
+                        <label for="forgot-email" class="form-label">Email Address</label>
+                        <input type="email" id="forgot-email" class="form-control" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary w-100">Send Reset Link</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <p class="text-center">Remember your password? <a href="#" id="show-login-from-forgot">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="app" style="display: none;">
+        <div class="container">
+            <!-- Sidebar -->
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <h3>WealthGrow</h3>
+                </div>
+                <ul class="sidebar-menu" id="user-menu">
+                    <li class="active">
+                        <a href="#dashboard">
+                            <i class="fas fa-fw fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#deposit">
+                            <i class="fas fa-fw fa-money-bill-wave"></i>
+                            <span>Deposit</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#withdraw">
+                            <i class="fas fa-fw fa-wallet"></i>
+                            <span>Withdraw</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#invest">
+                            <i class="fas fa-fw fa-chart-line"></i>
+                            <span>Invest</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#transactions">
+                            <i class="fas fa-fw fa-exchange-alt"></i>
+                            <span>Transactions</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#referrals">
+                            <i class="fas fa-fw fa-users"></i>
+                            <span>Referrals</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#profile">
+                            <i class="fas fa-fw fa-user"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="sidebar-menu" id="admin-menu" style="display: none;">
+                    <li>
+                        <a href="#admin-dashboard">
+                            <i class="fas fa-fw fa-tachometer-alt"></i>
+                            <span>Admin Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#users">
+                            <i class="fas fa-fw fa-users"></i>
+                            <span>Manage Users</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#deposits">
+                            <i class="fas fa-fw fa-money-bill-wave"></i>
+                            <span>Deposit Requests</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#withdrawals">
+                            <i class="fas fa-fw fa-wallet"></i>
+                            <span>Withdrawal Requests</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#investment-plans">
+                            <i class="fas fa-fw fa-chart-line"></i>
+                            <span>Investment Plans</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#settings">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content" id="main-content">
+                <!-- Navbar -->
+                <nav class="navbar">
+                    <div class="navbar-left">
+                        <button class="toggle-sidebar" id="toggle-sidebar">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <div class="page-title">
+                            <h1 id="page-title">Dashboard</h1>
+                        </div>
+                    </div>
+                    <div class="navbar-right">
+                        <div class="user-menu">
+                            <button class="user-btn" id="user-btn">
+                                <img src="https://ui-avatars.com/api/?name=User&background=4e73df&color=fff" alt="User" id="user-avatar">
+                                <span id="username-display">User</span>
+                                <i class="fas fa-caret-down ml-1"></i>
+                            </button>
+                            <div class="dropdown-menu" id="dropdown-menu">
+                                <a href="#profile" class="dropdown-item">
+                                    <i class="fas fa-fw fa-user mr-2"></i> Profile
+                                </a>
+                                <a href="#" class="dropdown-item" id="logout-btn">
+                                    <i class="fas fa-fw fa-sign-out-alt mr-2"></i> Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+
+                <!-- Content -->
+                <div class="content">
+                    <!-- Dashboard Page -->
+                    <div id="dashboard-page">
+                        <div class="page-header">
+                            <div class="page-title">
+                                <h1>Dashboard</h1>
+                            </div>
+                            <div class="breadcrumb">
+                                <li class="breadcrumb-item active">Dashboard</li>
+                            </div>
+                        </div>
+
+                        <!-- Stats Cards -->
+                        <div class="stats-cards">
+                            <div class="stats-card primary">
+                                <div class="title">Account Balance</div>
+                                <div class="value" id="balance-amount">0.00 ETB</div>
+                                <div class="icon">
+                                    <i class="fas fa-wallet"></i>
+                                </div>
+                            </div>
+                            <div class="stats-card success">
+                                <div class="title">Total Profit</div>
+                                <div class="value" id="total-profit">0.00 ETB</div>
+                                <div class="icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                            </div>
+                            <div class="stats-card info">
+                                <div class="title">Active Investments</div>
+                                <div class="value" id="active-investments">0</div>
+                                <div class="icon">
+                                    <i class="fas fa-chart-pie"></i>
+                                </div>
+                            </div>
+                            <div class="stats-card warning">
+                                <div class="title">Total Referrals</div>
+                                <div class="value" id="total-referrals">0</div>
+                                <div class="icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Transactions -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>Recent Transactions</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Type</th>
+                                                <th>Amount</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="recent-transactions">
+                                            <!-- Transactions will be added here dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Active Investments -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>Active Investments</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Plan</th>
+                                                <th>Amount</th>
+                                                <th>Profit</th>
+                                                <th>Start Date</th>
+                                                <th>End Date</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="active-investments-table">
+                                            <!-- Investments will be added here dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Deposit Page -->
+                    <div id="deposit-page" style="display: none;">
+                        <div class="page-header">
+                            <div class="page-title">
+                                <h1>Deposit Funds</h1>
+                            </div>
+                            <div class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#dashboard">Dashboard</a></li>
+                                <li class="breadcrumb-item active">Deposit</li>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>Make a Deposit</h6>
+                            </div>
+                            <div class="card-body">
+                                <form id="deposit-form">
+                                    <div class="form-group">
+                                        <label for="deposit-amount" class="form-label">Amount (ETB)</label>
+                                        <input type="number" id="deposit-amount" class="form-control" placeholder="Enter amount (minimum 300 ETB)" min="300" required>
+                                        <small class="text-muted">Minimum deposit: 300 ETB</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="deposit-method" class="form-label">Payment Method</label>
+                                        <select id="deposit-method" class="form-control" required>
+                                            <option value="">Select payment method</option>
+                                            <option value="telebirr">Telebirr</option>
+                                            <option value="cbe">CBE Birr</option>
+                                            <option value="awash">Awash Bank</option>
+                                            <option value="dashen">Dashen Bank</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="deposit-phone" class="form-label">Phone Number</label>
+                                        <input type="tel" id="deposit-phone" class="form-control" placeholder="Enter your phone number" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="deposit-transaction-id" class="form-label">Transaction ID (Optional)</label>
+                                        <input type="text" id="deposit-transaction-id" class="form-control" placeholder="Enter transaction ID if available">
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Submit Deposit Request</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>Deposit History</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Amount</th>
+                                                <th>Method</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="deposit-history">
+                                            <!-- Deposit history will be added here dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Withdraw Page -->
+                    <div id="withdraw-page" style="display: none;">
+                        <div class="page-header">
+                            <div class="page-title">
+                                <h1>Withdraw Funds</h1>
+                            </div>
+                            <div class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#dashboard">Dashboard</a></li>
+                                <li class="breadcrumb-item active">Withdraw</li>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>Request Withdrawal</h6>
+                            </div>
+                            <div class="card-body">
+                                <form id="withdraw-form">
+                                    <div class="form-group">
+                                        <label for="withdraw-amount" class="form-label">Amount (ETB)</label>
+                                        <input type="number" id="withdraw-amount" class="form-control" placeholder="Enter amount (minimum 100 ETB)" min="100" required>
+                                        <small class="text-muted">Minimum withdrawal: 100 ETB (6% fee applies)</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="withdraw-method" class="form-label">Payment Method</label>
+                                        <select id="withdraw-method" class="form-control" required>
+                                            <option value="">Select payment method</option>
+                                            <option value="telebirr">Telebirr</option>
+                                            <option value="cbe">CBE Birr</option>
+                                            <option value="awash">Awash Bank</option>
+                                            <option value="dashen">Dashen Bank</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="withdraw-phone" class="form-label">Phone Number</label>
+                                        <input type="tel" id="withdraw-phone" class="form-control" placeholder="Enter your phone number" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="withdraw-account-name" class="form-label">Account Name</label>
+                                        <input type="text" id="withdraw-account-name" class="form-control" placeholder="Enter account name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Submit Withdrawal Request</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>Withdrawal History</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Amount</th>
+                                                <th>Fee</th>
+                                                <th>Method</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="withdraw-history">
+                                            <!-- Withdrawal history will be added here dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Invest Page -->
+                    <div id="invest-page" style="display: none;">
+                        <div class="page-header">
+                            <div class="page-title">
+                                <h1>Investment Plans</h1>
+                            </div>
+                            <div class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#dashboard">Dashboard</a></li>
+                                <li class="breadcrumb-item active">Invest</li>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>Available Investment Plans</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row" id="investment-plans">
+                                    <!-- Investment plans will be added here dynamically -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>Active Investments</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Plan</th>
+                                                <th>Amount</th>
+                                                <th>Daily Profit</th>
+                                                <th>Total Profit</th>
+                                                <th>Start Date</th>
+                                                <th>End Date</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="user-investments">
+                                            <!-- User investments will be added here dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Transactions Page -->
+                    <div id="transactions-page" style="display: none;">
+                        <div class="page-header">
+                            <div class="page-title">
+                                <h1>Transaction History</h1>
+                            </div>
+                            <div class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#dashboard">Dashboard</a></li>
+                                <li class="breadcrumb-item active">Transactions</li>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>All Transactions</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Type</th>
+                                                <th>Amount</th>
+                                                <th>Description</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="all-transactions">
+                                            <!-- All transactions will be added here dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Referrals Page -->
+                    <div id="referrals-page" style="display: none;">
+                        <div class="page-header">
+                            <div class="page-title">
+                                <h1>Referral Program</h1>
+                            </div>
+                            <div class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#dashboard">Dashboard</a></li>
+                                <li class="breadcrumb-item active">Referrals</li>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>Your Referral Link</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label class="form-label">Share this link and earn 5 ETB for each successful registration</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="referral-link" readonly>
+                                        <button class="btn btn-primary" id="copy-referral-link">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>Referral Statistics</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="stats-cards">
+                                    <div class="stats-card primary">
+                                        <div class="title">Total Referrals</div>
+                                        <div class="value" id="referral-total">0</div>
+                                        <div class="icon">
+                                            <i class="fas fa-users"></i>
+                                        </div>
+                                    </div>
+                                    <div class="stats-card success">
+                                        <div class="title">Active Referrals</div>
+                                        <div class="value" id="referral-active">0</div>
+                                        <div class="icon">
+                                            <i class="fas fa-user-check"></i>
+                                        </div>
+                                    </div>
+                                    <div class="stats-card info">
+                                        <div class="title">Total Earnings</div>
+                                        <div class="value" id="referral-earnings">0.00 ETB</div>
+                                        <div class="icon">
+                                            <i class="fas fa-coins"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>Your Referrals</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Username</th>
+                                                <th>Join Date</th>
+                                                <th>Status</th>
+                                                <th>Earned</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="referral-list">
+                                            <!-- Referrals will be added here dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Profile Page -->
+                    <div id="profile-page" style="display: none;">
+                        <div class="page-header">
+                            <div class="page-title">
+                                <h1>Profile Settings</h1>
+                            </div>
+                            <div class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#dashboard">Dashboard</a></li>
+                                <li class="breadcrumb-item active">Profile</li>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>Personal Information</h6>
+                            </div>
+                            <div class="card-body">
+                                <form id="profile-form">
+                                    <div class="form-group">
+                                        <label for="profile-fullname" class="form-label">Full Name</label>
+                                        <input type="text" id="profile-fullname" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="profile-email" class="form-label">Email</label>
+                                        <input type="email" id="profile-email" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="profile-phone" class="form-label">Phone Number</label>
+                                        <input type="tel" id="profile-phone" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="profile-address" class="form-label">Address</label>
+                                        <textarea id="profile-address" class="form-control" rows="3"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>Change Password</h6>
+                            </div>
+                            <div class="card-body">
+                                <form id="password-form">
+                                    <div class="form-group">
+                                        <label for="current-password" class="form-label">Current Password</label>
+                                        <input type="password" id="current-password" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="new-password" class="form-label">New Password</label>
+                                        <input type="password" id="new-password" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="confirm-password" class="form-label">Confirm New Password</label>
+                                        <input type="password" id="confirm-password" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Change Password</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Admin Dashboard -->
+                    <div id="admin-dashboard-page" style="display: none;">
+                        <div class="page-header">
+                            <div class="page-title">
+                                <h1>Admin Dashboard</h1>
+                            </div>
+                            <div class="breadcrumb">
+                                <li class="breadcrumb-item active">Admin Dashboard</li>
+                            </div>
+                        </div>
+
+                        <div class="stats-cards">
+                            <div class="stats-card primary">
+                                <div class="title">Total Users</div>
+                                <div class="value" id="admin-total-users">0</div>
+                                <div class="icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                            </div>
+                            <div class="stats-card success">
+                                <div class="title">Active Users</div>
+                                <div class="value" id="admin-active-users">0</div>
+                                <div class="icon">
+                                    <i class="fas fa-user-check"></i>
+                                </div>
+                            </div>
+                            <div class="stats-card info">
+                                <div class="title">Total Deposits</div>
+                                <div class="value" id="admin-total-deposits">0.00 ETB</div>
+                                <div class="icon">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                </div>
+                            </div>
+                            <div class="stats-card warning">
+                                <div class="title">Total Withdrawals</div>
+                                <div class="value" id="admin-total-withdrawals">0.00 ETB</div>
+                                <div class="icon">
+                                    <i class="fas fa-wallet"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>Recent Activities</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>User</th>
+                                                <th>Activity</th>
+                                                <th>Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="admin-recent-activities">
+                                            <!-- Activities will be added here dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Manage Users -->
+                    <div id="users-page" style="display: none;">
+                        <div class="page-header">
+                            <div class="page-title">
+                                <h1>Manage Users</h1>
+                            </div>
+                            <div class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#admin-dashboard">Admin Dashboard</a></li>
+                                <li class="breadcrumb-item active">Users</li>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>All Users</h6>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <input type="text" id="user-search" class="form-control" placeholder="Search users...">
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Username</th>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Balance</th>
+                                                <th>Status</th>
+                                                <th>Joined</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="users-list">
+                                            <!-- Users will be added here dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Deposit Requests -->
+                    <div id="deposits-page" style="display: none;">
+                        <div class="page-header">
+                            <div class="page-title">
+                                <h1>Deposit Requests</h1>
+                            </div>
+                            <div class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#admin-dashboard">Admin Dashboard</a></li>
+                                <li class="breadcrumb-item active">Deposits</li>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>Pending Deposits</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>User</th>
+                                                <th>Amount</th>
+                                                <th>Method</th>
+                                                <th>Transaction ID</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="pending-deposits">
+                                            <!-- Pending deposits will be added here dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>Completed Deposits</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>User</th>
+                                                <th>Amount</th>
+                                                <th>Method</th>
+                                                <th>Confirmed By</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="completed-deposits">
+                                            <!-- Completed deposits will be added here dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Withdrawal Requests -->
+                    <div id="withdrawals-page" style="display: none;">
+                        <div class="page-header">
+                            <div class="page-title">
+                                <h1>Withdrawal Requests</h1>
+                            </div>
+                            <div class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#admin-dashboard">Admin Dashboard</a></li>
+                                <li class="breadcrumb-item active">Withdrawals</li>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>Pending Withdrawals</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>User</th>
+                                                <th>Amount</th>
+                                                <th>Fee</th>
+                                                <th>Method</th>
+                                                <th>Account</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="pending-withdrawals">
+                                            <!-- Pending withdrawals will be added here dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>Completed Withdrawals</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>User</th>
+                                                <th>Amount</th>
+                                                <th>Fee</th>
+                                                <th>Method</th>
+                                                <th>Processed By</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="completed-withdrawals">
+                                            <!-- Completed withdrawals will be added here dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Investment Plans -->
+                    <div id="investment-plans-page" style="display: none;">
+                        <div class="page-header">
+                            <div class="page-title">
+                                <h1>Investment Plans</h1>
+                            </div>
+                            <div class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#admin-dashboard">Admin Dashboard</a></li>
+                                <li class="breadcrumb-item active">Plans</li>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>Add New Plan</h6>
+                            </div>
+                            <div class="card-body">
+                                <form id="add-plan-form">
+                                    <div class="form-group">
+                                        <label for="plan-name" class="form-label">Plan Name</label>
+                                        <input type="text" id="plan-name" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="plan-min" class="form-label">Minimum Amount (ETB)</label>
+                                        <input type="number" id="plan-min" class="form-control" min="0" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="plan-max" class="form-label">Maximum Amount (ETB)</label>
+                                        <input type="number" id="plan-max" class="form-control" min="0">
+                                        <small class="text-muted">Leave empty for no maximum</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="plan-duration" class="form-label">Duration (Days)</label>
+                                        <input type="number" id="plan-duration" class="form-control" min="1" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="plan-profit" class="form-label">Daily Profit (%)</label>
+                                        <input type="number" id="plan-profit" class="form-control" min="0" step="0.01" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="plan-description" class="form-label">Description</label>
+                                        <textarea id="plan-description" class="form-control" rows="3"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Add Plan</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>Current Plans</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Min Amount</th>
+                                                <th>Max Amount</th>
+                                                <th>Duration</th>
+                                                <th>Daily Profit</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="plans-list">
+                                            <!-- Plans will be added here dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Settings -->
+                    <div id="settings-page" style="display: none;">
+                        <div class="page-header">
+                            <div class="page-title">
+                                <h1>System Settings</h1>
+                            </div>
+                            <div class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#admin-dashboard">Admin Dashboard</a></li>
+                                <li class="breadcrumb-item active">Settings</li>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>General Settings</h6>
+                            </div>
+                            <div class="card-body">
+                                <form id="general-settings-form">
+                                    <div class="form-group">
+                                        <label for="site-name" class="form-label">Site Name</label>
+                                        <input type="text" id="site-name" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="site-currency" class="form-label">Currency</label>
+                                        <input type="text" id="site-currency" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="min-deposit" class="form-label">Minimum Deposit (ETB)</label>
+                                        <input type="number" id="min-deposit" class="form-control" min="0" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="min-withdraw" class="form-label">Minimum Withdrawal (ETB)</label>
+                                        <input type="number" id="min-withdraw" class="form-control" min="0" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="withdraw-fee" class="form-label">Withdrawal Fee (%)</label>
+                                        <input type="number" id="withdraw-fee" class="form-control" min="0" max="100" step="0.01" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="referral-bonus" class="form-label">Referral Bonus (ETB)</label>
+                                        <input type="number" id="referral-bonus" class="form-control" min="0" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Save Settings</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>System Information</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <tbody>
+                                            <tr>
+                                                <th>Platform Version</th>
+                                                <td>v2.5.0</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Last Backup</th>
+                                                <td id="last-backup">Never</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Total Users</th>
+                                                <td id="system-total-users">0</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Total Transactions</th>
+                                                <td id="system-total-transactions">0</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Server Time</th>
+                                                <td id="server-time"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="mt-3">
+                                    <button class="btn btn-primary" id="backup-btn">
+                                        <i class="fas fa-database"></i> Create Backup
+                                    </button>
+                                    <button class="btn btn-danger ml-2" id="reset-btn">
+                                        <i class="fas fa-trash"></i> Reset System
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Investment Modal -->
+    <div class="modal" id="investment-modal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h5 id="investment-modal-title">Invest in Plan</h5>
+                <button class="close" id="close-investment-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="investment-form">
+                    <div class="form-group">
+                        <label for="investment-amount" class="form-label">Amount to Invest (ETB)</label>
+                        <input type="number" id="investment-amount" class="form-control" required>
+                        <small id="investment-range" class="text-muted"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="investment-wallet" class="form-label">Select Wallet</label>
+                        <select id="investment-wallet" class="form-control" required>
+                            <option value="balance">Account Balance</option>
+                            <option value="profit">Profit Balance</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary w-100">Confirm Investment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Details Modal -->
+    <div class="modal" id="user-modal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h5 id="user-modal-title">User Details</h5>
+                <button class="close" id="close-user-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <p id="modal-username" class="form-control-static"></p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <p id="modal-fullname" class="form-control-static"></p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <p id="modal-email" class="form-control-static"></p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone</label>
+                    <p id="modal-phone" class="form-control-static"></p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Balance</label>
+                    <p id="modal-balance" class="form-control-static"></p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <p id="modal-status" class="form-control-static"></p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Joined Date</label>
+                    <p id="modal-joined" class="form-control-static"></p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Last Login</label>
+                    <p id="modal-last-login" class="form-control-static"></p>
+                </div>
+                <div class="form-group" id="user-actions">
+                    <!-- Actions will be added here dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Plan Details Modal -->
+    <div class="modal" id="plan-modal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h5 id="plan-modal-title">Plan Details</h5>
+                <button class="close" id="close-plan-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Plan Name</label>
+                    <p id="modal-plan-name" class="form-control-static"></p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Minimum Amount</label>
+                    <p id="modal-plan-min" class="form-control-static"></p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Maximum Amount</label>
+                    <p id="modal-plan-max" class="form-control-static"></p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Duration</label>
+                    <p id="modal-plan-duration" class="form-control-static"></p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Daily Profit</label>
+                    <p id="modal-plan-profit" class="form-control-static"></p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <p id="modal-plan-description" class="form-control-static"></p>
+                </div>
+                <div class="form-group" id="plan-actions">
+                    <!-- Actions will be added here dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirm-modal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h5 id="confirm-modal-title">Confirmation</h5>
+                <button class="close" id="close-confirm-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="confirm-message">Are you sure you want to perform this action?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancel-confirm">Cancel</button>
+                <button class="btn btn-danger" id="confirm-action">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Database simulation with localStorage persistence
+        const DB = {
+            getUsers: () => {
+                const users = localStorage.getItem('wealthgrow_users');
+                return users ? JSON.parse(users) : [
+                    {
+                        id: 1,
+                        username: "admin",
+                        password: "admin123",
+                        fullname: "Admin User",
+                        email: "admin@wealthgrow.com",
+                        phone: "0912345678",
+                        address: "Addis Ababa, Ethiopia",
+                        balance: 100000,
+                        profit: 50000,
+                        referral_balance: 1000,
+                        status: "active",
+                        is_admin: true,
+                        referral_code: "ADMIN123",
+                        referred_by: null,
+                        join_date: "2023-01-01",
+                        last_login: new Date().toISOString()
+                    }
+                ];
+            },
+            setUsers: (users) => {
+                localStorage.setItem('wealthgrow_users', JSON.stringify(users));
+            },
+            getInvestmentPlans: () => {
+                const plans = localStorage.getItem('wealthgrow_investment_plans');
+                return plans ? JSON.parse(plans) : [
+                    {
+                        id: 1,
+                        name: "Starter Plan",
+                        min_amount: 300,
+                        max_amount: 5000,
+                        duration: 7,
+                        daily_profit: 1.5,
+                        description: "Perfect for beginners with low risk"
+                    },
+                    {
+                        id: 2,
+                        name: "Premium Plan",
+                        min_amount: 5000,
+                        max_amount: 20000,
+                        duration: 14,
+                        daily_profit: 2.5,
+                        description: "For experienced investors with medium risk"
+                    },
+                    {
+                        id: 3,
+                        name: "VIP Plan",
+                        min_amount: 20000,
+                        max_amount: null,
+                        duration: 30,
+                        daily_profit: 4.0,
+                        description: "High returns for VIP investors"
+                    }
+                ];
+            },
+            setInvestmentPlans: (plans) => {
+                localStorage.setItem('wealthgrow_investment_plans', JSON.stringify(plans));
+            },
+            getInvestments: () => {
+                const investments = localStorage.getItem('wealthgrow_investments');
+                return investments ? JSON.parse(investments) : [];
+            },
+            setInvestments: (investments) => {
+                localStorage.setItem('wealthgrow_investments', JSON.stringify(investments));
+            },
+            getTransactions: () => {
+                const transactions = localStorage.getItem('wealthgrow_transactions');
+                return transactions ? JSON.parse(transactions) : [];
+            },
+            setTransactions: (transactions) => {
+                localStorage.setItem('wealthgrow_transactions', JSON.stringify(transactions));
+            },
+            getDeposits: () => {
+                const deposits = localStorage.getItem('wealthgrow_deposits');
+                return deposits ? JSON.parse(deposits) : [];
+            },
+            setDeposits: (deposits) => {
+                localStorage.setItem('wealthgrow_deposits', JSON.stringify(deposits));
+            },
+            getWithdrawals: () => {
+                const withdrawals = localStorage.getItem('wealthgrow_withdrawals');
+                return withdrawals ? JSON.parse(withdrawals) : [];
+            },
+            setWithdrawals: (withdrawals) => {
+                localStorage.setItem('wealthgrow_withdrawals', JSON.stringify(withdrawals));
+            },
+            getSettings: () => {
+                const settings = localStorage.getItem('wealthgrow_settings');
+                return settings ? JSON.parse(settings) : {
+                    site_name: "WealthGrow Investment",
+                    currency: "ETB",
+                    min_deposit: 300,
+                    min_withdraw: 100,
+                    withdraw_fee: 6,
+                    referral_bonus: 5,
+                    last_backup: null
+                };
+            },
+            setSettings: (settings) => {
+                localStorage.setItem('wealthgrow_settings', JSON.stringify(settings));
+            },
+            backup: () => {
+                const backup = {
+                    users: DB.getUsers(),
+                    plans: DB.getInvestmentPlans(),
+                    investments: DB.getInvestments(),
+                    transactions: DB.getTransactions(),
+                    deposits: DB.getDeposits(),
+                    withdrawals: DB.getWithdrawals(),
+                    settings: DB.getSettings(),
+                    timestamp: new Date().toISOString()
+                };
+                
+                localStorage.setItem('wealthgrow_backup', JSON.stringify(backup));
+                
+                // Update last backup time
+                const settings = DB.getSettings();
+                settings.last_backup = new Date().toISOString();
+                DB.setSettings(settings);
+                
+                return backup;
+            },
+            restore: (backup) => {
+                if (backup.users) DB.setUsers(backup.users);
+                if (backup.plans) DB.setInvestmentPlans(backup.plans);
+                if (backup.investments) DB.setInvestments(backup.investments);
+                if (backup.transactions) DB.setTransactions(backup.transactions);
+                if (backup.deposits) DB.setDeposits(backup.deposits);
+                if (backup.withdrawals) DB.setWithdrawals(backup.withdrawals);
+                if (backup.settings) DB.setSettings(backup.settings);
+            },
+            reset: () => {
+                localStorage.removeItem('wealthgrow_users');
+                localStorage.removeItem('wealthgrow_investment_plans');
+                localStorage.removeItem('wealthgrow_investments');
+                localStorage.removeItem('wealthgrow_transactions');
+                localStorage.removeItem('wealthgrow_deposits');
+                localStorage.removeItem('wealthgrow_withdrawals');
+                localStorage.removeItem('wealthgrow_settings');
+                
+                // Reinitialize with default data
+                DB.getUsers();
+                DB.getInvestmentPlans();
+                DB.getSettings();
+            }
+        };
+
+        // Current user
+        let currentUser = null;
+        let confirmCallback = null;
+
+        // DOM Elements
+        const loginPage = document.getElementById('login-page');
+        const registerPage = document.getElementById('register-page');
+        const app = document.getElementById('app');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const showRegister = document.getElementById('show-register');
+        const showLogin = document.getElementById('show-login');
+        const forgotPassword = document.getElementById('forgot-password');
+        const showLoginFromForgot = document.getElementById('show-login-from-forgot');
+        const logoutBtn = document.getElementById('logout-btn');
+        const toggleSidebar = document.getElementById('toggle-sidebar');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const userMenu = document.getElementById('user-menu');
+        const adminMenu = document.getElementById('admin-menu');
+        const userBtn = document.getElementById('user-btn');
+        const dropdownMenu = document.getElementById('dropdown-menu');
+        const usernameDisplay = document.getElementById('username-display');
+        const userAvatar = document.getElementById('user-avatar');
+        const pageTitle = document.getElementById('page-title');
+
+        // Modals
+        const forgotPasswordModal = document.getElementById('forgot-password-modal');
+        const closeForgotPasswordModal = document.getElementById('close-forgot-password-modal');
+        const forgotPasswordForm = document.getElementById('forgot-password-form');
+
+        const confirmModal = document.getElementById('confirm-modal');
+        const closeConfirmModal = document.getElementById('close-confirm-modal');
+        const cancelConfirm = document.getElementById('cancel-confirm');
+        const confirmAction = document.getElementById('confirm-action');
+        const confirmMessage = document.getElementById('confirm-message');
+        const confirmModalTitle = document.getElementById('confirm-modal-title');
+
+        // Pages
+        const pages = {
+            dashboard: document.getElementById('dashboard-page'),
+            deposit: document.getElementById('deposit-page'),
+            withdraw: document.getElementById('withdraw-page'),
+            invest: document.getElementById('invest-page'),
+            transactions: document.getElementById('transactions-page'),
+            referrals: document.getElementById('referrals-page'),
+            profile: document.getElementById('profile-page'),
+            adminDashboard: document.getElementById('admin-dashboard-page'),
+            users: document.getElementById('users-page'),
+            deposits: document.getElementById('deposits-page'),
+            withdrawals: document.getElementById('withdrawals-page'),
+            investmentPlans: document.getElementById('investment-plans-page'),
+            settings: document.getElementById('settings-page')
+        };
+
+        // Forms
+        const depositForm = document.getElementById('deposit-form');
+        const withdrawForm = document.getElementById('withdraw-form');
+        const profileForm = document.getElementById('profile-form');
+        const passwordForm = document.getElementById('password-form');
+        const addPlanForm = document.getElementById('add-plan-form');
+        const generalSettingsForm = document.getElementById('general-settings-form');
+
+        // Investment modal
+        const investmentModal = document.getElementById('investment-modal');
+        const closeInvestmentModal = document.getElementById('close-investment-modal');
+        const investmentForm = document.getElementById('investment-form');
+        const investmentAmount = document.getElementById('investment-amount');
+        const investmentRange = document.getElementById('investment-range');
+        const investmentWallet = document.getElementById('investment-wallet');
+        const investmentModalTitle = document.getElementById('investment-modal-title');
+
+        // User modal
+        const userModal = document.getElementById('user-modal');
+        const closeUserModal = document.getElementById('close-user-modal');
+        const userModalTitle = document.getElementById('user-modal-title');
+
+        // Plan modal
+        const planModal = document.getElementById('plan-modal');
+        const closePlanModal = document.getElementById('close-plan-modal');
+        const planModalTitle = document.getElementById('plan-modal-title');
+
+        // System buttons
+        const backupBtn = document.getElementById('backup-btn');
+        const resetBtn = document.getElementById('reset-btn');
+
+        // Event Listeners
+        showRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginPage.style.display = 'none';
+            registerPage.style.display = 'flex';
+        });
+
+        showLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            registerPage.style.display = 'none';
+            loginPage.style.display = 'flex';
+        });
+
+        forgotPassword.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginPage.style.display = 'none';
+            forgotPasswordModal.classList.add('show');
+        });
+
+        showLoginFromForgot.addEventListener('click', (e) => {
+            e.preventDefault();
+            forgotPasswordModal.classList.remove('show');
+            loginPage.style.display = 'flex';
+        });
+
+        closeForgotPasswordModal.addEventListener('click', () => {
+            forgotPasswordModal.classList.remove('show');
+        });
+
+        forgotPasswordForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('forgot-email').value;
+            
+            // In a real app, you would send a reset link to the email
+            alert(`Password reset link has been sent to ${email}`);
+            forgotPasswordModal.classList.remove('show');
+            forgotPasswordForm.reset();
+        });
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            
+            const users = DB.getUsers();
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                if (user.status === 'blocked') {
+                    alert('Your account has been blocked. Please contact support.');
+                    return;
+                }
+                
+                currentUser = user;
+                user.last_login = new Date().toISOString();
+                
+                // Update user in database
+                const updatedUsers = users.map(u => u.id === user.id ? user : u);
+                DB.setUsers(updatedUsers);
+                
+                loginPage.style.display = 'none';
+                app.style.display = 'block';
+                
+                // Update UI
+                usernameDisplay.textContent = user.username;
+                userAvatar.src = `https://ui-avatars.com/api/?name=${user.username}&background=4e73df&color=fff`;
+                
+                // Show admin menu if admin
+                if (user.is_admin) {
+                    adminMenu.style.display = 'block';
+                    showPage('admin-dashboard');
+                } else {
+                    adminMenu.style.display = 'none';
+                    showPage('dashboard');
+                }
+                
+                // Update dashboard
+                updateDashboard();
+            } else {
+                alert('Invalid username or password');
+            }
+        });
+
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const fullname = document.getElementById('register-fullname').value;
+            const username = document.getElementById('register-username').value;
+            const email = document.getElementById('register-email').value;
+            const phone = document.getElementById('register-phone').value;
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm-password').value;
+            const referralCode = document.getElementById('register-referral').value;
+            const agreeTerms = document.getElementById('register-terms').checked;
+            
+            // Validate
+            if (!agreeTerms) {
+                alert('You must agree to the terms and conditions');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+            
+            const users = DB.getUsers();
+            
+            if (users.some(u => u.username === username)) {
+                alert('Username already taken');
+                return;
+            }
+            
+            if (users.some(u => u.email === email)) {
+                alert('Email already registered');
+                return;
+            }
+            
+            // Find referrer
+            let referred_by = null;
+            if (referralCode) {
+                const referrer = users.find(u => u.referral_code === referralCode);
+                if (referrer) {
+                    referred_by = referrer.id;
+                } else {
+                    alert('Invalid referral code');
+                    return;
+                }
+            }
+            
+            // Create user
+            const newUser = {
+                id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
+                username,
+                password,
+                fullname,
+                email,
+                phone,
+                address: '',
+                balance: 0,
+                profit: 0,
+                referral_balance: 0,
+                status: 'active',
+                is_admin: false,
+                referral_code: username.toUpperCase() + Math.floor(1000 + Math.random() * 9000),
+                referred_by,
+                join_date: new Date().toISOString(),
+                last_login: new Date().toISOString()
+            };
+            
+            const updatedUsers = [...users, newUser];
+            DB.setUsers(updatedUsers);
+            
+            // Add referral bonus if applicable
+            if (referred_by) {
+                const referrer = updatedUsers.find(u => u.id === referred_by);
+                referrer.referral_balance += DB.getSettings().referral_bonus;
+                
+                // Add transaction for referrer
+                const transactions = DB.getTransactions();
+                const newTransaction = {
+                    id: transactions.length > 0 ? Math.max(...transactions.map(t => t.id)) + 1 : 1,
+                    user_id: referrer.id,
+                    type: 'referral',
+                    amount: DB.getSettings().referral_bonus,
+                    description: `Referral bonus for ${username}`,
+                    status: 'completed',
+                    date: new Date().toISOString()
+                };
+                
+                DB.setTransactions([...transactions, newTransaction]);
+                DB.setUsers(updatedUsers);
+            }
+            
+            alert('Registration successful! Please login.');
+            registerPage.style.display = 'none';
+            loginPage.style.display = 'flex';
+            registerForm.reset();
+        });
+
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            currentUser = null;
+            app.style.display = 'none';
+            loginPage.style.display = 'flex';
+            loginForm.reset();
+        });
+
+        toggleSidebar.addEventListener('click', () => {
+            sidebar.classList.toggle('hidden');
+            mainContent.classList.toggle('expanded');
+        });
+
+        userBtn.addEventListener('click', () => {
+            dropdownMenu.classList.toggle('show');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!userBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                dropdownMenu.classList.remove('show');
+            }
+        });
+
+        // Navigation
+        document.querySelectorAll('.sidebar-menu a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const href = link.getAttribute('href').substring(1);
+                showPage(href);
+                
+                // Update active menu item
+                document.querySelectorAll('.sidebar-menu li').forEach(item => {
+                    item.classList.remove('active');
+                });
+                link.parentElement.classList.add('active');
+                
+                // Close dropdown if open
+                dropdownMenu.classList.remove('show');
+            });
+        });
+
+        // Confirmation modal
+        closeConfirmModal.addEventListener('click', () => {
+            confirmModal.classList.remove('show');
+        });
+
+        cancelConfirm.addEventListener('click', () => {
+            confirmModal.classList.remove('show');
+        });
+
+        confirmAction.addEventListener('click', () => {
+            if (confirmCallback) {
+                confirmCallback();
+            }
+            confirmModal.classList.remove('show');
+        });
+
+        function showConfirmation(title, message, callback) {
+            confirmModalTitle.textContent = title;
+            confirmMessage.textContent = message;
+            confirmCallback = callback;
+            confirmModal.classList.add('show');
+        }
+
+        // Backup and reset
+        backupBtn.addEventListener('click', () => {
+            DB.backup();
+            alert('System backup created successfully');
+            updateSettingsPage();
+        });
+
+        resetBtn.addEventListener('click', () => {
+            showConfirmation(
+                'Reset System',
+                'Are you sure you want to reset the system? This will delete all data and cannot be undone!',
+                () => {
+                    DB.reset();
+                    alert('System has been reset to default settings');
+                    updateSettingsPage();
+                }
+            );
+        });
+
+        // Show page function
+        function showPage(page) {
+            // Hide all pages
+            Object.values(pages).forEach(p => {
+                if (p) p.style.display = 'none';
+            });
+            
+            // Show requested page
+            let pageElement;
+            switch (page) {
+                case 'dashboard':
+                    pageElement = pages.dashboard;
+                    pageTitle.textContent = 'Dashboard';
+                    updateDashboard();
+                    break;
+                case 'deposit':
+                    pageElement = pages.deposit;
+                    pageTitle.textContent = 'Deposit Funds';
+                    updateDepositPage();
+                    break;
+                case 'withdraw':
+                    pageElement = pages.withdraw;
+                    pageTitle.textContent = 'Withdraw Funds';
+                    updateWithdrawPage();
+                    break;
+                case 'invest':
+                    pageElement = pages.invest;
+                    pageTitle.textContent = 'Investment Plans';
+                    updateInvestPage();
+                    break;
+                case 'transactions':
+                    pageElement = pages.transactions;
+                    pageTitle.textContent = 'Transaction History';
+                    updateTransactionsPage();
+                    break;
+                case 'referrals':
+                    pageElement = pages.referrals;
+                    pageTitle.textContent = 'Referral Program';
+                    updateReferralsPage();
+                    break;
+                case 'profile':
+                    pageElement = pages.profile;
+                    pageTitle.textContent = 'Profile Settings';
+                    updateProfilePage();
+                    break;
+                case 'admin-dashboard':
+                    pageElement = pages.adminDashboard;
+                    pageTitle.textContent = 'Admin Dashboard';
+                    updateAdminDashboard();
+                    break;
+                case 'users':
+                    pageElement = pages.users;
+                    pageTitle.textContent = 'Manage Users';
+                    updateUsersPage();
+                    break;
+                case 'deposits':
+                    pageElement = pages.deposits;
+                    pageTitle.textContent = 'Deposit Requests';
+                    updateDepositsPage();
+                    break;
+                case 'withdrawals':
+                    pageElement = pages.withdrawals;
+                    pageTitle.textContent = 'Withdrawal Requests';
+                    updateWithdrawalsPage();
+                    break;
+                case 'investment-plans':
+                    pageElement = pages.investmentPlans;
+                    pageTitle.textContent = 'Investment Plans';
+                    updateInvestmentPlansPage();
+                    break;
+                case 'settings':
+                    pageElement = pages.settings;
+                    pageTitle.textContent = 'System Settings';
+                    updateSettingsPage();
+                    break;
+                default:
+                    pageElement = currentUser?.is_admin ? pages.adminDashboard : pages.dashboard;
+                    pageTitle.textContent = currentUser?.is_admin ? 'Admin Dashboard' : 'Dashboard';
+                    if (currentUser?.is_admin) {
+                        updateAdminDashboard();
+                    } else {
+                        updateDashboard();
+                    }
+            }
+            
+            if (pageElement) {
+                pageElement.style.display = 'block';
+            }
+        }
+
+        // Deposit form
+        depositForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const amount = parseFloat(document.getElementById('deposit-amount').value);
+            const method = document.getElementById('deposit-method').value;
+            const phone = document.getElementById('deposit-phone').value;
+            const transaction_id = document.getElementById('deposit-transaction-id').value;
+            const settings = DB.getSettings();
+            
+            if (amount < settings.min_deposit) {
+                alert(`Minimum deposit amount is ${settings.min_deposit} ${settings.currency}`);
+                return;
+            }
+            
+            // Create deposit request
+            const deposits = DB.getDeposits();
+            const newDeposit = {
+                id: deposits.length > 0 ? Math.max(...deposits.map(d => d.id)) + 1 : 1,
+                user_id: currentUser.id,
+                amount,
+                method,
+                phone,
+                transaction_id,
+                status: 'pending',
+                date: new Date().toISOString()
+            };
+            
+            DB.setDeposits([...deposits, newDeposit]);
+            
+            // Add transaction
+            const transactions = DB.getTransactions();
+            const newTransaction = {
+                id: transactions.length > 0 ? Math.max(...transactions.map(t => t.id)) + 1 : 1,
+                user_id: currentUser.id,
+                type: 'deposit',
+                amount,
+                description: `Deposit via ${method}`,
+                status: 'pending',
+                date: new Date().toISOString()
+            };
+            
+            DB.setTransactions([...transactions, newTransaction]);
+            
+            alert('Deposit request submitted successfully. Please wait for admin confirmation.');
+            depositForm.reset();
+            updateDepositPage();
+        });
+
+        // Withdraw form
+        withdrawForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const amount = parseFloat(document.getElementById('withdraw-amount').value);
+            const method = document.getElementById('withdraw-method').value;
+            const phone = document.getElementById('withdraw-phone').value;
+            const account_name = document.getElementById('withdraw-account-name').value;
+            const settings = DB.getSettings();
+            
+            if (amount < settings.min_withdraw) {
+                alert(`Minimum withdrawal amount is ${settings.min_withdraw} ${settings.currency}`);
+                return;
+            }
+            
+            const fee = amount * (settings.withdraw_fee / 100);
+            const total = amount + fee;
+            
+            if (currentUser.balance < total) {
+                alert('Insufficient balance for withdrawal');
+                return;
+            }
+            
+            // Create withdrawal request
+            const withdrawals = DB.getWithdrawals();
+            const newWithdrawal = {
+                id: withdrawals.length > 0 ? Math.max(...withdrawals.map(w => w.id)) + 1 : 1,
+                user_id: currentUser.id,
+                amount,
+                fee,
+                method,
+                phone,
+                account_name,
+                status: 'pending',
+                date: new Date().toISOString()
+            };
+            
+            DB.setWithdrawals([...withdrawals, newWithdrawal]);
+            
+            // Deduct from balance (will be reversed if rejected)
+            const users = DB.getUsers();
+            const updatedUsers = users.map(u => {
+                if (u.id === currentUser.id) {
+                    return { ...u, balance: u.balance - total };
+                }
+                return u;
+            });
+            DB.setUsers(updatedUsers);
+            currentUser = updatedUsers.find(u => u.id === currentUser.id);
+            
+            // Add transaction
+            const transactions = DB.getTransactions();
+            const newTransaction = {
+                id: transactions.length > 0 ? Math.max(...transactions.map(t => t.id)) + 1 : 1,
+                user_id: currentUser.id,
+                type: 'withdrawal',
+                amount: -amount,
+                description: `Withdrawal request via ${method}`,
+                status: 'pending',
+                date: new Date().toISOString()
+            };
+            
+            DB.setTransactions([...transactions, newTransaction]);
+            
+            alert('Withdrawal request submitted successfully. Please wait for admin processing.');
+            withdrawForm.reset();
+            updateWithdrawPage();
+            updateDashboard();
+        });
+
+        // Profile form
+        profileForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const fullname = document.getElementById('profile-fullname').value;
+            const email = document.getElementById('profile-email').value;
+            const phone = document.getElementById('profile-phone').value;
+            const address = document.getElementById('profile-address').value;
+            
+            const users = DB.getUsers();
+            
+            // Check if email is already taken by another user
+            if (users.some(u => u.email === email && u.id !== currentUser.id)) {
+                alert('Email already registered by another user');
+                return;
+            }
+            
+            const updatedUsers = users.map(u => {
+                if (u.id === currentUser.id) {
+                    return {
+                        ...u,
+                        fullname,
+                        email,
+                        phone,
+                        address
+                    };
+                }
+                return u;
+            });
+            
+            DB.setUsers(updatedUsers);
+            currentUser = updatedUsers.find(u => u.id === currentUser.id);
+            
+            alert('Profile updated successfully');
+            updateProfilePage();
+        });
+
+        // Password form
+        passwordForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const currentPassword = document.getElementById('current-password').value;
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            
+            if (currentPassword !== currentUser.password) {
+                alert('Current password is incorrect');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                alert('New passwords do not match');
+                return;
+            }
+            
+            const users = DB.getUsers();
+            const updatedUsers = users.map(u => {
+                if (u.id === currentUser.id) {
+                    return { ...u, password: newPassword };
+                }
+                return u;
+            });
+            
+            DB.setUsers(updatedUsers);
+            currentUser = updatedUsers.find(u => u.id === currentUser.id);
+            
+            alert('Password changed successfully');
+            passwordForm.reset();
+        });
+
+        // Investment modal
+        closeInvestmentModal.addEventListener('click', () => {
+            investmentModal.classList.remove('show');
+        });
+
+        // User modal
+        closeUserModal.addEventListener('click', () => {
+            userModal.classList.remove('show');
+        });
+
+        // Plan modal
+        closePlanModal.addEventListener('click', () => {
+            planModal.classList.remove('show');
+        });
+
+        // Add plan form
+        addPlanForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('plan-name').value;
+            const min_amount = parseFloat(document.getElementById('plan-min').value);
+            const max_amount = document.getElementById('plan-max').value ? parseFloat(document.getElementById('plan-max').value) : null;
+            const duration = parseInt(document.getElementById('plan-duration').value);
+            const daily_profit = parseFloat(document.getElementById('plan-profit').value);
+            const description = document.getElementById('plan-description').value;
+            
+            const plans = DB.getInvestmentPlans();
+            const newPlan = {
+                id: plans.length > 0 ? Math.max(...plans.map(p => p.id)) + 1 : 1,
+                name,
+                min_amount,
+                max_amount,
+                duration,
+                daily_profit,
+                description
+            };
+            
+            DB.setInvestmentPlans([...plans, newPlan]);
+            alert('Investment plan added successfully');
+            addPlanForm.reset();
+            updateInvestmentPlansPage();
+        });
+
+        // General settings form
+        generalSettingsForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const settings = {
+                site_name: document.getElementById('site-name').value,
+                currency: document.getElementById('site-currency').value,
+                min_deposit: parseFloat(document.getElementById('min-deposit').value),
+                min_withdraw: parseFloat(document.getElementById('min-withdraw').value),
+                withdraw_fee: parseFloat(document.getElementById('withdraw-fee').value),
+                referral_bonus: parseFloat(document.getElementById('referral-bonus').value),
+                last_backup: DB.getSettings().last_backup
+            };
+            
+            DB.setSettings(settings);
+            alert('Settings saved successfully');
+        });
+
+        // Update dashboard
+        function updateDashboard() {
+            if (!currentUser) return;
+            
+            const settings = DB.getSettings();
+            const investments = DB.getInvestments();
+            const transactions = DB.getTransactions();
+            const users = DB.getUsers();
+            
+            // Update stats
+            document.getElementById('balance-amount').textContent = currentUser.balance.toFixed(2) + ' ' + settings.currency;
+            document.getElementById('total-profit').textContent = currentUser.profit.toFixed(2) + ' ' + settings.currency;
+            
+            // Active investments
+            const userInvestments = investments.filter(i => i.user_id === currentUser.id && i.status === 'active');
+            document.getElementById('active-investments').textContent = userInvestments.length;
+            
+            // Referrals
+            const userReferrals = users.filter(u => u.referred_by === currentUser.id);
+            document.getElementById('total-referrals').textContent = userReferrals.length;
+            
+            // Recent transactions
+            const recentTransactions = transactions
+                .filter(t => t.user_id === currentUser.id)
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(0, 5);
+            
+            const transactionsTable = document.getElementById('recent-transactions');
+            transactionsTable.innerHTML = '';
+            
+            recentTransactions.forEach(t => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${formatDate(t.date)}</td>
+                    <td>${t.type}</td>
+                    <td>${t.amount >= 0 ? '+' : ''}${t.amount.toFixed(2)} ${settings.currency}</td>
+                    <td>${getStatusBadge(t.status)}</td>
+                `;
+                transactionsTable.appendChild(row);
+            });
+            
+            // Active investments table
+            const investmentsTable = document.getElementById('active-investments-table');
+            investmentsTable.innerHTML = '';
+            
+            const plans = DB.getInvestmentPlans();
+            
+            userInvestments.forEach(i => {
+                const plan = plans.find(p => p.id === i.plan_id);
+                const endDate = new Date(i.start_date);
+                endDate.setDate(endDate.getDate() + plan.duration);
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${plan.name}</td>
+                    <td>${i.amount.toFixed(2)} ${settings.currency}</td>
+                    <td>${(i.amount * (plan.daily_profit / 100)).toFixed(2)} ${settings.currency}/day</td>
+                    <td>${formatDate(i.start_date)}</td>
+                    <td>${formatDate(endDate)}</td>
+                    <td>${getStatusBadge(i.status)}</td>
+                `;
+                investmentsTable.appendChild(row);
+            });
+        }
+
+        // Update deposit page
+        function updateDepositPage() {
+            if (!currentUser) return;
+            
+            const deposits = DB.getDeposits();
+            const settings = DB.getSettings();
+            
+            // Deposit history
+            const userDeposits = deposits
+                .filter(d => d.user_id === currentUser.id)
+                .sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            const depositHistory = document.getElementById('deposit-history');
+            depositHistory.innerHTML = '';
+            
+            userDeposits.forEach(d => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${formatDate(d.date)}</td>
+                    <td>${d.amount.toFixed(2)} ${settings.currency}</td>
+                    <td>${d.method}</td>
+                    <td>${getStatusBadge(d.status)}</td>
+                `;
+                depositHistory.appendChild(row);
+            });
+        }
+
+        // Update withdraw page
+        function updateWithdrawPage() {
+            if (!currentUser) return;
+            
+            const withdrawals = DB.getWithdrawals();
+            const settings = DB.getSettings();
+            
+            // Withdrawal history
+            const userWithdrawals = withdrawals
+                .filter(w => w.user_id === currentUser.id)
+                .sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            const withdrawHistory = document.getElementById('withdraw-history');
+            withdrawHistory.innerHTML = '';
+            
+            userWithdrawals.forEach(w => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${formatDate(w.date)}</td>
+                    <td>${w.amount.toFixed(2)} ${settings.currency}</td>
+                    <td>${w.fee.toFixed(2)} ${settings.currency}</td>
+                    <td>${w.method}</td>
+                    <td>${getStatusBadge(w.status)}</td>
+                `;
+                withdrawHistory.appendChild(row);
+            });
+        }
+
+        // Update invest page
+        function updateInvestPage() {
+            if (!currentUser) return;
+            
+            const plans = DB.getInvestmentPlans();
+            const investments = DB.getInvestments();
+            const settings = DB.getSettings();
+            
+            // Investment plans
+            const plansContainer = document.getElementById('investment-plans');
+            plansContainer.innerHTML = '';
+            
+            plans.forEach(plan => {
+                const planCard = document.createElement('div');
+                planCard.className = 'col-md-4 mb-4';
+                planCard.innerHTML = `
+                    <div class="card">
+                        <div class="card-header">
+                            <h6>${plan.name}</h6>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li><strong>Min Amount:</strong> ${plan.min_amount.toFixed(2)} ${settings.currency}</li>
+                                ${plan.max_amount ? `<li><strong>Max Amount:</strong> ${plan.max_amount.toFixed(2)} ${settings.currency}</li>` : ''}
+                                <li><strong>Duration:</strong> ${plan.duration} days</li>
+                                <li><strong>Daily Profit:</strong> ${plan.daily_profit}%</li>
+                                ${plan.description ? `<li><strong>Description:</strong> ${plan.description}</li>` : ''}
+                            </ul>
+                            <button class="btn btn-primary w-100 invest-btn" data-plan-id="${plan.id}">Invest Now</button>
+                        </div>
+                    </div>
+                `;
+                plansContainer.appendChild(planCard);
+            });
+            
+            // Add event listeners to invest buttons
+            document.querySelectorAll('.invest-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const planId = parseInt(e.target.getAttribute('data-plan-id'));
+                    const plan = plans.find(p => p.id === planId);
+                    
+                    investmentModalTitle.textContent = `Invest in ${plan.name}`;
+                    investmentAmount.value = plan.min_amount;
+                    investmentRange.textContent = `Investment range: ${plan.min_amount} ${settings.currency}${plan.max_amount ? ` - ${plan.max_amount} ${settings.currency}` : '+'}`;
+                    
+                    // Set min and max
+                    investmentAmount.min = plan.min_amount;
+                    if (plan.max_amount) {
+                        investmentAmount.max = plan.max_amount;
+                    }
+                    
+                    // Store plan ID in form
+                    investmentForm.setAttribute('data-plan-id', planId);
+                    
+                    investmentModal.classList.add('show');
+                });
+            });
+            
+            // User investments
+            const userInvestments = investments
+                .filter(i => i.user_id === currentUser.id)
+                .sort((a, b) => new Date(b.start_date) - new Date(a.date));
+            
+            const investmentsTable = document.getElementById('user-investments');
+            investmentsTable.innerHTML = '';
+            
+            userInvestments.forEach(i => {
+                const plan = plans.find(p => p.id === i.plan_id);
+                const endDate = new Date(i.start_date);
+                endDate.setDate(endDate.getDate() + plan.duration);
+                
+                const dailyProfit = i.amount * (plan.daily_profit / 100);
+                const totalProfit = dailyProfit * plan.duration;
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${plan.name}</td>
+                    <td>${i.amount.toFixed(2)} ${settings.currency}</td>
+                    <td>${dailyProfit.toFixed(2)} ${settings.currency}</td>
+                    <td>${totalProfit.toFixed(2)} ${settings.currency}</td>
+                    <td>${formatDate(i.start_date)}</td>
+                    <td>${formatDate(endDate)}</td>
+                    <td>${getStatusBadge(i.status)}</td>
+                `;
+                investmentsTable.appendChild(row);
+            });
+        }
+
+        // Investment form
+        investmentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const planId = parseInt(investmentForm.getAttribute('data-plan-id'));
+            const plans = DB.getInvestmentPlans();
+            const plan = plans.find(p => p.id === planId);
+            const amount = parseFloat(investmentAmount.value);
+            const wallet = investmentWallet.value;
+            const settings = DB.getSettings();
+            
+            // Validate amount
+            if (amount < plan.min_amount) {
+                alert(`Minimum investment for this plan is ${plan.min_amount} ${settings.currency}`);
+                return;
+            }
+            
+            if (plan.max_amount && amount > plan.max_amount) {
+                alert(`Maximum investment for this plan is ${plan.max_amount} ${settings.currency}`);
+                return;
+            }
+            
+            // Check balance
+            let balance = 0;
+            if (wallet === 'balance') {
+                balance = currentUser.balance;
+            } else if (wallet === 'profit') {
+                balance = currentUser.profit;
+            }
+            
+            if (balance < amount) {
+                alert(`Insufficient ${wallet} balance`);
+                return;
+            }
+            
+            // Update user balance
+            const users = DB.getUsers();
+            const updatedUsers = users.map(u => {
+                if (u.id === currentUser.id) {
+                    if (wallet === 'balance') {
+                        return { ...u, balance: u.balance - amount };
+                    } else {
+                        return { ...u, profit: u.profit - amount };
+                    }
+                }
+                return u;
+            });
+            
+            DB.setUsers(updatedUsers);
+            currentUser = updatedUsers.find(u => u.id === currentUser.id);
+            
+            // Create investment
+            const investments = DB.getInvestments();
+            const newInvestment = {
+                id: investments.length > 0 ? Math.max(...investments.map(i => i.id)) + 1 : 1,
+                user_id: currentUser.id,
+                plan_id: planId,
+                amount,
+                start_date: new Date().toISOString(),
+                status: 'active'
+            };
+            
+            DB.setInvestments([...investments, newInvestment]);
+            
+            // Add transaction
+            const transactions = DB.getTransactions();
+            const newTransaction = {
+                id: transactions.length > 0 ? Math.max(...transactions.map(t => t.id)) + 1 : 1,
+                user_id: currentUser.id,
+                type: 'investment',
+                amount: -amount,
+                description: `Investment in ${plan.name}`,
+                status: 'completed',
+                date: new Date().toISOString()
+            };
+            
+            DB.setTransactions([...transactions, newTransaction]);
+            
+            alert('Investment created successfully');
+            investmentModal.classList.remove('show');
+            investmentForm.reset();
+            updateDashboard();
+            updateInvestPage();
+        });
+
+        // Update transactions page
+        function updateTransactionsPage() {
+            if (!currentUser) return;
+            
+            const transactions = DB.getTransactions();
+            const settings = DB.getSettings();
+            
+            const userTransactions = transactions
+                .filter(t => t.user_id === currentUser.id)
+                .sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            const transactionsTable = document.getElementById('all-transactions');
+            transactionsTable.innerHTML = '';
+            
+            userTransactions.forEach(t => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${formatDate(t.date)}</td>
+                    <td>${t.type}</td>
+                    <td>${t.amount >= 0 ? '+' : ''}${t.amount.toFixed(2)} ${settings.currency}</td>
+                    <td>${t.description}</td>
+                    <td>${getStatusBadge(t.status)}</td>
+                `;
+                transactionsTable.appendChild(row);
+            });
+        }
+
+        // Update referrals page
+        function updateReferralsPage() {
+            if (!currentUser) return;
+            
+            const users = DB.getUsers();
+            const settings = DB.getSettings();
+            
+            // Referral link
+            document.getElementById('referral-link').value = `${window.location.origin}?ref=${currentUser.referral_code}`;
+            
+            // Copy referral link
+            document.getElementById('copy-referral-link').addEventListener('click', () => {
+                const referralLink = document.getElementById('referral-link');
+                referralLink.select();
+                document.execCommand('copy');
+                alert('Referral link copied to clipboard!');
+            });
+            
+            // Referral stats
+            const userReferrals = users.filter(u => u.referred_by === currentUser.id);
+            const activeReferrals = userReferrals.filter(u => u.status === 'active');
+            
+            document.getElementById('referral-total').textContent = userReferrals.length;
+            document.getElementById('referral-active').textContent = activeReferrals.length;
+            document.getElementById('referral-earnings').textContent = currentUser.referral_balance.toFixed(2) + ' ' + settings.currency;
+            
+            // Referral list
+            const referralList = document.getElementById('referral-list');
+            referralList.innerHTML = '';
+            
+            userReferrals.forEach(u => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${u.fullname}</td>
+                    <td>${u.username}</td>
+                    <td>${formatDate(u.join_date)}</td>
+                    <td>${getStatusBadge(u.status)}</td>
+                    <td>${u.status === 'active' ? settings.referral_bonus.toFixed(2) : '0.00'} ${settings.currency}</td>
+                `;
+                referralList.appendChild(row);
+            });
+        }
+
+        // Update profile page
+        function updateProfilePage() {
+            if (!currentUser) return;
+            
+            document.getElementById('profile-fullname').value = currentUser.fullname;
+            document.getElementById('profile-email').value = currentUser.email;
+            document.getElementById('profile-phone').value = currentUser.phone;
+            document.getElementById('profile-address').value = currentUser.address || '';
+        }
+
+        // Admin dashboard
+        function updateAdminDashboard() {
+            if (!currentUser || !currentUser.is_admin) return;
+            
+            const users = DB.getUsers();
+            const deposits = DB.getDeposits();
+            const withdrawals = DB.getWithdrawals();
+            const transactions = DB.getTransactions();
+            const settings = DB.getSettings();
+            
+            // Stats
+            document.getElementById('admin-total-users').textContent = users.length;
+            document.getElementById('admin-active-users').textContent = users.filter(u => u.status === 'active').length;
+            
+            const totalDeposits = deposits
+                .filter(d => d.status === 'completed')
+                .reduce((sum, d) => sum + d.amount, 0);
+            document.getElementById('admin-total-deposits').textContent = totalDeposits.toFixed(2) + ' ' + settings.currency;
+            
+            const totalWithdrawals = withdrawals
+                .filter(w => w.status === 'completed')
+                .reduce((sum, w) => sum + w.amount, 0);
+            document.getElementById('admin-total-withdrawals').textContent = totalWithdrawals.toFixed(2) + ' ' + settings.currency;
+            
+            // Recent activities
+            const recentActivities = transactions
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(0, 10);
+            
+            const activitiesTable = document.getElementById('admin-recent-activities');
+            activitiesTable.innerHTML = '';
+            
+            recentActivities.forEach(t => {
+                const user = users.find(u => u.id === t.user_id);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${formatDate(t.date)}</td>
+                    <td>${user?.username || 'Unknown'}</td>
+                    <td>${t.description}</td>
+                    <td>${t.amount >= 0 ? '+' : ''}${t.amount.toFixed(2)} ${settings.currency}</td>
+                `;
+                activitiesTable.appendChild(row);
+            });
+        }
+
+        // Users page
+        function updateUsersPage() {
+            if (!currentUser || !currentUser.is_admin) return;
+            
+            const users = DB.getUsers();
+            const settings = DB.getSettings();
+            
+            const usersTable = document.getElementById('users-list');
+            usersTable.innerHTML = '';
+            
+            users.forEach(u => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${u.username}</td>
+                    <td>${u.fullname}</td>
+                    <td>${u.email}</td>
+                    <td>${u.balance.toFixed(2)} ${settings.currency}</td>
+                    <td>${getStatusBadge(u.status)}</td>
+                    <td>${formatDate(u.join_date)}</td>
+                    <td>
+                        <button class="btn btn-sm btn-info view-user-btn" data-user-id="${u.id}">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </td>
+                `;
+                usersTable.appendChild(row);
+            });
+            
+            // User search
+            document.getElementById('user-search').addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const rows = usersTable.querySelectorAll('tr');
+                
+                rows.forEach(row => {
+                    const username = row.querySelector('td:first-child').textContent.toLowerCase();
+                    const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                    const email = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                    
+                    if (username.includes(searchTerm) || name.includes(searchTerm) || email.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+            
+            // View user buttons
+            document.querySelectorAll('.view-user-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const userId = parseInt(e.target.closest('button').getAttribute('data-user-id'));
+                    const users = DB.getUsers();
+                    const user = users.find(u => u.id === userId);
+                    const settings = DB.getSettings();
+                    
+                    userModalTitle.textContent = `User: ${user.username}`;
+                    document.getElementById('modal-username').textContent = user.username;
+                    document.getElementById('modal-fullname').textContent = user.fullname;
+                    document.getElementById('modal-email').textContent = user.email;
+                    document.getElementById('modal-phone').textContent = user.phone;
+                    document.getElementById('modal-balance').textContent = user.balance.toFixed(2) + ' ' + settings.currency;
+                    document.getElementById('modal-status').innerHTML = getStatusBadge(user.status);
+                    document.getElementById('modal-joined').textContent = formatDate(user.join_date);
+                    document.getElementById('modal-last-login').textContent = formatDate(user.last_login);
+                    
+                    // Actions
+                    const actionsDiv = document.getElementById('user-actions');
+                    actionsDiv.innerHTML = '';
+                    
+                    if (user.status === 'active') {
+                        const blockBtn = document.createElement('button');
+                        blockBtn.className = 'btn btn-danger';
+                        blockBtn.innerHTML = '<i class="fas fa-ban"></i> Block User';
+                        blockBtn.addEventListener('click', () => {
+                            const updatedUsers = users.map(u => {
+                                if (u.id === user.id) {
+                                    return { ...u, status: 'blocked' };
+                                }
+                                return u;
+                            });
+                            DB.setUsers(updatedUsers);
+                            alert('User has been blocked');
+                            updateUsersPage();
+                            userModal.classList.remove('show');
+                        });
+                        actionsDiv.appendChild(blockBtn);
+                    } else {
+                        const unblockBtn = document.createElement('button');
+                        unblockBtn.className = 'btn btn-success';
+                        unblockBtn.innerHTML = '<i class="fas fa-check"></i> Unblock User';
+                        unblockBtn.addEventListener('click', () => {
+                            const updatedUsers = users.map(u => {
+                                if (u.id === user.id) {
+                                    return { ...u, status: 'active' };
+                                }
+                                return u;
+                            });
+                            DB.setUsers(updatedUsers);
+                            alert('User has been unblocked');
+                            updateUsersPage();
+                            userModal.classList.remove('show');
+                        });
+                        actionsDiv.appendChild(unblockBtn);
+                    }
+                    
+                    // Add funds button
+                    const addFundsBtn = document.createElement('button');
+                    addFundsBtn.className = 'btn btn-primary ml-2';
+                    addFundsBtn.innerHTML = '<i class="fas fa-plus"></i> Add Funds';
+                    addFundsBtn.addEventListener('click', () => {
+                        const amount = prompt('Enter amount to add:');
+                        if (amount && !isNaN(amount)) {
+                            const updatedUsers = users.map(u => {
+                                if (u.id === user.id) {
+                                    return { ...u, balance: u.balance + parseFloat(amount) };
+                                }
+                                return u;
+                            });
+                            
+                            DB.setUsers(updatedUsers);
+                            
+                            // Add transaction
+                            const transactions = DB.getTransactions();
+                            const newTransaction = {
+                                id: transactions.length > 0 ? Math.max(...transactions.map(t => t.id)) + 1 : 1,
+                                user_id: user.id,
+                                type: 'admin',
+                                amount: parseFloat(amount),
+                                description: `Funds added by admin ${currentUser.username}`,
+                                status: 'completed',
+                                date: new Date().toISOString()
+                            };
+                            
+                            DB.setTransactions([...transactions, newTransaction]);
+                            
+                            alert('Funds added successfully');
+                            updateUsersPage();
+                            userModal.classList.remove('show');
+                        }
+                    });
+                    actionsDiv.appendChild(addFundsBtn);
+                    
+                    userModal.classList.add('show');
+                });
+            });
+        }
+
+        // Deposits page
+        function updateDepositsPage() {
+            if (!currentUser || !currentUser.is_admin) return;
+            
+            const deposits = DB.getDeposits();
+            const users = DB.getUsers();
+            const settings = DB.getSettings();
+            
+            // Pending deposits
+            const pendingDepositsTable = document.getElementById('pending-deposits');
+            pendingDepositsTable.innerHTML = '';
+            
+            const pendingDeposits = deposits
+                .filter(d => d.status === 'pending')
+                .sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            pendingDeposits.forEach(d => {
+                const user = users.find(u => u.id === d.user_id);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${formatDate(d.date)}</td>
+                    <td>${user?.username || 'Unknown'}</td>
+                    <td>${d.amount.toFixed(2)} ${settings.currency}</td>
+                    <td>${d.method}</td>
+                    <td>${d.transaction_id || 'N/A'}</td>
+                    <td>
+                        <button class="btn btn-sm btn-success confirm-deposit-btn" data-deposit-id="${d.id}">
+                            <i class="fas fa-check"></i> Confirm
+                        </button>
+                        <button class="btn btn-sm btn-danger reject-deposit-btn" data-deposit-id="${d.id}">
+                            <i class="fas fa-times"></i> Reject
+                        </button>
+                    </td>
+                `;
+                pendingDepositsTable.appendChild(row);
+            });
+            
+            // Completed deposits
+            const completedDepositsTable = document.getElementById('completed-deposits');
+            completedDepositsTable.innerHTML = '';
+            
+            const completedDeposits = deposits
+                .filter(d => d.status === 'completed')
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(0, 20);
+            
+            completedDeposits.forEach(d => {
+                const user = users.find(u => u.id === d.user_id);
+                const confirmedBy = users.find(u => u.id === d.confirmed_by);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${formatDate(d.date)}</td>
+                    <td>${user?.username || 'Unknown'}</td>
+                    <td>${d.amount.toFixed(2)} ${settings.currency}</td>
+                    <td>${d.method}</td>
+                    <td>${confirmedBy?.username || 'System'}</td>
+                `;
+                completedDepositsTable.appendChild(row);
+            });
+            
+            // Confirm deposit buttons
+            document.querySelectorAll('.confirm-deposit-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const depositId = parseInt(e.target.closest('button').getAttribute('data-deposit-id'));
+                    const deposits = DB.getDeposits();
+                    const deposit = deposits.find(d => d.id === depositId);
+                    const users = DB.getUsers();
+                    const user = users.find(u => u.id === deposit.user_id);
+                    const transactions = DB.getTransactions();
+                    
+                    // Update deposit status
+                    const updatedDeposits = deposits.map(d => {
+                        if (d.id === depositId) {
+                            return { ...d, status: 'completed', confirmed_by: currentUser.id };
+                        }
+                        return d;
+                    });
+                    
+                    DB.setDeposits(updatedDeposits);
+                    
+                    // Add to user balance
+                    const updatedUsers = users.map(u => {
+                        if (u.id === deposit.user_id) {
+                            return { ...u, balance: u.balance + deposit.amount };
+                        }
+                        return u;
+                    });
+                    
+                    DB.setUsers(updatedUsers);
+                    
+                    // Update transaction status
+                    const updatedTransactions = transactions.map(t => {
+                        if (t.user_id === deposit.user_id && t.type === 'deposit' && t.amount === deposit.amount && t.status === 'pending') {
+                            return { ...t, status: 'completed' };
+                        }
+                        return t;
+                    });
+                    
+                    DB.setTransactions(updatedTransactions);
+                    
+                    alert('Deposit confirmed successfully');
+                    updateDepositsPage();
+                });
+            });
+            
+            // Reject deposit buttons
+            document.querySelectorAll('.reject-deposit-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const depositId = parseInt(e.target.closest('button').getAttribute('data-deposit-id'));
+                    const deposits = DB.getDeposits();
+                    
+                    // Update deposit status
+                    const updatedDeposits = deposits.map(d => {
+                        if (d.id === depositId) {
+                            return { ...d, status: 'rejected' };
+                        }
+                        return d;
+                    });
+                    
+                    DB.setDeposits(updatedDeposits);
+                    
+                    // Update transaction status
+                    const transactions = DB.getTransactions();
+                    const updatedTransactions = transactions.map(t => {
+                        if (t.user_id === deposit.user_id && t.type === 'deposit' && t.amount === deposit.amount && t.status === 'pending') {
+                            return { ...t, status: 'rejected' };
+                        }
+                        return t;
+                    });
+                    
+                    DB.setTransactions(updatedTransactions);
+                    
+                    alert('Deposit rejected');
+                    updateDepositsPage();
+                });
+            });
+        }
+
+        // Withdrawals page
+        function updateWithdrawalsPage() {
+            if (!currentUser || !currentUser.is_admin) return;
+            
+            const withdrawals = DB.getWithdrawals();
+            const users = DB.getUsers();
+            const settings = DB.getSettings();
+            
+            // Pending withdrawals
+            const pendingWithdrawalsTable = document.getElementById('pending-withdrawals');
+            pendingWithdrawalsTable.innerHTML = '';
+            
+            const pendingWithdrawals = withdrawals
+                .filter(w => w.status === 'pending')
+                .sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            pendingWithdrawals.forEach(w => {
+                const user = users.find(u => u.id === w.user_id);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${formatDate(w.date)}</td>
+                    <td>${user?.username || 'Unknown'}</td>
+                    <td>${w.amount.toFixed(2)} ${settings.currency}</td>
+                    <td>${w.fee.toFixed(2)} ${settings.currency}</td>
+                    <td>${w.method}</td>
+                    <td>${w.account_name} (${w.phone})</td>
+                    <td>
+                        <button class="btn btn-sm btn-success confirm-withdrawal-btn" data-withdrawal-id="${w.id}">
+                            <i class="fas fa-check"></i> Confirm
+                        </button>
+                        <button class="btn btn-sm btn-danger reject-withdrawal-btn" data-withdrawal-id="${w.id}">
+                            <i class="fas fa-times"></i> Reject
+                        </button>
+                    </td>
+                `;
+                pendingWithdrawalsTable.appendChild(row);
+            });
+            
+            // Completed withdrawals
+            const completedWithdrawalsTable = document.getElementById('completed-withdrawals');
+            completedWithdrawalsTable.innerHTML = '';
+            
+            const completedWithdrawals = withdrawals
+                .filter(w => w.status === 'completed')
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(0, 20);
+            
+            completedWithdrawals.forEach(w => {
+                const user = users.find(u => u.id === w.user_id);
+                const processedBy = users.find(u => u.id === w.processed_by);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${formatDate(w.date)}</td>
+                    <td>${user?.username || 'Unknown'}</td>
+                    <td>${w.amount.toFixed(2)} ${settings.currency}</td>
+                    <td>${w.fee.toFixed(2)} ${settings.currency}</td>
+                    <td>${w.method}</td>
+                    <td>${processedBy?.username || 'System'}</td>
+                `;
+                completedWithdrawalsTable.appendChild(row);
+            });
+            
+            // Confirm withdrawal buttons
+            document.querySelectorAll('.confirm-withdrawal-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const withdrawalId = parseInt(e.target.closest('button').getAttribute('data-withdrawal-id'));
+                    const withdrawals = DB.getWithdrawals();
+                    
+                    // Update withdrawal status
+                    const updatedWithdrawals = withdrawals.map(w => {
+                        if (w.id === withdrawalId) {
+                            return { ...w, status: 'completed', processed_by: currentUser.id };
+                        }
+                        return w;
+                    });
+                    
+                    DB.setWithdrawals(updatedWithdrawals);
+                    
+                    // Update transaction status
+                    const transactions = DB.getTransactions();
+                    const updatedTransactions = transactions.map(t => {
+                        if (t.user_id === withdrawal.user_id && t.type === 'withdrawal' && t.amount === -withdrawal.amount && t.status === 'pending') {
+                            return { ...t, status: 'completed' };
+                        }
+                        return t;
+                    });
+                    
+                    DB.setTransactions(updatedTransactions);
+                    
+                    alert('Withdrawal confirmed successfully');
+                    updateWithdrawalsPage();
+                });
+            });
+            
+            // Reject withdrawal buttons
+            document.querySelectorAll('.reject-withdrawal-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const withdrawalId = parseInt(e.target.closest('button').getAttribute('data-withdrawal-id'));
+                    const withdrawals = DB.getWithdrawals();
+                    const withdrawal = withdrawals.find(w => w.id === withdrawalId);
+                    const users = DB.getUsers();
+                    
+                    // Update withdrawal status
+                    const updatedWithdrawals = withdrawals.map(w => {
+                        if (w.id === withdrawalId) {
+                            return { ...w, status: 'rejected' };
+                        }
+                        return w;
+                    });
+                    
+                    DB.setWithdrawals(updatedWithdrawals);
+                    
+                    // Return funds to user
+                    const updatedUsers = users.map(u => {
+                        if (u.id === withdrawal.user_id) {
+                            return { ...u, balance: u.balance + withdrawal.amount + withdrawal.fee };
+                        }
+                        return u;
+                    });
+                    
+                    DB.setUsers(updatedUsers);
+                    
+                    // Update transaction status
+                    const transactions = DB.getTransactions();
+                    const updatedTransactions = transactions.map(t => {
+                        if (t.user_id === withdrawal.user_id && t.type === 'withdrawal' && t.amount === -withdrawal.amount && t.status === 'pending') {
+                            return { ...t, status: 'rejected' };
+                        }
+                        return t;
+                    });
+                    
+                    DB.setTransactions(updatedTransactions);
+                    
+                    alert('Withdrawal rejected and funds returned to user');
+                    updateWithdrawalsPage();
+                });
+            });
+        }
+
+        // Investment plans page
+        function updateInvestmentPlansPage() {
+            if (!currentUser || !currentUser.is_admin) return;
+            
+            const plans = DB.getInvestmentPlans();
+            const settings = DB.getSettings();
+            
+            const plansTable = document.getElementById('plans-list');
+            plansTable.innerHTML = '';
+            
+            plans.forEach(plan => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${plan.name}</td>
+                    <td>${plan.min_amount.toFixed(2)} ${settings.currency}</td>
+                    <td>${plan.max_amount ? plan.max_amount.toFixed(2) + ' ' + settings.currency : 'No limit'}</td>
+                    <td>${plan.duration} days</td>
+                    <td>${plan.daily_profit}%</td>
+                    <td>
+                        <button class="btn btn-sm btn-info view-plan-btn" data-plan-id="${plan.id}">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger delete-plan-btn" data-plan-id="${plan.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                plansTable.appendChild(row);
+            });
+            
+            // View plan buttons
+            document.querySelectorAll('.view-plan-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const planId = parseInt(e.target.closest('button').getAttribute('data-plan-id'));
+                    const plans = DB.getInvestmentPlans();
+                    const plan = plans.find(p => p.id === planId);
+                    const settings = DB.getSettings();
+                    
+                    planModalTitle.textContent = `Plan: ${plan.name}`;
+                    document.getElementById('modal-plan-name').textContent = plan.name;
+                    document.getElementById('modal-plan-min').textContent = plan.min_amount.toFixed(2) + ' ' + settings.currency;
+                    document.getElementById('modal-plan-max').textContent = plan.max_amount ? plan.max_amount.toFixed(2) + ' ' + settings.currency : 'No limit';
+                    document.getElementById('modal-plan-duration').textContent = plan.duration + ' days';
+                    document.getElementById('modal-plan-profit').textContent = plan.daily_profit + '% daily';
+                    document.getElementById('modal-plan-description').textContent = plan.description || 'No description';
+                    
+                    // Actions
+                    const actionsDiv = document.getElementById('plan-actions');
+                    actionsDiv.innerHTML = '';
+                    
+                    const editBtn = document.createElement('button');
+                    editBtn.className = 'btn btn-primary';
+                    editBtn.innerHTML = '<i class="fas fa-edit"></i> Edit Plan';
+                    editBtn.addEventListener('click', () => {
+                        // In a real app, you would implement edit functionality
+                        alert('Edit functionality would be implemented here');
+                    });
+                    actionsDiv.appendChild(editBtn);
+                    
+                    planModal.classList.add('show');
+                });
+            });
+            
+            // Delete plan buttons
+            document.querySelectorAll('.delete-plan-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const planId = parseInt(e.target.closest('button').getAttribute('data-plan-id'));
+                    
+                    showConfirmation(
+                        'Delete Plan',
+                        'Are you sure you want to delete this plan? Existing investments will not be affected.',
+                        () => {
+                            const plans = DB.getInvestmentPlans();
+                            const updatedPlans = plans.filter(p => p.id !== planId);
+                            DB.setInvestmentPlans(updatedPlans);
+                            updateInvestmentPlansPage();
+                            alert('Plan deleted successfully');
+                        }
+                    );
+                });
+            });
+        }
+
+        // Settings page
+        function updateSettingsPage() {
+            if (!currentUser || !currentUser.is_admin) return;
+            
+            const settings = DB.getSettings();
+            const users = DB.getUsers();
+            const transactions = DB.getTransactions();
+            
+            document.getElementById('site-name').value = settings.site_name;
+            document.getElementById('site-currency').value = settings.currency;
+            document.getElementById('min-deposit').value = settings.min_deposit;
+            document.getElementById('min-withdraw').value = settings.min_withdraw;
+            document.getElementById('withdraw-fee').value = settings.withdraw_fee;
+            document.getElementById('referral-bonus').value = settings.referral_bonus;
+            
+            // System info
+            document.getElementById('system-total-users').textContent = users.length;
+            document.getElementById('system-total-transactions').textContent = transactions.length;
+            
+            if (settings.last_backup) {
+                document.getElementById('last-backup').textContent = formatDate(settings.last_backup);
+            } else {
+                document.getElementById('last-backup').textContent = 'Never';
+            }
+            
+            // Update server time every second
+            function updateServerTime() {
+                document.getElementById('server-time').textContent = new Date().toLocaleString();
+            }
+            
+            updateServerTime();
+            setInterval(updateServerTime, 1000);
+        }
+
+        // Helper functions
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+        }
+
+        function getStatusBadge(status) {
+            switch (status) {
+                case 'active':
+                case 'completed':
+                    return `<span class="badge badge-success">${status}</span>`;
+                case 'pending':
+                    return `<span class="badge badge-warning">${status}</span>`;
+                case 'blocked':
+                case 'rejected':
+                    return `<span class="badge badge-danger">${status}</span>`;
+                default:
+                    return `<span class="badge badge-secondary">${status}</span>`;
+            }
+        }
+
+        // Check for referral code in URL
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const refCode = urlParams.get('ref');
+            
+            if (refCode) {
+                document.getElementById('register-referral').value = refCode;
+            }
+        });
+    </script>
+</body>
+</html>
