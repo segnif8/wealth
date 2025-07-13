@@ -1,0 +1,70 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "admin123",
+      "fullname": "Admin User",
+      "email": "admin@wealthgrow.com",
+      "phone": "0912345678",
+      "address": "Addis Ababa, Ethiopia",
+      "balance": 0,
+      "profit": 0,
+      "referral_balance": 0,
+      "status": "active",
+      "is_admin": true,
+      "referral_code": "ADMIN123",
+      "referred_by": null,
+      "join_date": "2023-01-01T00:00:00.000Z",
+      "last_login": "2023-01-01T00:00:00.000Z"
+    }
+  ],
+  "investment_plans": [
+    {
+      "id": 1,
+      "name": "Starter Plan",
+      "min_amount": 300,
+      "max_amount": 5000,
+      "duration": 7,
+      "daily_profit": 1.5,
+      "description": "Perfect for beginners with low risk"
+    },
+    {
+      "id": 2,
+      "name": "Premium Plan",
+      "min_amount": 5000,
+      "max_amount": 20000,
+      "duration": 14,
+      "daily_profit": 2.5,
+      "description": "For experienced investors with medium risk"
+    },
+    {
+      "id": 3,
+      "name": "VIP Plan",
+      "min_amount": 20000,
+      "max_amount": null,
+      "duration": 30,
+      "daily_profit": 4.0,
+      "description": "High returns for VIP investors"
+    }
+  ],
+  "investments": [],
+  "transactions": [],
+  "deposits": [],
+  "withdrawals": [],
+  "settings": {
+    "site_name": "WealthGrow Investment",
+    "currency": "ETB",
+    "min_deposit": 300,
+    "min_withdraw": 100,
+    "withdraw_fee": 6,
+    "referral_bonus": 5,
+    "last_backup": null
+  },
+  "bank_details": {
+    "bank_name": "Commercial Bank of Ethiopia",
+    "account_name": "WealthGrow Investments",
+    "account_number": "100034567890",
+    "telebirr_number": "0912345678"
+  }
+}
