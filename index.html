@@ -2286,11 +2286,9 @@ const DB = {
   dataUrl: 'https://raw.githubusercontent.com/segnif8/wealth/main/wealthgrow-data.json',
   currentData: null,
   
-  // Initialize the database
   async init() {
     try {
-      // Try to fetch from GitHub first
-      const response = await fetch(`${this.dataUrl}?t=${Date.now()}`); // Cache busting
+      const response = await fetch(`${this.dataUrl}?t=${Date.now()}`);
       if (response.ok) {
         this.currentData = await response.json();
       } else {
@@ -2298,13 +2296,13 @@ const DB = {
       }
     } catch (error) {
       console.log('Using localStorage fallback:', error);
-      // Fallback to localStorage if GitHub fetch fails
       const localData = localStorage.getItem('wealthgrow_data');
       this.currentData = localData ? JSON.parse(localData) : this.getDefaultData();
     }
     return this.currentData;
   },
-  
+  // ... rest of your DB implementation
+};
   // Default data structure
   getDefaultData() {
     return {
